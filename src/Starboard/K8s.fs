@@ -29,7 +29,6 @@ module K8s =
 
             List.append state [box (deployment.ToResource())]
         
-
         [<CustomOperation "resource">]
         member _.Resource(state: K8s, resource: obj) = List.append state [resource]
 

@@ -49,6 +49,12 @@ module Common =
     type LabelSelectorRequirement = { key: string; operator: MatchExpressionOperator; values: string list}
     type LabelSelectorRequirement with
         static member fromMatchLabel (key,value) = { key = key; operator = In; values = [value] }
+        static member ToK8sModel (labelSelectorRequirement: LabelSelectorRequirement) =
+            {|
+                key = labelSelectorRequirement.key
+                operator = labelSelectorRequirement.operator.ToString()
+                values = labelSelectorRequirement.values
+            |}
 
     //-------------------------
     // LabelSelector
@@ -60,6 +66,23 @@ module Common =
         static member empty =
             { matchExpressions = List.empty
               matchLabels = List.empty }
+
+        static member ToK8sModel (labelSelector: LabelSelector) =
+            let matchLabels = labelSelector.matchLabels
+            let matchExpressions = labelSelector.matchExpressions
+
+            let mapToMatchLabels lst = dict lst
+            let mapToMatchExpressions labelSelectors =
+                labelSelectors
+                |> List.map LabelSelectorRequirement.ToK8sModel
+
+            match (matchLabels, matchExpressions) with
+            | [], [] -> None
+            | lbls, exprs -> 
+                {|
+                    matchLabels = Helpers.mapValues mapToMatchLabels lbls
+                    matchExpressions = Helpers.mapValues mapToMatchExpressions exprs
+                |} |> Some
 
     type LabelSelectorBuilder() =
         member _.Yield _ = LabelSelector.empty
@@ -92,12 +115,23 @@ module Common =
     // Container
     //-------------------------
     
-    type Container =
-        { name: string option
-          image: string
-          command: string list
-          args: string list 
-          env: (string*string) list }
+    type Container = { 
+        name: string option
+        image: string
+        command: string list
+        args: string list 
+        env: (string*string) list
+        // workingDir
+        // ports
+        // TODO: env.valueFrom
+        // TODO: envFrom
+        // TODO: volumes
+        // TODO: resources
+        // TODO: lifecyce
+        // TODO: security context
+        // TODO: debugging
+
+    }
 
 
     type Container with

@@ -21,33 +21,7 @@ type Deployment with
             selectors = LabelSelector.empty
         }
     member this.ToResource() =
-
-        let toK8sSelector() =
-            let matchLabels = this.selectors.matchLabels
-            let matchExpressions = this.selectors.matchExpressions
-
-            let mapToMatchLabels lst = dict lst
-            let mapToMatchExpressions labelSelectors =
-                labelSelectors
-                |> List.map (fun e ->  {|
-                                            key = e.key
-                                            operator = e.operator.ToString()
-                                            values = e.values
-                                        |})
-
-            match (matchLabels, matchExpressions) with
-            | [], [] -> None
-            | lbls, exprs -> 
-                {|
-                    matchLabels = Helpers.mapValues mapToMatchLabels lbls
-                    matchExpressions = Helpers.mapValues mapToMatchExpressions exprs
-                |} |> Some
-
-        
-            //match lst with
-            //| [] -> None
-            //| lbls -> lbls |> dict |> Some
-                    
+    
         // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/deployment-v1/
         {|
             apiVersion = "apps/v1"
@@ -59,7 +33,7 @@ type Deployment with
                 minReadySeconds = 0
                 revisionHistoryLimit = 10
                 progressDeadlineSeconds = 600
-                selector = toK8sSelector()
+                selector = LabelSelector.ToK8sModel this.selectors
                 // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/
                 template = {|
                     metadata = this.pod |> Option.bind (fun p -> p.K8sMetadata())
