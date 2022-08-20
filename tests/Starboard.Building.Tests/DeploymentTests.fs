@@ -41,7 +41,7 @@ module DeploymentTests =
             pod aPod
         }
 
-        Assert.Equal(Some "my-name", deployment1.name)
+        Assert.Equal(Some "my-name", deployment1.metadata.name)
 
     [<Fact>]
     let ``DeploymentBuilder sets replicas`` () =
@@ -62,7 +62,7 @@ module DeploymentTests =
             pod aPod
         }
 
-        Assert.Equal("test", deployment1.ns)
+        Assert.Equal(Some "test", deployment1.metadata.ns)
 
     [<Fact>]
     let ``DeploymentBuilder sets labels`` () =
@@ -72,7 +72,7 @@ module DeploymentTests =
             pod aPod
         }
 
-        listsEqual expected deployment1.labels
+        listsEqual expected deployment1.metadata.labels
         
     [<Fact>]
     let ``DeploymentBuilder sets annotations`` () =
@@ -82,16 +82,16 @@ module DeploymentTests =
             pod aPod
         }
 
-        listsEqual expected deployment1.annotations
+        listsEqual expected deployment1.metadata.annotations
     
     [<Fact>]
     let ``DeploymentBuilder sets matchExpressions with selectors`` () =
         let expected  = [{ key = "key"; operator = In; values = ["value"] }]
-        let matchLabels = selector {
+        let labelsToMatch = selector {
             matchIn ("key",["value"])   
         }
         let deployment1 = deployment {
-            selector matchLabels
+            selector labelsToMatch
             pod aPod
         }
 
@@ -100,11 +100,11 @@ module DeploymentTests =
     [<Fact>]
     let ``DeploymentBuilder sets matchLabels with selectors`` () =
         let expected = [("key","value")]
-        let matchLabels = selector {
+        let labelsToMatch = selector {
             matchLabel ("key","value")   
         }
         let deployment1 = deployment {
-            selector matchLabels
+            selector labelsToMatch
             pod aPod
         }
 

@@ -21,9 +21,6 @@ module K8s =
     
     type K8s = obj list
 
-    //type K8s with
-    //    static member Empty = List.empty
-
     type K8sBuilder() =
         member _.Yield _ = List.Empty
 

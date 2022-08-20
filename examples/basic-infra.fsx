@@ -26,22 +26,22 @@ open Starboard.Resources
 open Starboard.Resources.K8s
 
 let container1 = container {
-    image "nginx"
-    command ["systemctl"]
-    args ["config"; "nginx"]
+    name "nginx"
+    image "nginx:latest"
 }
 
+let appLabels = [("app","ngnix")]
 let pod1 = pod {
     containers [container1]
-    
+    labels appLabels
 }
 
 let deployment1 = deployment {
     name "test-deployment"
     replicas 3
     pod pod1
-    labels [("app","ngnix")]
-    matchLabel ("app","nginx")
+    labels appLabels
+    matchLabels appLabels
 }
 
 let k8s1 = k8s {
@@ -49,4 +49,10 @@ let k8s1 = k8s {
 }
 
 KubeCtlWriter.print k8s1
-KubeCtlWriter.toJsonFile k8s1 "nginx.deployment.json"
+
+let save k8s =
+    let fsxName = fsi.CommandLineArgs[0].Replace(".fsx", "")
+    let fileName = $"{fsxName}.deployment.json"
+    KubeCtlWriter.toJsonFile k8s fileName
+
+save k8s1 

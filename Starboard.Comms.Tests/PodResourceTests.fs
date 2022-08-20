@@ -1,6 +1,6 @@
 namespace Starboard.Comms.Tests
 
-module DeploymentResourceTests =
+module PodResourceTests =
 
     open Xunit
     open Starboard.Resources

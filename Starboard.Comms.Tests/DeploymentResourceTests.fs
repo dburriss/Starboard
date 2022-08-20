@@ -162,3 +162,30 @@ module DeploymentResourceTests =
 
         test <@ annotations = ["key"] @>
         test <@ annotationValues = ["value"] @>
+    
+    [<Fact>]
+    let ``Deployment pod template labels`` () =
+        let container1 = container {
+            name "nginx"
+            image "nginx:1.14.2"
+            command ["systemctl"]
+            args ["config"; "nginx"]
+        }
+
+        let pod1 = pod {
+            container container1
+            labels [("pod-label","pod-label-value")]
+        }
+
+        let deployment1 = deployment {
+            name "my-name"
+            pod pod1
+            annotations [("key","value")]
+        }
+
+        let deploymentResource = deployment1.ToResource()
+        let labels = deploymentResource.spec.template.metadata.Value.labels.Value.Keys |> Seq.toList
+        let labelValues = deploymentResource.spec.template.metadata.Value.labels.Value.Values |> Seq.toList
+
+        test <@ labels = ["pod-label"] @>
+        test <@ labelValues = ["pod-label-value"] @>

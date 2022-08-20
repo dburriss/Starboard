@@ -1,8 +1,12 @@
 ﻿namespace Starboard.Resources
 
+module Helpers =
+    let mapValues f = function
+        | [] -> None
+        | xs -> Some (f xs)
+
 [<AutoOpen>]
 module Common =
-    open System.Collections.Generic
     
     type K8sResource =
         abstract member JsonModel : unit -> obj
@@ -10,10 +14,29 @@ module Common =
     type Metadata = {
         name: string option
         generateName : string option
-        ``namespace``: string option
-        labels: IReadOnlyDictionary<string,string> option
-        annotations: IReadOnlyDictionary<string,string> option
+        ns: string option
+        labels: (string*string) list
+        annotations: (string*string) list
     }
+
+    type Metadata with
+        static member empty = {
+            name = None
+            generateName = None
+            ns = Some "default"
+            labels = List.empty
+            annotations = List.empty 
+        }
+
+        static member ToK8sModel metadata =
+            let toK8sMap lst = Helpers.mapValues dict lst
+
+            {|
+                name = metadata.name
+                ``namespace`` = metadata.ns
+                labels = toK8sMap metadata.labels
+                annotations = toK8sMap metadata.annotations
+            |}
 
     type MatchExpressionOperator = | In | NotIn | Exists | DoesNotExist 
         with override this.ToString() =
