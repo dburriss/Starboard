@@ -40,15 +40,7 @@ type Deployment with
                     // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/#PodTemplateSpec
                     spec = {|
                         // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
-                        containers = this.pod |>  Option.map ( fun pod -> [
-                            for c in pod.containers do
-                                {|
-                                    name = c.name
-                                    image = c.image
-                                    command = c.command
-                                    args = c.args
-                                |}
-                        ])
+                        containers = this.pod |>  Option.map ( fun pod -> pod.containers |> List.map (fun c -> c.Spec()))
                     |}
                 |}
                 strategy = None

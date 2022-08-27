@@ -36,8 +36,8 @@ module DeploymentResourceTests =
 
         Assert.Equal(Some "nginx", container.name)        
         Assert.Equal("nginx:1.14.2", container.image)        
-        listsEqual ["systemctl"] container.command      
-        listsEqual ["config"; "nginx"] container.args
+        listsEqual ["systemctl"] container.command.Value   
+        listsEqual ["config"; "nginx"] container.args.Value
 
     [<Fact>]
     let ``Deployment spec contains replicas`` () =

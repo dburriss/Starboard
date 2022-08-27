@@ -20,10 +20,9 @@ spec:
       namespace: default
     spec:
       containers:
-      - args: []
-        command: []
-        image: nginx:latest
+      - image: nginx:latest
         name: nginx
+        workingDir: /test-dir
 
 ---
 apiVersion: apps/v1
@@ -48,8 +47,7 @@ spec:
       namespace: default
     spec:
       containers:
-      - args: []
-        command: []
-        image: nginx:latest
+      - image: nginx:latest
         name: nginx
+        workingDir: /test-dir
 

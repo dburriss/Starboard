@@ -127,18 +127,18 @@ module Common =
         command: string list
         args: string list 
         env: (string*string) list
-        // workingDir
-        // ports
+        workingDir: string option
+        // TODO: workingDir
+        // TODO: ports
+        // TODO: resources
+        // TODO: volumes
+        // TODO: lifecyce
         // TODO: env.valueFrom
         // TODO: envFrom
-        // TODO: volumes
-        // TODO: resources
-        // TODO: lifecyce
         // TODO: security context
         // TODO: debugging
 
     }
-
 
     type Container with
         static member Empty =
@@ -146,7 +146,17 @@ module Common =
               image = "alpine:latest"
               command = List.empty
               args = List.empty 
-              env = List.Empty }
+              env = List.Empty 
+              workingDir = None }
+
+        member this.Spec() =
+            {|
+                name = this.name
+                image = this.image
+                command = this.command |> Helpers.mapValues id
+                args = this.args |> Helpers.mapValues id
+                workingDir = this.workingDir
+            |}
 
     type ContainerBuilder() =
         member _.Yield _ = Container.Empty
@@ -162,6 +172,9 @@ module Common =
 
         [<CustomOperation "command">]
         member _.Command(state: Container, command: string list) = { state with command = command }
+
+        [<CustomOperation "workingDir">]
+        member _.WorkingDir(state: Container, dir: string) = { state with workingDir = Some dir }
 
     /// A single application container that you want to run within a pod.
     /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container

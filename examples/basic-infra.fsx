@@ -30,6 +30,7 @@ open Starboard.Resources.K8s
 let container1 = container {
     name "nginx"
     image "nginx:latest"
+    workingDir "/test-dir"
 }
 
 let appLabels = [("app","ngnix")]

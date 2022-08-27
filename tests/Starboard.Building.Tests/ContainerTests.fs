@@ -23,3 +23,11 @@ module ContainerTests =
         listsEqual ["systemctl"] container1.command
         listsEqual ["config"; "nginx"] container1.args
 
+    [<Fact>]
+    let ``ContainerBuilder sets workingDir`` () =
+        let container1 = container {
+            workingDir "test-dir"
+        }
+
+        Assert.Equal(Some "test-dir", container1.workingDir)
+

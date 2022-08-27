@@ -21,6 +21,10 @@ type Pod with
     member this.K8sMetadata() = 
         if this.metadata = Metadata.empty then None
         else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.Spec() =
+        {|
+            containers = this.containers |> List.map (fun c -> c.Spec())
+        |}
         
 
 type PodBuilder() =
