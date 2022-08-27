@@ -70,4 +70,30 @@ module K8sTests =
         Assert.NotEqual(deploymentJson?spec, JsonValue.Null)
         
 
+    [<Fact>]
+    let ``K8s to yaml`` () =
+        let container1 = container {
+            image "nginx"
+            command ["systemctl"]
+            args ["config"; "nginx"]
+        }
+
+        let pod1 = pod {
+            container container1
+        }
+
+        let deployment1 = deployment {
+            name "my-name"
+            pod pod1
+        }
+
+        let k8s1 = k8s {
+            deployment deployment1
+        }
+
+        let yaml = KubeCtlWriter.toYaml k8s1
+
+        Assert.NotEmpty(yaml)
+        
+
     //TODO: validate against schemas

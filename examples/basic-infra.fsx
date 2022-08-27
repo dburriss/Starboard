@@ -1,3 +1,5 @@
+#r "nuget:YamlDotNet"
+#r "nuget:Newtonsoft.Json"
 #r "../src/Starboard/bin/debug/net6.0/Starboard.dll"
 
 // apiVersion: apps/v1
@@ -44,15 +46,24 @@ let deployment1 = deployment {
     matchLabels appLabels
 }
 
+let deployment2 = deployment {
+    name "test-another-deployment"
+    replicas 3
+    pod pod1
+    labels appLabels
+    matchLabels appLabels
+}
+
 let k8s1 = k8s {
     deployment deployment1
+    deployment deployment2
 }
 
 KubeCtlWriter.print k8s1
 
 let save k8s =
     let fsxName = fsi.CommandLineArgs[0].Replace(".fsx", "")
-    let fileName = $"{fsxName}.deployment.json"
-    KubeCtlWriter.toJsonFile k8s fileName
+    let fileName = $"{fsxName}.deployment.yaml"
+    KubeCtlWriter.toYamlFile k8s fileName
 
 save k8s1 

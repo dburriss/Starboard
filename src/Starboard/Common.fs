@@ -1,6 +1,12 @@
 ﻿namespace Starboard.Resources
 
 module Helpers =
+    open System
+
+    let nullableOfOption = function
+        | None -> new Nullable<_>()
+        | Some x -> new Nullable<_>(x)
+
     let mapValues f = function
         | [] -> None
         | xs -> Some (f xs)
@@ -34,7 +40,7 @@ module Common =
             {|
                 name = metadata.name
                 ``namespace`` = metadata.ns
-                labels = toK8sMap metadata.labels
+                labels = (toK8sMap metadata.labels)
                 annotations = toK8sMap metadata.annotations
             |}
 

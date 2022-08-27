@@ -40,6 +40,7 @@ module K8s =
 
     module KubeCtlWriter =
         open System
+        open System.Text
         open Starboard.Serialization
 
         let toJson (k8s: K8s) =
@@ -50,10 +51,26 @@ module K8s =
             |}
             Serializer.toJson list
 
-        let print = toJson >> printfn "%s" 
 
         let toJsonFile k8s filePath =
             let json = toJson k8s
             IO.File.WriteAllText(filePath, json)
+
+        let toYaml (k8s: K8s) =
+
+            if k8s.IsEmpty then String.Empty
+            else
+                let yamlDocuments = StringBuilder().AppendLine(k8s.Head |> Serializer.toYaml)
+                for resource in k8s.Tail do
+                    yamlDocuments
+                        .AppendLine("---")
+                        .AppendLine(resource |> Serializer.toYaml) |> ignore
+                yamlDocuments.ToString()
+
+        let toYamlFile k8s filePath =
+            let json = toYaml k8s
+            IO.File.WriteAllText(filePath, json)
+        
+        let print = toYaml >> printfn "%s" 
     
     
