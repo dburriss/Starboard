@@ -147,6 +147,41 @@ module Common =
                 protocol = TCP
             }
 
+    /// Millicpus: 1000m = 1cpu
+    [<Measure>] type m
+    /// Mebibytes 
+    [<Measure>] type Mi
+
+    type Resources = {
+        memoryRequest: int<Mi>
+        memoryLimit: int<Mi>
+        cpuRequest: int<m>
+        cpuLimit: int<m>
+        //hugePages: (string * int<Mi>) list
+    }
+    type Resources with
+        static member empty =
+            {
+                cpuLimit = 1000<m>
+                memoryLimit = 512<Mi>
+                cpuRequest = 500<m>
+                memoryRequest = 256<Mi>
+                //hugePages = List.empty
+            }
+
+        member this.Spec() =
+            //TODO: return dictionary of string*obj to handle variable hugepage key 
+            {|
+                limits = {|
+                    cpu = $"{this.cpuLimit}m"
+                    memory = $"{this.memoryLimit}Mi"
+                |}
+                requests = {|
+                    cpu = $"{this.cpuRequest}m"
+                    memory = $"{this.memoryRequest}Mi"
+                |}
+                //hugePages = List.empty
+            |}
 
     type Container = { 
         name: string option
@@ -156,7 +191,7 @@ module Common =
         env: (string*string) list
         workingDir: string option
         ports: ContainerPort list
-        // TODO: resources
+        resources: Resources
         // TODO: volumes
         // TODO: lifecyce
         // TODO: env.valueFrom
@@ -174,7 +209,8 @@ module Common =
               args = List.empty 
               env = List.Empty 
               workingDir = None 
-              ports = List.empty }
+              ports = List.empty 
+              resources = Resources.empty }
 
         member this.Spec() =
             let mapPort p = {|
@@ -185,6 +221,7 @@ module Common =
                 protocol = p.protocol.ToString()
             |}
             let mapPorts = List.map mapPort
+
             {|
                 name = this.name
                 image = this.image
@@ -192,7 +229,30 @@ module Common =
                 args = this.args |> Helpers.mapValues id
                 workingDir = this.workingDir
                 ports = Helpers.mapValues mapPorts this.ports
+                resources = this.resources.Spec()
             |}
+
+
+    type ContainerPortBuilder() =
+        member _.Yield _ = ContainerPort.empty
+
+        [<CustomOperation "containerPort">]
+        member _.ContainerPort(state: ContainerPort, containerPort: int) = { state with containerPort = Some containerPort }
+        
+        [<CustomOperation "hostIP">]
+        member _.HostIP(state: ContainerPort, hostIP: string) = { state with hostIP = Some hostIP }
+        
+        [<CustomOperation "hostPort">]
+        member _.HostPort(state: ContainerPort, hostPort: int) = { state with hostPort = Some hostPort }
+        
+        [<CustomOperation "name">]
+        member _.Name(state: ContainerPort, name: string) = { state with name = Some name }
+        
+        [<CustomOperation "protocol">]
+        member _.Protocol(state: ContainerPort, protocol: Protocol) = { state with protocol = protocol }
+        
+    let containerPort = new ContainerPortBuilder()
+
 
     type ContainerBuilder() =
         member _.Yield _ = Container.empty
@@ -214,28 +274,29 @@ module Common =
 
         [<CustomOperation "port">]
         member _.Port(state: Container, port: ContainerPort) = { state with ports = List.append state.ports [port] }
+        
+        [<CustomOperation "cpuLimit">]
+        member _.CpuLimit(state: Container, cpuLimit: int<m>) = 
+            let newResources = { state.resources with cpuLimit = cpuLimit }
+            { state with resources = newResources }
+        
+        [<CustomOperation "memoryLimit">]
+        member _.MemoryLimit(state: Container, memoryLimit: int<Mi>) = 
+            let newResources = { state.resources with memoryLimit = memoryLimit }
+            { state with resources = newResources }
 
-
-    type ContainerPortBuilder() =
-        member _.Yield _ = ContainerPort.empty
-
-        [<CustomOperation "containerPort">]
-        member _.ContainerPort(state: ContainerPort, containerPort: int) = { state with containerPort = Some containerPort }
+        [<CustomOperation "cpuRequest">]
+        member _.CpuRequest(state: Container, cpuRequest: int<m>) = 
+            let newResources = { state.resources with cpuRequest = cpuRequest }
+            { state with resources = newResources }
         
-        [<CustomOperation "hostIP">]
-        member _.HostIP(state: ContainerPort, hostIP: string) = { state with hostIP = Some hostIP }
-        
-        [<CustomOperation "hostPort">]
-        member _.HostPort(state: ContainerPort, hostPort: int) = { state with hostPort = Some hostPort }
-        
-        [<CustomOperation "name">]
-        member _.Name(state: ContainerPort, name: string) = { state with name = Some name }
-        
-        [<CustomOperation "protocol">]
-        member _.Protocol(state: ContainerPort, protocol: Protocol) = { state with protocol = protocol }
+        [<CustomOperation "memoryRequest">]
+        member _.MemoryRequest(state: Container, memoryRequest: int<Mi>) = 
+            let newResources = { state.resources with memoryRequest = memoryRequest }
+            { state with resources = newResources }
 
 
     /// A single application container that you want to run within a pod.
     /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
+    
     let container = new ContainerBuilder()    
-    let containerPort = new ContainerPortBuilder()

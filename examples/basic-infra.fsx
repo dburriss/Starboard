@@ -36,6 +36,7 @@ let container1 = container {
     image "nginx:latest"
     workingDir "/test-dir"
     port port1
+    memoryLimit 2000<Mi>
 }
 
 let appLabels = [("app","ngnix")]
