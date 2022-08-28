@@ -121,6 +121,33 @@ module Common =
     // Container
     //-------------------------
     
+    type Protocol = TCP | UDP | SCTP
+    type Protocol with
+        member this.ToString() =
+            match this with
+            | TCP -> "TCP"
+            | UDP -> "UDP"
+            | SCTP -> "SCTP"
+
+    type ContainerPort = {
+        containerPort: int option
+        hostIP: string option
+        hostPort: int option
+        name: string option
+        protocol: Protocol
+    }
+
+    type ContainerPort with
+        static member empty = 
+            {
+                containerPort = None
+                hostIP = None
+                hostPort = None
+                name = None
+                protocol = TCP
+            }
+
+
     type Container = { 
         name: string option
         image: string
@@ -128,8 +155,7 @@ module Common =
         args: string list 
         env: (string*string) list
         workingDir: string option
-        // TODO: workingDir
-        // TODO: ports
+        ports: ContainerPort list
         // TODO: resources
         // TODO: volumes
         // TODO: lifecyce
@@ -141,25 +167,35 @@ module Common =
     }
 
     type Container with
-        static member Empty =
+        static member empty =
             { name = None
               image = "alpine:latest"
               command = List.empty
               args = List.empty 
               env = List.Empty 
-              workingDir = None }
+              workingDir = None 
+              ports = List.empty }
 
         member this.Spec() =
+            let mapPort p = {|
+                containerPort = p.containerPort
+                hostIP = p.hostIP
+                hostPort = p.hostPort
+                name = p.name
+                protocol = p.protocol.ToString()
+            |}
+            let mapPorts = List.map mapPort
             {|
                 name = this.name
                 image = this.image
                 command = this.command |> Helpers.mapValues id
                 args = this.args |> Helpers.mapValues id
                 workingDir = this.workingDir
+                ports = Helpers.mapValues mapPorts this.ports
             |}
 
     type ContainerBuilder() =
-        member _.Yield _ = Container.Empty
+        member _.Yield _ = Container.empty
 
         [<CustomOperation "name">]
         member _.Name(state: Container, name: string) = { state with name = Some name }
@@ -176,6 +212,30 @@ module Common =
         [<CustomOperation "workingDir">]
         member _.WorkingDir(state: Container, dir: string) = { state with workingDir = Some dir }
 
+        [<CustomOperation "port">]
+        member _.Port(state: Container, port: ContainerPort) = { state with ports = List.append state.ports [port] }
+
+
+    type ContainerPortBuilder() =
+        member _.Yield _ = ContainerPort.empty
+
+        [<CustomOperation "containerPort">]
+        member _.ContainerPort(state: ContainerPort, containerPort: int) = { state with containerPort = Some containerPort }
+        
+        [<CustomOperation "hostIP">]
+        member _.HostIP(state: ContainerPort, hostIP: string) = { state with hostIP = Some hostIP }
+        
+        [<CustomOperation "hostPort">]
+        member _.HostPort(state: ContainerPort, hostPort: int) = { state with hostPort = Some hostPort }
+        
+        [<CustomOperation "name">]
+        member _.Name(state: ContainerPort, name: string) = { state with name = Some name }
+        
+        [<CustomOperation "protocol">]
+        member _.Protocol(state: ContainerPort, protocol: Protocol) = { state with protocol = protocol }
+
+
     /// A single application container that you want to run within a pod.
     /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
-    let container = new ContainerBuilder()
+    let container = new ContainerBuilder()    
+    let containerPort = new ContainerPortBuilder()

@@ -30,4 +30,24 @@ module ContainerTests =
         }
 
         Assert.Equal(Some "test-dir", container1.workingDir)
+        
+    [<Fact>]
+    let ``ContainerBuilder sets port`` () =
+        let port1 = {
+            containerPort = Some 5000
+            hostIP = Some "127.0.0.1"
+            hostPort = Some 80
+            name = Some "test"
+            protocol = TCP
+        }
+        let container1 = container {
+            port port1
+        }
+
+        Assert.Equal(Some 5000, container1.ports[0].containerPort)
+        Assert.Equal(Some "127.0.0.1", container1.ports[0].hostIP)
+        Assert.Equal(Some 80, container1.ports[0].hostPort)
+        Assert.Equal(Some "test", container1.ports[0].name)
+        Assert.Equal(TCP, container1.ports[0].protocol)
+
 

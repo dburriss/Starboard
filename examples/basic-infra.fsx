@@ -27,10 +27,15 @@
 open Starboard.Resources
 open Starboard.Resources.K8s
 
+let port1 = containerPort {
+    hostIP "127.0.0.1"
+}
+
 let container1 = container {
     name "nginx"
     image "nginx:latest"
     workingDir "/test-dir"
+    port port1
 }
 
 let appLabels = [("app","ngnix")]
