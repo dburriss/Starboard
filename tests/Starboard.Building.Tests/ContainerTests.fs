@@ -50,4 +50,33 @@ module ContainerTests =
         Assert.Equal(Some "test", container1.ports[0].name)
         Assert.Equal(TCP, container1.ports[0].protocol)
 
+        
+    [<Fact>]
+    let ``ContainerBuilder sets resources`` () =
+        let container1 = container {
+            cpuLimit 1000<m>
+            memoryLimit 500<Mi>
+            cpuRequest 384<m>
+            memoryRequest 250<Mi>
+        }
+
+        Assert.Equal(1000<m>, container1.resources.cpuLimit)
+        Assert.Equal(500<Mi>, container1.resources.memoryLimit)
+        Assert.Equal(384<m>, container1.resources.cpuRequest)
+        Assert.Equal(250<Mi>, container1.resources.memoryRequest)
+        
+    [<Fact>]
+    let ``ContainerBuilder sets volumeMount`` () =
+        let v = volumeMount {
+            name "test-volume"
+            mountPath "/bin"
+            readOnly
+        }
+        let container1 = container {
+            volumeMount v
+        }
+        let volumeMount = container1.volumeMounts[0]
+        Assert.Equal(Some "test-volume", volumeMount.name)
+        Assert.Equal(Some "/bin", volumeMount.mountPath)
+        Assert.Equal(true, volumeMount.readOnly)
 

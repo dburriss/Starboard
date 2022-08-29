@@ -32,6 +32,12 @@ spec:
           requests:
             cpu: 500m
             memory: 256Mi
+        volumeMounts:
+        - mountPath: /bin
+          name: test-vmount
+          readOnly: true
+          subPath: ''
+          subPathExpr: ''
         workingDir: /test-dir
 
 ---
@@ -69,5 +75,11 @@ spec:
           requests:
             cpu: 500m
             memory: 256Mi
+        volumeMounts:
+        - mountPath: /bin
+          name: test-vmount
+          readOnly: true
+          subPath: ''
+          subPathExpr: ''
         workingDir: /test-dir
 

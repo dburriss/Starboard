@@ -31,12 +31,19 @@ let port1 = containerPort {
     hostIP "127.0.0.1"
 }
 
+let vMount = volumeMount {
+    name "test-vmount"
+    mountPath "/bin"
+    readOnly
+}
+
 let container1 = container {
     name "nginx"
     image "nginx:latest"
     workingDir "/test-dir"
     port port1
     memoryLimit 2000<Mi>
+    volumeMount vMount
 }
 
 let appLabels = [("app","ngnix")]

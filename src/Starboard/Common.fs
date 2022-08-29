@@ -11,6 +11,10 @@ module Helpers =
         | [] -> None
         | xs -> Some (f xs)
 
+    let mapEach f = function
+        | [] -> None
+        | xs -> Some (List.map f xs)
+
 [<AutoOpen>]
 module Common =
     
@@ -147,6 +151,15 @@ module Common =
                 protocol = TCP
             }
 
+        member this.Spec() =
+            {|
+                containerPort = this.containerPort
+                hostIP = this.hostIP
+                hostPort = this.hostPort
+                name = this.name
+                protocol = this.protocol.ToString()
+            |}
+
     /// Millicpus: 1000m = 1cpu
     [<Measure>] type m
     /// Mebibytes 
@@ -183,56 +196,7 @@ module Common =
                 //hugePages = List.empty
             |}
 
-    type Container = { 
-        name: string option
-        image: string
-        command: string list
-        args: string list 
-        env: (string*string) list
-        workingDir: string option
-        ports: ContainerPort list
-        resources: Resources
-        // TODO: volumes
-        // TODO: lifecyce
-        // TODO: env.valueFrom
-        // TODO: envFrom
-        // TODO: security context
-        // TODO: debugging
-
-    }
-
-    type Container with
-        static member empty =
-            { name = None
-              image = "alpine:latest"
-              command = List.empty
-              args = List.empty 
-              env = List.Empty 
-              workingDir = None 
-              ports = List.empty 
-              resources = Resources.empty }
-
-        member this.Spec() =
-            let mapPort p = {|
-                containerPort = p.containerPort
-                hostIP = p.hostIP
-                hostPort = p.hostPort
-                name = p.name
-                protocol = p.protocol.ToString()
-            |}
-            let mapPorts = List.map mapPort
-
-            {|
-                name = this.name
-                image = this.image
-                command = this.command |> Helpers.mapValues id
-                args = this.args |> Helpers.mapValues id
-                workingDir = this.workingDir
-                ports = Helpers.mapValues mapPorts this.ports
-                resources = this.resources.Spec()
-            |}
-
-
+    
     type ContainerPortBuilder() =
         member _.Yield _ = ContainerPort.empty
 
@@ -252,6 +216,92 @@ module Common =
         member _.Protocol(state: ContainerPort, protocol: Protocol) = { state with protocol = protocol }
         
     let containerPort = new ContainerPortBuilder()
+
+
+    type VolumeMount = {
+        name: string option
+        mountPath: string option
+        readOnly: bool
+        subPath: string
+        subPathExpr: string
+    }
+    type VolumeMount with
+        static member empty =
+            {
+                name = None
+                mountPath = None
+                readOnly = false
+                subPath = ""
+                subPathExpr = ""
+            }
+        member this.Spec() = 
+            {|
+                mountPath = this.mountPath
+                name = this.name
+                readOnly = this.readOnly
+                subPath = this.subPath
+                subPathExpr = this.subPathExpr
+            |}
+
+    
+    type VolumeMountBuilder() =
+        member _.Yield _ = VolumeMount.empty
+
+        [<CustomOperation "name">]
+        member _.Name(state: VolumeMount, name: string) = { state with name = Some name }
+        
+        [<CustomOperation "mountPath">]
+        member _.MountPath(state: VolumeMount, mountPath: string) = { state with mountPath = Some mountPath }
+        
+        [<CustomOperation "readOnly">]
+        member _.ReadOnly(state: VolumeMount) = { state with readOnly = true }
+        
+
+    let volumeMount = new VolumeMountBuilder()
+
+
+
+    type Container = { 
+        name: string option
+        image: string
+        command: string list
+        args: string list 
+        env: (string*string) list
+        workingDir: string option
+        ports: ContainerPort list
+        resources: Resources
+        volumeMounts: VolumeMount list
+        // TODO: lifecyce
+        // TODO: env.valueFrom
+        // TODO: envFrom
+        // TODO: security context
+        // TODO: debugging
+
+    }
+
+    type Container with
+        static member empty =
+            { name = None
+              image = "alpine:latest"
+              command = List.empty
+              args = List.empty 
+              env = List.Empty 
+              workingDir = None 
+              ports = List.empty 
+              resources = Resources.empty 
+              volumeMounts = List.empty }
+
+        member this.Spec() =
+            {|
+                name = this.name
+                image = this.image
+                command = this.command |> Helpers.mapValues id
+                args = this.args |> Helpers.mapValues id
+                workingDir = this.workingDir
+                ports = this.ports |> Helpers.mapEach (fun p -> p.Spec())
+                resources = this.resources.Spec()
+                volumeMounts = this.volumeMounts |> Helpers.mapEach ((fun v -> v.Spec()))
+            |}
 
 
     type ContainerBuilder() =
@@ -294,6 +344,10 @@ module Common =
         member _.MemoryRequest(state: Container, memoryRequest: int<Mi>) = 
             let newResources = { state.resources with memoryRequest = memoryRequest }
             { state with resources = newResources }
+
+        [<CustomOperation "volumeMount">]
+        member _.VolumeMount(state: Container, volumeMount: VolumeMount) = { state with volumeMounts = List.append state.volumeMounts [volumeMount] }
+        
 
 
     /// A single application container that you want to run within a pod.
