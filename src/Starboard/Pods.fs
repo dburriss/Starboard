@@ -1,4 +1,4 @@
-﻿namespace Starboard.Resources.Pods
+﻿namespace Starboard.Resources
 
 open Starboard.Resources
 

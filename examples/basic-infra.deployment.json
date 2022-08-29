@@ -2,6 +2,24 @@
   "apiVersion": "v1",
   "items": [
     {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "name": "my-service",
+        "namespace": "default"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 80,
+            "protocol": "TCP",
+            "targetPort": "9376"
+          }
+        ],
+        "type": "ClusterIP"
+      }
+    },
+    {
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
@@ -31,10 +49,34 @@
           "spec": {
             "containers": [
               {
-                "args": [],
-                "command": [],
                 "image": "nginx:latest",
-                "name": "nginx"
+                "name": "nginx",
+                "ports": [
+                  {
+                    "hostIP": "127.0.0.1",
+                    "protocol": "TCP"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "2000Mi"
+                  },
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "256Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/bin",
+                    "name": "test-vmount",
+                    "readOnly": true,
+                    "subPath": "",
+                    "subPathExpr": ""
+                  }
+                ],
+                "workingDir": "/test-dir"
               }
             ]
           }
@@ -71,10 +113,34 @@
           "spec": {
             "containers": [
               {
-                "args": [],
-                "command": [],
                 "image": "nginx:latest",
-                "name": "nginx"
+                "name": "nginx",
+                "ports": [
+                  {
+                    "hostIP": "127.0.0.1",
+                    "protocol": "TCP"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "2000Mi"
+                  },
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "256Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/bin",
+                    "name": "test-vmount",
+                    "readOnly": true,
+                    "subPath": "",
+                    "subPathExpr": ""
+                  }
+                ],
+                "workingDir": "/test-dir"
               }
             ]
           }

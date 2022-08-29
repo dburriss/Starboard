@@ -1,7 +1,6 @@
-﻿namespace Starboard.Resources.Deployments
+﻿namespace Starboard.Resources
 
 open Starboard.Resources
-open Starboard.Resources.Pods
 
 /// Represents state that is later converted to a k8s Deployment Resource
 /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/deployment-v1/
@@ -10,7 +9,7 @@ type Deployment =
         pod: Pod option
         replicas: int
         metadata: Metadata
-        selectors: LabelSelector }
+        selector: LabelSelector }
 
 type Deployment with
     static member Empty =
@@ -18,33 +17,40 @@ type Deployment with
             pod = None
             replicas = 1
             metadata = Metadata.empty
-            selectors = LabelSelector.empty
+            selector = LabelSelector.empty
         }
+    member this.K8sVersion() = "apps/v1"
+    member this.K8sKind() = "Deployment"
+    member this.K8sMetadata() = 
+        if this.metadata = Metadata.empty then None
+        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.Spec() = 
+        {|
+            replicas = this.replicas
+            minReadySeconds = 0
+            revisionHistoryLimit = 10
+            progressDeadlineSeconds = 600
+            selector = LabelSelector.ToK8sModel this.selector
+            // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/
+            template = {|
+                metadata = this.pod |> Option.bind (fun p -> p.K8sMetadata())
+                // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/#PodTemplateSpec
+                spec = {|
+                    // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
+                    containers = this.pod |>  Option.map ( fun pod -> pod.containers |> List.map (fun c -> c.Spec()))
+                |}
+            |}
+            strategy = None
+        |}
     member this.ToResource() =
     
         // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/deployment-v1/
         {|
-            apiVersion = "apps/v1"
+            apiVersion = this.K8sVersion()
             kind = "Deployment"
             // https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-            metadata = Metadata.ToK8sModel this.metadata
-            spec = {|
-                replicas = this.replicas
-                minReadySeconds = 0
-                revisionHistoryLimit = 10
-                progressDeadlineSeconds = 600
-                selector = LabelSelector.ToK8sModel this.selectors
-                // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/
-                template = {|
-                    metadata = this.pod |> Option.bind (fun p -> p.K8sMetadata())
-                    // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/#PodTemplateSpec
-                    spec = {|
-                        // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
-                        containers = this.pod |>  Option.map ( fun pod -> pod.containers |> List.map (fun c -> c.Spec()))
-                    |}
-                |}
-                strategy = None
-            |}
+            metadata = this.K8sMetadata()
+            spec = this.Spec()
         |}
 
 
@@ -87,14 +93,14 @@ type DeploymentBuilder() =
         
     /// Selector for the Deployment. Used for complex selections. Use `matchLabel(s)` for simple label matching.
     [<CustomOperation "selector">]
-    member _.Selector(state: Deployment, selectors: LabelSelector) = { state with selectors = selectors }
+    member _.Selector(state: Deployment, selectors: LabelSelector) = { state with selector = selectors }
 
     /// Add a single label selector to the Deployment.
     [<CustomOperation "matchLabel">]
     member _.MatchLabel(state: Deployment, (key,value)) =
-        { state with selectors = { state.selectors with matchLabels = List.append state.selectors.matchLabels [(key,value)] } }
+        { state with selector = { state.selector with matchLabels = List.append state.selector.matchLabels [(key,value)] } }
 
     /// Add multiple label selectors to the Deployment.
     [<CustomOperation "matchLabels">]
     member _.MatchLabels(state: Deployment, labels) =
-        { state with selectors = { state.selectors with matchLabels = List.append state.selectors.matchLabels labels } }
+        { state with selector = { state.selector with matchLabels = List.append state.selector.matchLabels labels } }

@@ -131,8 +131,8 @@ module DeploymentResourceTests =
         }
 
         let deploymentResource = deployment1.ToResource()
-        let labels = deploymentResource.metadata.labels.Value.Keys |> Seq.toList
-        let labelValues = deploymentResource.metadata.labels.Value.Values |> Seq.toList
+        let labels = deploymentResource.metadata.Value.labels.Value.Keys |> Seq.toList
+        let labelValues = deploymentResource.metadata.Value.labels.Value.Values |> Seq.toList
 
         test <@ labels = ["key"] @>
         test <@ labelValues = ["value"] @>
@@ -157,8 +157,8 @@ module DeploymentResourceTests =
         }
 
         let deploymentResource = deployment1.ToResource()
-        let annotations = deploymentResource.metadata.annotations.Value.Keys |> Seq.toList
-        let annotationValues = deploymentResource.metadata.annotations.Value.Values |> Seq.toList
+        let annotations = deploymentResource.metadata.Value.annotations.Value.Keys |> Seq.toList
+        let annotationValues = deploymentResource.metadata.Value.annotations.Value.Values |> Seq.toList
 
         test <@ annotations = ["key"] @>
         test <@ annotationValues = ["value"] @>

@@ -93,6 +93,7 @@ module Common =
                     matchLabels = Helpers.mapValues mapToMatchLabels lbls
                     matchExpressions = Helpers.mapValues mapToMatchExpressions exprs
                 |} |> Some
+        member this.Spec() = LabelSelector.ToK8sModel this
 
     type LabelSelectorBuilder() =
         member _.Yield _ = LabelSelector.empty

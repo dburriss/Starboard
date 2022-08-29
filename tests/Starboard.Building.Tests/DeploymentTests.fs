@@ -95,7 +95,7 @@ module DeploymentTests =
             pod aPod
         }
 
-        listsEqual expected deployment1.selectors.matchExpressions
+        listsEqual expected deployment1.selector.matchExpressions
         
     [<Fact>]
     let ``DeploymentBuilder sets matchLabels with selectors`` () =
@@ -108,7 +108,7 @@ module DeploymentTests =
             pod aPod
         }
 
-        listsEqual expected deployment1.selectors.matchLabels
+        listsEqual expected deployment1.selector.matchLabels
 
 
     [<Fact>]
@@ -120,7 +120,7 @@ module DeploymentTests =
             pod aPod
         }
 
-        listsEqual expected deployment1.selectors.matchLabels
+        listsEqual expected deployment1.selector.matchLabels
 
 
 

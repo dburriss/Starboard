@@ -2,18 +2,22 @@
 
 module K8s =
 
-    open Starboard.Resources.Pods
+    open Starboard.Resources.Workloads
     let pod = new PodBuilder()
 
-    // TODO: ReplicaSet?
-    // TODO: Volume, PersistentVolume
     // TODO: Service
-    // TODO: Jobs
+    // TODO: Volume, PersistentVolume
     // TODO: ConfigMap
     // TODO: Secret
+    // TODO: Jobs
+    // TODO: ReplicaSet?
+    // TODO: Argo?
 
-    open Starboard.Resources.Deployments
     let deployment = new DeploymentBuilder()
+
+    open Starboard.Resources.Services
+    let servicePort = new ServicePortBuilder()
+    let service = new ServiceBuilder()
 
     //-------------------------
     // K8s resource list
@@ -26,8 +30,11 @@ module K8s =
 
         [<CustomOperation "deployment">]
         member _.Deployment(state: K8s, deployment: Deployment) = 
-
             List.append state [box (deployment.ToResource())]
+
+        [<CustomOperation "service">]
+        member _.Service(state: K8s, service: Service) = 
+            List.append state [box (service.ToResource())]
         
         [<CustomOperation "resource">]
         member _.Resource(state: K8s, resource: obj) = List.append state [resource]

@@ -2,30 +2,10 @@
 #r "nuget:Newtonsoft.Json"
 #r "../src/Starboard/bin/debug/net6.0/Starboard.dll"
 
-// apiVersion: apps/v1
-// kind: Deployment
-// metadata:
-//   name: nginx-deployment
-//   labels:
-//     app: nginx
-// spec:
-//   replicas: 3
-//   selector:
-//     matchLabels:
-//       app: nginx
-//   template:
-//     metadata:
-//       labels:
-//         app: nginx
-//     spec:
-//       containers:
-//       - name: nginx
-//         image: nginx:1.14.2
-//         ports:
-//         - containerPort: 80
 
 open Starboard.Resources
 open Starboard.Resources.K8s
+open Starboard.Resources.Services
 
 let port1 = containerPort {
     hostIP "127.0.0.1"
@@ -68,7 +48,17 @@ let deployment2 = deployment {
     matchLabels appLabels
 }
 
+let service1 = service {
+    name "my-service"
+    port (servicePort {
+        port 80
+        targetPortInt 9376
+    })
+    typeOf ClusterIP
+}
+
 let k8s1 = k8s {
+    service service1
     deployment deployment1
     deployment deployment2
 }
@@ -77,6 +67,8 @@ KubeCtlWriter.print k8s1
 
 let save k8s =
     let fsxName = fsi.CommandLineArgs[0].Replace(".fsx", "")
+    let fileName = $"{fsxName}.deployment.json"
+    KubeCtlWriter.toJsonFile k8s fileName
     let fileName = $"{fsxName}.deployment.yaml"
     KubeCtlWriter.toYamlFile k8s fileName
 
