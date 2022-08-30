@@ -1,4 +1,4 @@
-﻿namespace Starboard.Resources.Services
+﻿namespace Starboard.Resources
 
 open Starboard.Resources
 open Newtonsoft.Json.Linq
@@ -169,3 +169,8 @@ type ServiceBuilder() =
         { state with ``type`` = typeof }
 
 // TODO: Specific builders per service type
+
+[<AutoOpen>]
+module ServicerBuilders =
+    let servicePort = new ServicePortBuilder()
+    let service = new ServiceBuilder()

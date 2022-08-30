@@ -2,8 +2,7 @@
 
 module K8s =
 
-    open Starboard.Resources.Workloads
-    let pod = new PodBuilder()
+    open Starboard.Resources
 
     // TODO: Service
     // TODO: Volume, PersistentVolume
@@ -13,11 +12,6 @@ module K8s =
     // TODO: ReplicaSet?
     // TODO: Argo?
 
-    let deployment = new DeploymentBuilder()
-
-    open Starboard.Resources.Services
-    let servicePort = new ServicePortBuilder()
-    let service = new ServiceBuilder()
 
     //-------------------------
     // K8s resource list
@@ -27,6 +21,10 @@ module K8s =
 
     type K8sBuilder() =
         member _.Yield _ = List.Empty
+
+        [<CustomOperation "configMap">]
+        member _.ConfigMap(state: K8s, configMap: ConfigMap) = 
+            List.append state [box (configMap.ToResource())]
 
         [<CustomOperation "deployment">]
         member _.Deployment(state: K8s, deployment: Deployment) = 

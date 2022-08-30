@@ -354,4 +354,4 @@ module Common =
     /// A single application container that you want to run within a pod.
     /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
     
-    let container = new ContainerBuilder()    
+    let container = new ContainerBuilder()

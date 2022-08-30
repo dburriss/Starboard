@@ -3,15 +3,17 @@
 open Starboard.Resources
 
 type Pod = { 
-    containers: Container list
     metadata: Metadata
+    containers: Container list
+    volumes: Volume list
 }
 
 type Pod with
     static member empty =
         { 
-            containers = List.empty 
             metadata = Metadata.empty
+            containers = List.empty 
+            volumes = List.empty
         }
 
 // resource: version, kind, metadata, spec
@@ -23,19 +25,14 @@ type Pod with
         else this.metadata |> Metadata.ToK8sModel |> Some
     member this.Spec() =
         {|
-            containers = this.containers |> List.map (fun c -> c.Spec())
+            containers = this.containers |> Helpers.mapEach (fun c -> c.Spec())
+            volumes = this.volumes |> Helpers.mapEach (fun v -> v.Spec())
         |}
         
 
 type PodBuilder() =
         
     member _.Yield (_) = Pod.empty
-
-    [<CustomOperation "container">]
-    member _.Container(state: Pod, container: Container) = { state with containers = List.append state.containers [container] }
-        
-    [<CustomOperation "containers">]
-    member _.Containers(state: Pod, containers: Container list) = { state with containers = containers }
 
     /// Name of the Pod. 
     /// Name must be unique within a namespace. 
@@ -64,3 +61,18 @@ type PodBuilder() =
     member _.Annotations(state: Pod, annotations: (string*string) list) = 
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
+        
+    [<CustomOperation "container">]
+    member _.Container(state: Pod, container: Container) = { state with containers = List.append state.containers [container] }
+        
+    [<CustomOperation "containers">]
+    member _.Containers(state: Pod, containers: Container list) = { state with containers = containers }
+
+    [<CustomOperation "volume">]
+    member _.Volume(state: Pod, volume: Volume) = { state with volumes = List.append state.volumes [volume] }
+
+
+
+[<AutoOpen>]
+module PodBuilders =
+    let pod = new PodBuilder()

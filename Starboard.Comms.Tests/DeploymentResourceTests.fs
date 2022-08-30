@@ -32,7 +32,7 @@ module DeploymentResourceTests =
         }
 
         let resource = deployment1.ToResource()
-        let container = resource.spec.template.spec.containers |> Option.get |> List.head
+        let container = resource.spec.template.spec.Value.containers |> Option.get |> List.head
 
         Assert.Equal(Some "nginx", container.name)        
         Assert.Equal("nginx:1.14.2", container.image)        

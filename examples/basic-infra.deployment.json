@@ -3,6 +3,20 @@
   "items": [
     {
       "apiVersion": "v1",
+      "data": {
+        "allowed": "true",
+        "enemies": "aliens",
+        "lives": "3"
+      },
+      "immutable": false,
+      "kind": "ConfigMap",
+      "metadata": {
+        "name": "test-config-map",
+        "namespace": "default"
+      }
+    },
+    {
+      "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
         "name": "my-service",
@@ -69,14 +83,29 @@
                 },
                 "volumeMounts": [
                   {
-                    "mountPath": "/bin",
-                    "name": "test-vmount",
+                    "mountPath": "/etc/config",
+                    "name": "config-vol",
                     "readOnly": true,
                     "subPath": "",
                     "subPathExpr": ""
                   }
                 ],
                 "workingDir": "/test-dir"
+              }
+            ],
+            "volumes": [
+              {
+                "configMap": {
+                  "name": "log-config",
+                  "optional": false,
+                  "items": [
+                    {
+                      "key": "log_level",
+                      "path": "log_level.conf"
+                    }
+                  ]
+                },
+                "name": "config-vol"
               }
             ]
           }
@@ -133,14 +162,29 @@
                 },
                 "volumeMounts": [
                   {
-                    "mountPath": "/bin",
-                    "name": "test-vmount",
+                    "mountPath": "/etc/config",
+                    "name": "config-vol",
                     "readOnly": true,
                     "subPath": "",
                     "subPathExpr": ""
                   }
                 ],
                 "workingDir": "/test-dir"
+              }
+            ],
+            "volumes": [
+              {
+                "configMap": {
+                  "name": "log-config",
+                  "optional": false,
+                  "items": [
+                    {
+                      "key": "log_level",
+                      "path": "log_level.conf"
+                    }
+                  ]
+                },
+                "name": "config-vol"
               }
             ]
           }

@@ -35,10 +35,11 @@ type Deployment with
             template = {|
                 metadata = this.pod |> Option.bind (fun p -> p.K8sMetadata())
                 // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/#PodTemplateSpec
-                spec = {|
-                    // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
-                    containers = this.pod |>  Option.map ( fun pod -> pod.containers |> List.map (fun c -> c.Spec()))
-                |}
+                spec = this.pod |> Option.map (fun p -> p.Spec())
+                //spec = {|
+                //    // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
+                //    containers = this.pod |>  Option.map ( fun pod -> pod.containers |> List.map (fun c -> c.Spec()))
+                //|}
             |}
             strategy = None
         |}
@@ -104,3 +105,7 @@ type DeploymentBuilder() =
     [<CustomOperation "matchLabels">]
     member _.MatchLabels(state: Deployment, labels) =
         { state with selector = { state.selector with matchLabels = List.append state.selector.matchLabels labels } }
+
+[<AutoOpen>]
+module DeploymentBuilders =
+    let deployment = new DeploymentBuilder()

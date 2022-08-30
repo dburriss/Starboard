@@ -5,16 +5,30 @@
 
 open Starboard.Resources
 open Starboard.Resources.K8s
-open Starboard.Resources.Services
+
+let config = configMap {
+    name "test-config-map"
+    data [
+        ("allowed", "true")
+        ("enemies", "aliens")
+        ("lives", "3")
+    ]
+}
 
 let port1 = containerPort {
     hostIP "127.0.0.1"
 }
 
 let vMount = volumeMount {
-    name "test-vmount"
-    mountPath "/bin"
+    name "config-vol"
+    mountPath "/etc/config"
     readOnly
+}
+
+let cfVolume = configMapVolume {
+    name "config-vol"
+    configMapName "log-config"
+    item ("log_level", "log_level.conf")
 }
 
 let container1 = container {
@@ -30,6 +44,7 @@ let appLabels = [("app","ngnix")]
 let pod1 = pod {
     containers [container1]
     labels appLabels
+    volume cfVolume
 }
 
 let deployment1 = deployment {
@@ -58,6 +73,7 @@ let service1 = service {
 }
 
 let k8s1 = k8s {
+    configMap config
     service service1
     deployment deployment1
     deployment deployment2
