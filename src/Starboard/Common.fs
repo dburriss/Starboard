@@ -15,6 +15,8 @@ module Helpers =
         | [] -> None
         | xs -> Some (List.map f xs)
 
+    let toDict lst = mapValues dict lst
+
 [<AutoOpen>]
 module Common =
     
@@ -39,13 +41,13 @@ module Common =
         }
 
         static member ToK8sModel metadata =
-            let toK8sMap lst = Helpers.mapValues dict lst
+            
 
             {|
                 name = metadata.name
                 ``namespace`` = metadata.ns
-                labels = (toK8sMap metadata.labels)
-                annotations = toK8sMap metadata.annotations
+                labels = Helpers.toDict metadata.labels
+                annotations = Helpers.toDict metadata.annotations
             |}
 
     type MatchExpressionOperator = | In | NotIn | Exists | DoesNotExist 

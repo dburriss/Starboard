@@ -6,7 +6,6 @@ module K8s =
 
     // TODO: Service
     // TODO: Volume, PersistentVolume
-    // TODO: ConfigMap
     // TODO: Secret
     // TODO: Jobs
     // TODO: ReplicaSet?
@@ -33,6 +32,10 @@ module K8s =
         [<CustomOperation "service">]
         member _.Service(state: K8s, service: Service) = 
             List.append state [box (service.ToResource())]
+ 
+        [<CustomOperation "storageClass">]
+        member _.StorageClass(state: K8s, storageClass: StorageClass) = 
+            List.append state [box (storageClass.ToResource())]
         
         [<CustomOperation "resource">]
         member _.Resource(state: K8s, resource: obj) = List.append state [resource]
