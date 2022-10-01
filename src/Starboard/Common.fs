@@ -353,7 +353,57 @@ module Common =
         
 
 
+    type ObjectReference = {
+        apiVersion: string option
+        fieldPath: string option
+        kind: string option
+        name: string option
+        ns: string option
+        resourceVersion: string option
+        uid: string option
+    }
+
+    type ObjectReference with
+        static member empty = 
+            {
+                apiVersion = None
+                fieldPath = None
+                kind = None
+                name = None
+                ns = None
+                resourceVersion = None
+                uid = None
+            }
+    
+    type ObjectReferenceBuilder() =
+        member _.Yield _ = ObjectReference.empty
+
+        [<CustomOperation "apiVersion">]
+        member _.ApiVersion(state: ObjectReference, apiVersion: string) = 
+            { state with apiVersion = Some apiVersion }
+
+        [<CustomOperation "fieldPath">]
+        member _.FieldPath (state: ObjectReference, fieldPath : string) = 
+            { state with fieldPath  = Some fieldPath  }
+
+        [<CustomOperation "kind">]
+        member _.Kind(state: ObjectReference, kind : string) = 
+            { state with kind  = Some kind  }
+
+        [<CustomOperation "ns">]
+        member _.Namespace(state: ObjectReference, ns : string) = 
+            { state with ns  = Some ns  }
+            
+        [<CustomOperation "resourceVersion">]
+        member _.ResourceVersion(state: ObjectReference, resourceVersion : string) = 
+            { state with resourceVersion  = Some resourceVersion  }
+ 
+        [<CustomOperation "uid">]
+        member _.Uid(state: ObjectReference, uid : string) = 
+            { state with uid  = Some uid  }
+
     /// A single application container that you want to run within a pod.
     /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
     
     let container = new ContainerBuilder()
+    let objRef = new ObjectReferenceBuilder()
