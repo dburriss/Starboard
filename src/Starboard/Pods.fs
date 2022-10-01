@@ -8,6 +8,7 @@ type Pod = {
     volumes: Volume list
 }
 
+// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/
 type Pod with
     static member empty =
         { 
@@ -25,8 +26,16 @@ type Pod with
         else this.metadata |> Metadata.ToK8sModel |> Some
     member this.Spec() =
         {|
+            // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec
             containers = this.containers |> Helpers.mapEach (fun c -> c.Spec())
             volumes = this.volumes |> Helpers.mapEach (fun v -> v.Spec())
+        |}
+    member this.ToResource() =
+        {|
+            apiVersion = this.K8sVersion()
+            kind = this.K8sKind()
+            metadata = this.K8sMetadata()
+            spec = this.Spec()
         |}
         
 

@@ -5,7 +5,7 @@ module K8s =
     open Starboard.Resources
 
     // TODO: Service
-    // TODO: Volume, PersistentVolume
+    // TODO: Volume, PersistentVolume, PersistentVolumeClaim
     // TODO: Secret
     // TODO: Jobs
     // TODO: ReplicaSet?
@@ -24,6 +24,10 @@ module K8s =
         [<CustomOperation "configMap">]
         member _.ConfigMap(state: K8s, configMap: ConfigMap) = 
             List.append state [box (configMap.ToResource())]
+
+        [<CustomOperation "pod">]
+        member _.Pod(state: K8s, pod: Pod) = 
+            List.append state [box (pod.ToResource())]
 
         [<CustomOperation "deployment">]
         member _.Deployment(state: K8s, deployment: Deployment) = 
