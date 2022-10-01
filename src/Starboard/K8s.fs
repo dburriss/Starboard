@@ -5,8 +5,10 @@ module K8s =
     open Starboard.Resources
 
     // TODO: Service
-    // TODO: Volume, PersistentVolume, PersistentVolumeClaim
-    // TODO: Secret
+    // TODO: Volume, 
+    // TODO: PersistentVolume: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/
+    // TODO: PersistentVolumeClaim: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/
+    // TODO: Secret: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/secret-v1/
     // TODO: Jobs
     // TODO: ReplicaSet?
     // TODO: Argo?
@@ -40,6 +42,10 @@ module K8s =
         [<CustomOperation "storageClass">]
         member _.StorageClass(state: K8s, storageClass: StorageClass) = 
             List.append state [box (storageClass.ToResource())]
+        
+        [<CustomOperation "persistentVolumeClaim">]
+        member _.PersistentVolumeClaim(state: K8s, persistentVolumeClaim: PersistentVolumeClaim) = 
+            List.append state [box (persistentVolumeClaim.ToResource())]
         
         [<CustomOperation "resource">]
         member _.Resource(state: K8s, resource: obj) = List.append state [resource]

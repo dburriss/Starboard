@@ -7,7 +7,6 @@ open Starboard.Resources
 // TODO: secrets
 
 // TODO: PersistentVolume
-// TODO: PersistentVolumeClaim
 // TODO: CSI
 
 // STORAGE CLASS
@@ -104,10 +103,115 @@ type StorageClassBuilder() =
     member _.MountOptions(state: StorageClass, mountOptions: string list) = 
         { state with mountOptions = mountOptions }
    
+// PersistentVolumeClaim
+// https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/
+
+type VolumeMode = | Filesystem | Block
+
+type VolumeMode with
+    member this.ToString() =
+        match this with
+        | Filesystem -> "Filesystem"
+        | Block -> "Block"
+
+type AccessMode = | ReadWriteOnce | ReadOnlyMany | ReadWriteMany | ReadWriteOncePod
+
+type AccessMode with
+    member this.ToString() =
+        match this with
+        | ReadWriteOnce -> "ReadWriteOnce"
+        | ReadOnlyMany -> "ReadOnlyMany"
+        | ReadWriteMany -> "ReadWriteMany"
+        | ReadWriteOncePod -> "ReadWriteOncePod"
+
+type PersistentVolumeClaim = {
+    metadata: Metadata
+    volumeName: string option
+    storageClassName: string option
+    volumeMode: VolumeMode
+    accessModes: AccessMode list
+    selector: LabelSelector
+    resources: Resources
+}
+
+/// PersistentVolumeClaim is a user's request for and claim to a persistent volume
+/// See: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/
+type PersistentVolumeClaim with
+    static member empty =
+        { 
+            metadata = Metadata.empty
+            volumeName = None
+            storageClassName = None
+            volumeMode = Filesystem
+            accessModes = List.empty
+            selector = LabelSelector.empty
+            resources = Resources.empty
+        }
+    member _.K8sVersion() = "v1"
+    member _.K8sKind() = "PersistentVolumeClaim"
+    member this.K8sMetadata() = 
+        if this.metadata = Metadata.empty then None
+        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.Spec() =
+        {|
+            volumeName = this.volumeName
+            storageClassName = this.storageClassName
+            volumeMode = this.volumeMode.ToString()
+            accessModes = this.accessModes |> Helpers.mapEach (fun a -> a.ToString())
+            selector = this.selector.Spec()
+            resources = this.resources.Spec()
+        |}
+    member this.ToResource() =
+        {|
+            apiVersion = this.K8sVersion()
+            kind = this.K8sKind()
+            spec = this.Spec()
+        |}
+
+type PersistentVolumeClaimBuilder() =
+    member _.Yield _ = PersistentVolumeClaim.empty
+
+    /// Name of the StorageClass. 
+    /// Name must be unique within a namespace. 
+    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+    [<CustomOperation "name">]
+    member _.Name(state: PersistentVolumeClaim, metaName: string) = 
+        let newMetadata = { state.metadata with name = Some metaName }
+        { state with metadata = newMetadata}
+
+    /// volumeName is the binding reference to the PersistentVolume backing this claim
+    [<CustomOperation "volumeName">]
+    member _.VolumeName(state: PersistentVolumeClaim, volumeName: string) = 
+        { state with volumeName = Some volumeName}
+
+    /// storageClassName is the name of the StorageClass required by the claim
+    [<CustomOperation "storageClassName">]
+    member _.StorageClassName(state: PersistentVolumeClaim, storageClassName: string) = 
+        { state with storageClassName = Some storageClassName}
+
+    /// volumeMode defines what type of volume is required by the claim
+    [<CustomOperation "volumeMode">]
+    member _.VolumeMode(state: PersistentVolumeClaim, volumeMode: VolumeMode) = 
+        { state with volumeMode = volumeMode}
+
+    /// accessModes contains the desired access modes the volume should have
+    [<CustomOperation "accessModes">]
+    member _.AccessModes(state: PersistentVolumeClaim, accessModes: AccessMode list) = 
+        { state with accessModes = accessModes}
+
+    /// selector is a label query over volumes to consider for binding
+    [<CustomOperation "selector">]
+    member _.Selector(state: PersistentVolumeClaim, selector: LabelSelector) = 
+        { state with selector = selector}
+
+    /// resources represents the minimum resources the volume should have
+    [<CustomOperation "resources">]
+    member _.Resources(state: PersistentVolumeClaim, resources: Resources) = 
+        { state with resources = resources}
 
 
 // VOLUMES
-
+// https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/
 type KeyToPath = {
     key: string
     path: string
@@ -254,6 +358,7 @@ type EmptyDirVolumeBuilder() =
 module VolumeBuilders =
     
     let storageClass = new StorageClassBuilder()
+    let persistentVolumeClaim = PersistentVolumeClaimBuilder();
 
     let configMapVolume = new ConfigMapVolumeBuilder()
     let emptyDirVolume = new EmptyDirVolumeBuilder()    
