@@ -10,6 +10,7 @@
     <Compile Include="Common.fs" />
     <Compile Include="Volumes.fs" />
     <Compile Include="ConfigMap.fs" />
+    <Compile Include="PersistentVolume.fs" />
     <Compile Include="Pods.fs" />
     <Compile Include="Service.fs" />
     <Compile Include="Deployments.fs" />
