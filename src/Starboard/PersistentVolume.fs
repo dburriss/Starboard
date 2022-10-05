@@ -8,6 +8,13 @@ type ReclaimPolicy with
         | Delete -> "Delete"
         | Retain -> "Retain"
 
+type SecretReference = {
+    /// Name is unique within a namespace to reference a secret resource.
+    name: string option
+    /// Namespace defines the space within which the secret name must be unique.
+    ns: string option
+}
+
 // STORAGE CLASS
 
 // https://kubernetes.io/docs/concepts/storage/storage-classes/
@@ -131,7 +138,6 @@ type PersistentVolumeClaim = {
     accessModes: AccessMode list
     selector: LabelSelector
     resources: Resources
-    volumeSpec : (string*obj) option
 }
 
 /// PersistentVolumeClaim is a user's request for and claim to a persistent volume
@@ -146,7 +152,6 @@ type PersistentVolumeClaim with
             accessModes = List.empty
             selector = LabelSelector.empty
             resources = Resources.empty
-            volumeSpec = None
         }
     member _.K8sVersion() = "v1"
     member _.K8sKind() = "PersistentVolumeClaim"
@@ -213,7 +218,7 @@ type PersistentVolumeClaimBuilder() =
 /// PersistentVolume (PV) is a storage resource provisioned by an administrator. It is analogous to a node. 
 /// See: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/
 /// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes
-type PersistentVolume = {
+type PersistentVolume<'a> = {
     metadata: Metadata
     accessModes: AccessMode list
     capacity: int<Mi> option
@@ -223,9 +228,10 @@ type PersistentVolume = {
     persistentVolumeReclaimPolicy: ReclaimPolicy option
     storageClassName: string option
     volumeMode: VolumeMode
+    volumeSpec : (string*'a) option
 }
 
-type PersistentVolume with
+type PersistentVolume<'a> with
     static member empty =
         { 
             metadata = Metadata.empty
@@ -237,6 +243,7 @@ type PersistentVolume with
             persistentVolumeReclaimPolicy = None
             storageClassName = None
             volumeMode = VolumeMode.Filesystem
+            volumeSpec = None
         }
     member _.K8sVersion() = "v1"
     member _.K8sKind() = "PersistentVolume"
@@ -244,16 +251,19 @@ type PersistentVolume with
         if this.metadata = Metadata.empty then None
         else this.metadata |> Metadata.ToK8sModel |> Some
     member this.Spec() =
-        {|
-            accessModes = this.accessModes |> Helpers.mapEach (fun a -> a.ToString())
-            capacity = this.capacity |> Option.map (fun x -> $"{x}Mi")
-            claimRef = this.claimRef
-            storageClassName = this.storageClassName
-            mountOptions = this.mountOptions |> Helpers.mapValues id
-            persistentVolumeReclaimPolicy = this.persistentVolumeReclaimPolicy
-            storageClassName = this.storageClassName
-            volumeMode = this.volumeMode.ToString()
-        |}
+        let vs = this.volumeSpec |> Option.get
+        [
+            "accessModes", this.accessModes |> Helpers.mapEach (fun a -> a.ToString()) |> box
+            "capacity", this.capacity |> Option.map (fun x -> $"{x}Mi") |> box
+            "claimRef", this.claimRef
+            "storageClassName", this.storageClassName
+            "mountOptions", this.mountOptions |> Helpers.mapValues id |> box
+            "persistentVolumeReclaimPolicy", this.persistentVolumeReclaimPolicy
+            "storageClassName", this.storageClassName
+            "volumeMode", this.volumeMode.ToString()
+            (vs |> fst), (vs |> snd |> box)
+        ] |> dict
+        
     member this.ToResource() =
         {|
             apiVersion = this.K8sVersion()
@@ -261,46 +271,112 @@ type PersistentVolume with
             spec = this.Spec()
         |}
 
-type PersistentVolumeBuilder() =
-    member _.Yield _ = PersistentVolumeClaim.empty
+type CSIPersistentVolumeSource ={
+    driver: string option
+    volumeHandle: string option
+    fsType: string option
+    readOnly: bool
+    volumeAttributes: (Map<string,string>) option
+    controllerExpandSecretRef: SecretReference option
+    controllerPublishSecretRef: SecretReference option
+    nodeExpandSecretRef: SecretReference option
+    nodePublishSecretRef: SecretReference option
+    nodeStageSecretRef: SecretReference option
+}
 
-    /// Name of the StorageClass. 
+type CSIPersistentVolumeSource with
+    static member empty = {
+        driver = None
+        volumeHandle = None
+        fsType = None
+        readOnly = false
+        volumeAttributes = None
+        controllerExpandSecretRef = None
+        controllerPublishSecretRef = None
+        nodeExpandSecretRef = None
+        nodePublishSecretRef = None
+        nodeStageSecretRef = None
+    }
+/// csi represents storage that is handled by an external CSI driver.
+/// See: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/
+/// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes
+type CsiVolumeBuilder() =
+    let csiInit spec = spec |> Option.defaultValue ("csi", CSIPersistentVolumeSource.empty)
+
+    // TODO: see what it feels like with inheritance
+    member _.Yield _ = PersistentVolume<CSIPersistentVolumeSource>.empty
+
+    /// Name of the PersistentVolume. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "name">]
-    member _.Name(state: PersistentVolumeClaim, metaName: string) = 
+    member _.Name(state: PersistentVolume<CSIPersistentVolumeSource>, metaName: string) = 
         let newMetadata = { state.metadata with name = Some metaName }
         { state with metadata = newMetadata}
 
-    /// volumeName is the binding reference to the PersistentVolume backing this claim
-    [<CustomOperation "volumeName">]
-    member _.VolumeName(state: PersistentVolumeClaim, volumeName: string) = 
-        { state with volumeName = Some volumeName}
+    /// capacity is the description of the persistent volume's resources and capacity. 
+    /// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#capacity
+    [<CustomOperation "capacity">]
+    member _.Capacity(state: PersistentVolume<CSIPersistentVolumeSource>, capacity: int<Mi>) = 
+        { state with capacity = Some capacity}
+        
+    /// claimRef is part of a bi-directional binding between PersistentVolume and PersistentVolumeClaim. 
+    /// See: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-reference/#ObjectReference
+    [<CustomOperation "claimRef">]
+    member _.ClaimRef(state: PersistentVolume<CSIPersistentVolumeSource>, claimRef: ObjectReference) = 
+        { state with claimRef = Some claimRef}
 
-    /// storageClassName is the name of the StorageClass required by the claim
+    /// storageClassName is the name of StorageClass to which this persistent volume belongs.
     [<CustomOperation "storageClassName">]
-    member _.StorageClassName(state: PersistentVolumeClaim, storageClassName: string) = 
+    member _.StorageClassName(state: PersistentVolume<CSIPersistentVolumeSource>, storageClassName: string) = 
         { state with storageClassName = Some storageClassName}
 
-    /// volumeMode defines what type of volume is required by the claim
+    /// volumeMode defines if a volume is intended to be used with a formatted filesystem or to remain in raw block state. Default: Filesystem
     [<CustomOperation "volumeMode">]
-    member _.VolumeMode(state: PersistentVolumeClaim, volumeMode: VolumeMode) = 
+    member _.VolumeMode(state: PersistentVolume<CSIPersistentVolumeSource>, volumeMode: VolumeMode) = 
         { state with volumeMode = volumeMode}
 
     /// accessModes contains the desired access modes the volume should have
     [<CustomOperation "accessModes">]
-    member _.AccessModes(state: PersistentVolumeClaim, accessModes: AccessMode list) = 
+    member _.AccessModes(state: PersistentVolume<CSIPersistentVolumeSource>, accessModes: AccessMode list) = 
         { state with accessModes = accessModes}
+   
+    // custom methods start here
 
-    /// selector is a label query over volumes to consider for binding
-    [<CustomOperation "selector">]
-    member _.Selector(state: PersistentVolumeClaim, selector: LabelSelector) = 
-        { state with selector = selector}
-
-    /// resources represents the minimum resources the volume should have
-    [<CustomOperation "resources">]
-    member _.Resources(state: PersistentVolumeClaim, resources: Resources) = 
-        { state with resources = resources}
+    /// driver is the name of the driver to use for this volume. Required.
+    [<CustomOperation "driver">]
+    member _.VolumeSpec(state: PersistentVolume<CSIPersistentVolumeSource>, driver) = 
+        let (label,csi) = state.volumeSpec |> csiInit
+        let newCsi = { csi with driver = Some driver }
+        { state with volumeSpec = Some (label, newCsi) }
+        
+    /// volumeHandle is the unique volume name returned by the CSI volume plugin’s CreateVolume to refer to the volume on all subsequent calls. Required.
+    [<CustomOperation "volumeHandle">]
+    member _.VolumeHandle(state: PersistentVolume<CSIPersistentVolumeSource>, volumeHandle) = 
+        let (label,csi) = state.volumeSpec |> csiInit
+        let newCsi = { csi with volumeHandle = Some volumeHandle }
+        { state with volumeSpec = Some (label, newCsi) }
+     
+    /// fsType to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs".
+    [<CustomOperation "fsType">]
+    member _.FsType(state: PersistentVolume<CSIPersistentVolumeSource>, fsType) = 
+        let (label,csi) = state.volumeSpec |> csiInit
+        let newCsi = { csi with fsType = Some fsType }
+        { state with volumeSpec = Some (label, newCsi) }
+        
+    /// readOnly value to pass to ControllerPublishVolumeRequest. Defaults to false (read/write).
+    [<CustomOperation "readOnly">]
+    member _.ReadOnly(state: PersistentVolume<CSIPersistentVolumeSource>) = 
+        let (label,csi) = state.volumeSpec |> csiInit
+        let newCsi = { csi with readOnly = true }
+        { state with volumeSpec = Some (label, newCsi) }
+        
+    /// readOnly value to pass to ControllerPublishVolumeRequest. Defaults to false (read/write).
+    [<CustomOperation "volumeAttributes">]
+    member _.VolumeAttributes(state: PersistentVolume<CSIPersistentVolumeSource>, volumeAttributes: (string*string) list) = 
+        let (label,csi) = state.volumeSpec |> csiInit
+        let newCsi = { csi with volumeAttributes = Some (volumeAttributes |> Map.ofList) }
+        { state with volumeSpec = Some (label, newCsi) }
 
 // OPEN BUILDERS
 
@@ -308,4 +384,5 @@ type PersistentVolumeBuilder() =
 module PersistentVolumeBuilders =
     
     let storageClass = new StorageClassBuilder()
-    let persistentVolumeClaim = PersistentVolumeClaimBuilder();
+    let persistentVolumeClaim = new PersistentVolumeClaimBuilder();
+    let csi = new CsiVolumeBuilder()
