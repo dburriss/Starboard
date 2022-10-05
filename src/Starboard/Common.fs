@@ -40,9 +40,13 @@ module Common =
             annotations = List.empty 
         }
 
-        static member ToK8sModel metadata =
-            
+        static member setName metadata name =
+            { metadata with name = Some name }
 
+        static member setNamespace metadata nsName =
+            { metadata with ns = Some nsName }
+
+        static member ToK8sModel metadata =
             {|
                 name = metadata.name
                 ``namespace`` = metadata.ns
