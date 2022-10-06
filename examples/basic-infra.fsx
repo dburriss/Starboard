@@ -27,8 +27,15 @@ let vMount = volumeMount {
 
 let cfVolume = configMapVolume {
     name "config-vol"
-    configMapName "log-config"
     item ("log_level", "log_level.conf")
+}
+
+let persistentVol = csi {
+    name "pvol"
+    capacity 8000<Mi>
+    accessModes [ReadWriteMany]
+    driver "disk.csi.azure.com"
+    fsType "ext4"
 }
 
 let container1 = container {
@@ -77,6 +84,7 @@ let k8s1 = k8s {
     service service1
     deployment deployment1
     deployment deployment2
+    persistentVolume persistentVol
 }
 
 KubeCtlWriter.print k8s1

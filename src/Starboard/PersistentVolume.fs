@@ -243,7 +243,7 @@ type PersistentVolume<'a> with
             persistentVolumeReclaimPolicy = None
             storageClassName = None
             volumeMode = VolumeMode.Filesystem
-            volumeSpec = None
+            volumeSpec = Option<string*'a>.None
         }
     member _.K8sVersion() = "v1"
     member _.K8sKind() = "PersistentVolume"
@@ -251,23 +251,46 @@ type PersistentVolume<'a> with
         if this.metadata = Metadata.empty then None
         else this.metadata |> Metadata.ToK8sModel |> Some
     member this.Spec() =
-        let vs = this.volumeSpec |> Option.get
-        [
-            "accessModes", this.accessModes |> Helpers.mapEach (fun a -> a.ToString()) |> box
-            "capacity", this.capacity |> Option.map (fun x -> $"{x}Mi") |> box
-            "claimRef", this.claimRef
-            "storageClassName", this.storageClassName
-            "mountOptions", this.mountOptions |> Helpers.mapValues id |> box
-            "persistentVolumeReclaimPolicy", this.persistentVolumeReclaimPolicy
-            "storageClassName", this.storageClassName
-            "volumeMode", this.volumeMode.ToString()
-            (vs |> fst), (vs |> snd |> box)
-        ] |> dict
+        let (volType,volTypeSpec) = this.volumeSpec |> Option.get
+
+        let addIfValueSome (k, v) m =
+            match v with
+            | Some v -> Map.add k (box v) m 
+            | None -> m
+
+        let addIfNotEmpty (k, lst) m =
+            if List.isEmpty lst then m
+            else Map.add k (box lst) m
+
+        Map.empty
+        |> addIfNotEmpty ("accessModes", this.accessModes |> List.map (fun a -> a.ToString()))
+        |> addIfValueSome ("capacity", this.capacity |> Option.map (fun x -> $"{x}Mi"))
+        |> addIfValueSome ("claimRef", this.claimRef)
+        |> addIfValueSome ("storageClassName", this.storageClassName)
+        |> addIfNotEmpty ("mountOptions", this.mountOptions)
+        |> addIfValueSome ("persistentVolumeReclaimPolicy", this.persistentVolumeReclaimPolicy)
+        |> Map.add "volumeMode" (this.volumeMode.ToString())
+        |> Map.add volType (volTypeSpec |> box)
+        |> Map.toSeq
+        |> dict
+        //[
+        //    "accessModes", this.accessModes |> Helpers.mapEach (fun a -> a.ToString()) |> box
+        //    "capacity", this.capacity |> Option.map (fun x -> $"{x}Mi") |> box
+        //    "claimRef", this.claimRef
+        //    "storageClassName", this.storageClassName
+        //    "mountOptions", this.mountOptions |> Helpers.mapValues id |> box
+        //    "persistentVolumeReclaimPolicy", this.persistentVolumeReclaimPolicy
+        //    "volumeMode", this.volumeMode.ToString()
+        //    (vs |> fst), (vs |> snd |> box)
+        //] 
+        //|> List.filter (fun (_,v) -> not(isNull v))
+        //|> dict
         
     member this.ToResource() =
         {|
             apiVersion = this.K8sVersion()
             kind = this.K8sKind()
+            metadata = this.K8sMetadata()
             spec = this.Spec()
         |}
 

@@ -46,6 +46,10 @@ module K8s =
         [<CustomOperation "persistentVolumeClaim">]
         member _.PersistentVolumeClaim(state: K8s, persistentVolumeClaim: PersistentVolumeClaim) = 
             List.append state [box (persistentVolumeClaim.ToResource())]
+         
+        [<CustomOperation "persistentVolume">]
+        member _.PersistentVolume<'a>(state: K8s, persistentVolume: PersistentVolume<'a>) = 
+            List.append state [box (persistentVolume.ToResource())]
         
         [<CustomOperation "resource">]
         member _.Resource(state: K8s, resource: obj) = List.append state [resource]
