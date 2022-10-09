@@ -94,6 +94,9 @@ module K8sTests =
         let yaml = KubeCtlWriter.toYaml k8s1
 
         Assert.NotEmpty(yaml)
+        Assert.Contains("apiVersion: apps/v1", yaml)
+        Assert.Contains("image: nginx", yaml)
+        Assert.Contains("name: my-name", yaml)
         
 
     //TODO: validate against schemas

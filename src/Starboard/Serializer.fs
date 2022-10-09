@@ -1,13 +1,13 @@
 ﻿namespace Starboard.Serialization
 
-open Newtonsoft.Json.Linq
-
 
 module Serializer =
 
     open System.Text.Json
-    open System.Text.Encodings.Web
     open System.Text.Json.Serialization
+    open System.Text.Json.Nodes
+    open System.Text.Encodings.Web
+    open System.Collections.Generic
 
     let jsonSerializerOptions =
         JsonSerializerOptions(
@@ -23,16 +23,36 @@ module Serializer =
     let ofJson<'T> (x: string) =
         JsonSerializer.Deserialize<'T>(x, jsonSerializerOptions)
 
-    let rec private toObj (jToken: JToken) =
-        match jToken with
-        | :? JValue as t -> t.Value
-        | :? JArray as t -> t.AsJEnumerable() |> Seq.map toObj |> box
-        | :? JObject as t -> t.Properties() |> Seq.map (fun p -> (p.Name, (toObj p.Value))) |> dict |> box
-        | _ -> failwithf "Unexpected token %s" (jToken.ToString())
+    let getNumber (jEl: JsonElement) =
+        let (b,i) = jEl.TryGetInt64()
+        if b then box i
+        else jEl.TryGetDecimal() |> box
+
+    let getValue (jEl: JsonElement) =
+        match jEl.ValueKind with
+        | JsonValueKind.Number -> getNumber jEl
+        | JsonValueKind.True | JsonValueKind.False -> jEl.GetBoolean() |> box
+        | _ -> jEl.GetString() |> box
+
+    let rec private toObj (jEl: JsonNode) =
+        match jEl with
+        | :? JsonValue -> 
+            let v = jEl.GetValue()
+            getValue v
+        | :? JsonArray -> 
+            let jArr = jEl.AsArray()
+            Array.init (jArr.Count) (fun i -> toObj(jArr.Item(i)))
+        | :? JsonObject -> 
+            let d = jEl.AsObject() :> IDictionary<string,JsonNode>
+            d.Keys
+            |> Seq.map (fun k -> (k, toObj(d[k])))
+            |> dict
+            |> box
+        | _ -> failwithf "Unexpected token %s at %s" (jEl.ToJsonString()) (jEl.GetPath())
         
     let private serializer = YamlDotNet.Serialization.SerializerBuilder().Build()
     let toYaml x = 
         let json = toJson x
-        let jToken = JToken.Parse(json)
-        let o = toObj jToken
+        let jNode = JsonNode.Parse(json)
+        let o = toObj jNode
         serializer.Serialize(o)

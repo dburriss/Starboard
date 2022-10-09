@@ -1,15 +1,15 @@
 ﻿namespace Starboard.Resources
 
 open Starboard.Resources
-open Newtonsoft.Json.Linq
+open System.Text.Json.Nodes
 
 type IntOrString = | I of int32 | S of string
 type IntOrString with
     member this.Value =
         // TODO: Create a serializer for this.
         match this with
-        | I i -> JValue(i).Value.ToString()
-        | S s -> JValue(s).Value.ToString()
+        | I i -> JsonValue.Create(i).ToJsonString()
+        | S s -> JsonValue.Create(s).ToJsonString()
 
 type ServicePort = {
     port: int option
