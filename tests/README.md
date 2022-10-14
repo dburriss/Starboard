@@ -30,8 +30,20 @@ So in the above illustration, Acceptance tests know about the Builders, which is
 Questions:
 
 - Are resources listed as expected?
-- Does the workflow product the expected resource with correct values?
+- Does the functionality produce a kubernetes resource with the correct values?
 - Does invalid builder usage produce validation errors?
+
+```fsharp
+[<Fact>]
+let ``ingressClassName is set`` () =
+    let theIngress = ingress {
+        defaultBackend aBackend
+        ingressClassName aClassName
+    }
+    let spec = theIngress.ToResource() |> Result.unwrap |> fun r -> r.spec // get the Resource which is "external" as it matches the Kubernetes specification
+
+    test <@ spec.ingressClassName.Value = aClassName @> // verify against the Kubernetes type, not the internal type
+```
 
 ### Guidelines
 
@@ -40,6 +52,7 @@ Questions:
 - Each top level property for a component SHOULD have at least 1 test verifying validation rules
 - Acceptance tests MUST **HAVE ZERO KNOWLEDGE** of the internal types used by the *builders*
 - Developers SHOULD abstract away construction of builders if used in the same way across multiple tests
+- Link at the top of the test to the relevant Kubernetes specification
 
 ## Building tests
 
@@ -49,9 +62,21 @@ Builder tests are those tests that know about the internal structure of your app
 
 Examples:
 
+- Does the builder produce expected value
 - Details about serialization
 - Logic on how validations interact
 
+```fsharp
+[<Fact>]
+let ``DeploymentBuilder with a name sets name`` () =
+
+    let deployment1 = deployment {
+        name "my-name"
+        pod aPod
+    } // deployment1 is type `Deployment` which is an internal type
+
+    Assert.Equal(Some "my-name", deployment1.metadata.name) // <- deployment1 is used directly to verify
+```
 ### Guidelines
 
 - Create as needed and follow usual unit testing good sense
