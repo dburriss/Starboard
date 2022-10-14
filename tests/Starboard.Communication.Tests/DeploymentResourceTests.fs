@@ -28,7 +28,7 @@ module DeploymentResourceTests =
 
         let deployment1 = deployment {
             name "my-name"
-            pod pod1
+            podTemplate pod1
         }
 
         let resource = deployment1.ToResource()
@@ -54,7 +54,7 @@ module DeploymentResourceTests =
 
         let deployment1 = deployment {
             name "my-name"
-            pod pod1
+            podTemplate pod1
             replicas 2
         }
 
@@ -77,7 +77,7 @@ module DeploymentResourceTests =
 
         let deployment1 = deployment {
             name "my-name"
-            pod pod1
+            podTemplate pod1
         }
 
         let deploymentResource = deployment1.ToResource()
@@ -99,7 +99,7 @@ module DeploymentResourceTests =
 
         let deployment1 = deployment {
             name "my-name"
-            pod pod1
+            podTemplate pod1
             matchLabel ("key","value")
         }
 
@@ -126,7 +126,7 @@ module DeploymentResourceTests =
 
         let deployment1 = deployment {
             name "my-name"
-            pod pod1
+            podTemplate pod1
             labels [("key","value")]
         }
 
@@ -152,7 +152,7 @@ module DeploymentResourceTests =
 
         let deployment1 = deployment {
             name "my-name"
-            pod pod1
+            podTemplate pod1
             annotations [("key","value")]
         }
 
@@ -179,7 +179,7 @@ module DeploymentResourceTests =
 
         let deployment1 = deployment {
             name "my-name"
-            pod pod1
+            podTemplate pod1
             annotations [("key","value")]
         }
 

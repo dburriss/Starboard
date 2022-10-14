@@ -39,6 +39,10 @@ module K8s =
         member _.Service(state: K8s, service: Service) = 
             List.append state [box (service.ToResource())]
  
+        [<CustomOperation "ingress">]
+        member _.Ingress(state: K8s, ingress: Ingress) = 
+            List.append state [box (ingress.ToResource())]
+ 
         [<CustomOperation "storageClass">]
         member _.StorageClass(state: K8s, storageClass: StorageClass) = 
             List.append state [box (storageClass.ToResource())]

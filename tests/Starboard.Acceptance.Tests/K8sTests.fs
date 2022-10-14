@@ -1,6 +1,6 @@
 ﻿namespace Starboard.Acceptance.Tests
 
-module K8sTests =
+module K8s_Resources =
 
     open Xunit
     open Starboard.Resources
@@ -14,9 +14,8 @@ module K8sTests =
         let a : IEnumerable<'a> = List.toSeq actual
         Assert.Equal<'a>(e, a)
 
-        
     [<Fact>]
-    let ``K8s resources appear in a List schema`` () =
+    let ``appear in a List schema`` () =
         let container1 = container {
             image "nginx"
             command ["systemctl"]
@@ -28,7 +27,7 @@ module K8sTests =
         }
 
         let deployment1 = deployment {
-            pod pod1
+            podTemplate pod1
         }
 
         let k8s1 = k8s {
@@ -55,7 +54,7 @@ module K8sTests =
 
         let deployment1 = deployment {
             name "my-name"
-            pod pod1
+            podTemplate pod1
         }
 
         let k8s1 = k8s {
@@ -69,7 +68,6 @@ module K8sTests =
         Assert.Equal(deploymentJson?metadata?name.AsString(), "my-name")
         Assert.NotEqual(deploymentJson?spec, JsonValue.Null)
         
-
     [<Fact>]
     let ``K8s to yaml`` () =
         let container1 = container {
@@ -84,7 +82,7 @@ module K8sTests =
 
         let deployment1 = deployment {
             name "my-name"
-            pod pod1
+            podTemplate pod1
         }
 
         let k8s1 = k8s {

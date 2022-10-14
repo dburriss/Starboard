@@ -57,7 +57,7 @@ let pod1 = pod {
 let deployment1 = deployment {
     name "test-deployment"
     replicas 3
-    pod pod1
+    podTemplate pod1
     labels appLabels
     matchLabels appLabels
 }
@@ -65,7 +65,7 @@ let deployment1 = deployment {
 let deployment2 = deployment {
     name "test-another-deployment"
     replicas 3
-    pod pod1
+    podTemplate pod1
     labels appLabels
     matchLabels appLabels
 }
@@ -79,9 +79,14 @@ let service1 = service {
     typeOf ClusterIP
 }
 
+let ingress1 = ingress {
+    ingressClassName "test-ingress"
+}
+
 let k8s1 = k8s {
     configMap config
     service service1
+    ingress ingress1
     deployment deployment1
     deployment deployment2
     persistentVolume persistentVol

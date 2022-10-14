@@ -20,7 +20,6 @@ type ServicePort = {
     appProtocol : string option
 }
 
-
 type ServicePort with
     static member empty = 
         {
@@ -167,8 +166,6 @@ type ServiceBuilder() =
     [<CustomOperation "typeOf">]
     member _.Type(state: Service, typeof: ServiceType) = 
         { state with ``type`` = typeof }
-
-// TODO: Specific builders per service type
 
 [<AutoOpen>]
 module ServicerBuilders =

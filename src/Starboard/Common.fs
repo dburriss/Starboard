@@ -1,5 +1,8 @@
 ﻿namespace Starboard.Resources
 
+module Result =
+    let unwrap = function | Ok v -> v | Error err -> failwithf "%A" err
+
 module Helpers =
     open System
 
@@ -405,6 +408,31 @@ module Common =
         [<CustomOperation "uid">]
         member _.Uid(state: ObjectReference, uid : string) = 
             { state with uid  = Some uid  }
+
+    type TypedLocalObjectReference = {
+        kind:string option
+        name: string option
+        apiGroup: string option
+    }
+    type TypedLocalObjectReference with
+        static member empty = {
+            kind = None
+            name = None
+            apiGroup = None
+        }
+    type TypedLocalObjectReferenceBuilder() =
+        member _.Yield _ = TypedLocalObjectReference.empty
+    
+        [<CustomOperation "kind">]
+        member _.Kind(state: TypedLocalObjectReference, kind: string) = { state with kind = Some kind }
+        
+        [<CustomOperation "name">]
+        member _.Name(state: TypedLocalObjectReference, name: string) = { state with name = Some name }
+        
+        [<CustomOperation "apiGroup">]
+        member _.ApiGroup(state: TypedLocalObjectReference, apiGroup: string) = { state with apiGroup = Some apiGroup }
+        
+        
 
     /// A single application container that you want to run within a pod.
     /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container

@@ -58,8 +58,8 @@ type Deployment with
 type DeploymentBuilder() =
     member _.Yield _ = Deployment.Empty
 
-    [<CustomOperation "pod">]
-    member _.Pods(state: Deployment, pod: Pod) = { state with pod = Some pod }
+    [<CustomOperation "podTemplate">]
+    member _.Pod(state: Deployment, pod: Pod) = { state with pod = Some pod }
         
     [<CustomOperation "replicas">]
     member _.Replicas(state: Deployment, replicaCount: int) = { state with replicas = replicaCount }
