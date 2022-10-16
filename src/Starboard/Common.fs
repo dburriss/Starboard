@@ -1,28 +1,10 @@
 ﻿namespace Starboard.Resources
 
-module Result =
-    let unwrap = function | Ok v -> v | Error err -> failwithf "%A" err
-
-module Helpers =
-    open System
-
-    let nullableOfOption = function
-        | None -> new Nullable<_>()
-        | Some x -> new Nullable<_>(x)
-
-    let mapValues f = function
-        | [] -> None
-        | xs -> Some (f xs)
-
-    let mapEach f = function
-        | [] -> None
-        | xs -> Some (List.map f xs)
-
-    let toDict lst = mapValues dict lst
-
 [<AutoOpen>]
 module Common =
-    
+
+    open Starboard
+
     type K8sResource =
         abstract member JsonModel : unit -> obj
 

@@ -1,5 +1,6 @@
 ﻿namespace Starboard.Resources
 
+open Starboard
 //====================================
 // IngressClass
 // https://kubernetes.io/docs/reference/kubernetes-api/service-resources/ingress-class-v1/
@@ -28,6 +29,14 @@ type IngressClassParameters with
         ns = None
         scope = IngressClassParametersScope.Cluster
     }
+
+    member this.Spec() = {|
+        kind = this.kind
+        name = this.name
+        apiGroup = this.apiGroup
+        ``namespace`` = this.ns
+        scope = this.scope.ToString()
+    |}
 
 type IngressClassParametersBuilder() =
     member _.Yield _ = IngressClassParameters.empty
@@ -58,6 +67,23 @@ type IngressClass with
         controller = None
         parameters = None
     }
+    member this.K8sVersion() = "networking.k8s.io/v1"
+    member this.K8sKind() = "IngressClass"
+    member this.K8sMetadata() = 
+        if this.metadata = Metadata.empty then None
+        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.Spec() = {|
+        controller = this.controller
+        parameters = this.parameters |> Option.map (fun x -> x.Spec()) 
+    |}
+    member this.Valdidate() = List.empty
+    member this.ToResource() =
+        {|
+            apiVersion = this.K8sVersion()
+            kind = this.K8sKind()
+            metadata = this.K8sMetadata()
+            spec = this.Spec()
+        |}
 
 type IngressClassBuilder() =
     member _.Yield _ = IngressClass.empty
@@ -161,6 +187,10 @@ type HTTPIngressPath with
         pathType = this.pathType.ToString()
         path = this.path
     |}
+    member this.Validate() =
+        Validation.required (fun x -> x.backend) "Ingress `rules.http.paths.backend` is required." this
+        @ Validation.required (fun x -> x.pathType) "Ingress `rules.http.paths.pathType` is required." this
+        @ Validation.startsWith "/" (fun x -> x.path) "Ingress `rules.http.paths.path` must start with '/'." this
 
 type HTTPIngressPathBuilder() =
     member _.Yield _ = HTTPIngressPath.empty
@@ -191,6 +221,9 @@ type IngressRule with
                 paths = this.httpPaths |> Helpers.mapEach (fun p -> p.Spec())
             |}
         |}
+    member this.Validate() =
+        Validation.notEmpty (fun r -> r.httpPaths) "Ingress `rules.http.paths` is required." this
+        @ (this.httpPaths |> List.map (fun h -> h.Validate()) |> List.concat)
 
 type IngressRuleBuilder() =
     member _.Yield _ = IngressRule.empty
@@ -255,8 +288,12 @@ type Ingress with
             rules = this.rules |> Helpers.mapEach (fun r -> r.Spec() )
             tls = this.tls |> Helpers.mapEach  (fun t -> t.Spec() )
         |}
+    member this.Valdidate() =
+        (Validation.requiredIfEmpty (fun ingress -> ingress.defaultBackend) (fun ingress -> ingress.rules) "Ingress `defaultBackend` is required if no `rules` are specified." this)
+        @ (this.rules |> List.map (fun rule -> rule.Validate()) |> List.concat)
+
     member this.ToResource() =
-        Ok {|
+        {|
             apiVersion = this.K8sVersion()
             kind = this.K8sKind()
             metadata = this.K8sMetadata()

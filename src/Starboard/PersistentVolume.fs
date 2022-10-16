@@ -1,5 +1,7 @@
 ﻿namespace Starboard.Resources
 
+open Starboard
+
 type ReclaimPolicy = | Delete | Retain
 
 type ReclaimPolicy with

@@ -6,6 +6,7 @@
 module K8s_Ingress =
 
     open Xunit
+    open Starboard
     open Starboard.Resources
     open Swensen.Unquote
 
@@ -40,7 +41,7 @@ module K8s_Ingress =
         let theIngress = ingress {
             defaultBackend aBackend
         }
-        let result = theIngress.ToResource() |> Result.unwrap
+        let result = theIngress.ToResource()
 
         test <@ result.kind = "Ingress" @>
         
@@ -49,7 +50,7 @@ module K8s_Ingress =
         let theIngress = ingress {
             defaultBackend aBackend
         }
-        let result = theIngress.ToResource() |> Result.unwrap
+        let result = theIngress.ToResource()
 
         test <@ result.apiVersion = "networking.k8s.io/v1" @>
 
@@ -58,7 +59,7 @@ module K8s_Ingress =
         let theIngress = ingress {
             defaultBackend aBackend
         }
-        let spec = theIngress.ToResource() |> Result.unwrap |> fun r -> r.spec
+        let spec = theIngress.ToResource() |> fun r -> r.spec
 
         test <@ spec.defaultBackend.Value.service.Value.name.Value = defaultBackend_serviceName @>
         test <@ spec.defaultBackend.Value.service.Value.port.Value.name.Value = defaultBackend_portName @>
@@ -69,17 +70,17 @@ module K8s_Ingress =
             defaultBackend aBackend
             ingressClassName aClassName
         }
-        let spec = theIngress.ToResource() |> Result.unwrap |> fun r -> r.spec
+        let spec = theIngress.ToResource() |>  fun r -> r.spec
 
         test <@ spec.ingressClassName.Value = aClassName @>
               
     [<Fact>]
-    let ``K8s Ingress rules matches input`` () =
+    let ``rules matches input`` () =
         let theIngress = ingress {
             defaultBackend aBackend
             rules [ aRule ]
         }
-        let spec = theIngress.ToResource() |> Result.unwrap |> fun r -> r.spec
+        let spec = theIngress.ToResource() |> fun r -> r.spec
         let rule = spec.rules.Value[0]
 
         test <@ rule.host.Value = aHost @>
@@ -90,13 +91,22 @@ module K8s_Ingress =
         test <@ rule.http.paths.Value[0].path.Value = "/" @>
                
     [<Fact>]
-    let ``K8s Ingress TLS matches input`` () =
+    let ``TLS matches input`` () =
         let theIngress = ingress {
             defaultBackend aBackend
             tls [ aTLS ]
         }
-        let spec = theIngress.ToResource() |> Result.unwrap |> fun r -> r.spec
+        let spec = theIngress.ToResource() |> fun r -> r.spec
         let tls = spec.tls.Value[0]
 
         test <@ tls.hosts.Value[0] = aHost @>
         test <@ tls.secretName.Value = aSecretName @>
+                
+    [<Fact>]
+    let ``defaultBackend required if no rules`` () =
+        let theIngress = ingress {
+            rules []
+        }
+        let result = theIngress.Valdidate()
+
+        test <@ result = [ValidationProblem.RequiredMemberIsMissing "Ingress `defaultBackend` is required if no `rules` are specified."] @>

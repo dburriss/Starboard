@@ -34,7 +34,7 @@ module K8s_Resources =
             deployment deployment1
         }
 
-        let json = KubeCtlWriter.toJson k8s1 |> JsonValue.Parse
+        let json = KubeCtlWriter.toJson k8s1 |> fun o -> JsonValue.Parse o.content
 
         Assert.Equal(json?apiVersion.AsString(), "v1")
         Assert.Equal(json?kind.AsString(), "List")
@@ -61,7 +61,7 @@ module K8s_Resources =
             deployment deployment1
         }
 
-        let deploymentJson = KubeCtlWriter.toJson k8s1 |> JsonValue.Parse |> fun json -> json?items.AsArray() |> Array.head
+        let deploymentJson = KubeCtlWriter.toJson k8s1 |> fun o -> JsonValue.Parse o.content |> fun json -> json?items.AsArray() |> Array.head
 
         Assert.Equal(deploymentJson?apiVersion.AsString(), "apps/v1")
         Assert.Equal(deploymentJson?kind.AsString(), "Deployment")
@@ -89,7 +89,8 @@ module K8s_Resources =
             deployment deployment1
         }
 
-        let yaml = KubeCtlWriter.toYaml k8s1
+        let output = KubeCtlWriter.toYaml k8s1
+        let yaml = output.content
 
         Assert.NotEmpty(yaml)
         Assert.Contains("apiVersion: apps/v1", yaml)

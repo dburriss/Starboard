@@ -1,6 +1,6 @@
-namespace Starboard.Comms.Tests
+namespace Starboard.Acceptance.Tests
 
-module DeploymentResourceTests =
+module K8s_Deployment =
 
     open Xunit
     open Starboard.Resources

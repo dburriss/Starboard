@@ -97,8 +97,8 @@ KubeCtlWriter.print k8s1
 let save k8s =
     let fsxName = fsi.CommandLineArgs[0].Replace(".fsx", "")
     let fileName = $"{fsxName}.deployment.json"
-    KubeCtlWriter.toJsonFile k8s fileName
+    KubeCtlWriter.toJsonFile k8s fileName |> ignore
     let fileName = $"{fsxName}.deployment.yaml"
-    KubeCtlWriter.toYamlFile k8s fileName
+    KubeCtlWriter.toYamlFile k8s fileName |> ignore
 
 save k8s1 

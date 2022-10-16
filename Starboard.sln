@@ -22,7 +22,7 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Starboard.Building.Tests", 
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Starboard.Acceptance.Tests", "tests\Starboard.Acceptance.Tests\Starboard.Acceptance.Tests.fsproj", "{C8779DAC-5C1D-46A3-B653-6DD7F776F45B}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Starboard.Comms.Tests", "tests\Starboard.Communication.Tests\Starboard.Communication.Tests.fsproj", "{0779E2BF-6DFD-4175-B60B-E86C9D389120}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Starboard.Communication.Tests", "tests\Starboard.Communication.Tests\Starboard.Communication.Tests.fsproj", "{0779E2BF-6DFD-4175-B60B-E86C9D389120}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

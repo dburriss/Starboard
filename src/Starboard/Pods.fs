@@ -1,5 +1,6 @@
 ﻿namespace Starboard.Resources
 
+open Starboard
 open Starboard.Resources
 
 type Pod = { 

@@ -8,8 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="PodResourceTests.fs" />
-    <Compile Include="DeploymentResourceTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -29,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Starboard\Starboard.fsproj" />
+    <ProjectReference Include="..\..\src\Starboard\Starboard.fsproj" />
   </ItemGroup>
 
 </Project>
