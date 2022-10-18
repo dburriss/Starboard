@@ -43,9 +43,7 @@ type StorageClass with
         }
     member _.K8sVersion() = "storage.k8s.io/v1"
     member _.K8sKind() = "StorageClass"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.ToResource() =
     
         // https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/storage-class-v1/
@@ -57,7 +55,7 @@ type StorageClass with
             volumeBindingMode = this.volumeBindingMode
             reclaimPolicy = this.reclaimPolicy.ToString()
             allowVolumeExpansion = this.allowVolumeExpansion
-            parameters = this.parameters |> Helpers.toDict
+            parameters = this.parameters |> Helpers.listToDict
             mountOptions = this.mountOptions |> Helpers.mapValues id
         |}
 
@@ -69,7 +67,7 @@ type StorageClassBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "name">]
     member _.Name(state: StorageClass, name: string) = 
-        let newMetadata = { state.metadata with name = Some name }
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
 
     /// Namespace of the StorageClass.
@@ -77,7 +75,7 @@ type StorageClassBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "ns">]
     member _.Namespace(state: StorageClass, ns: string) = 
-        let newMetadata = { state.metadata with ns = Some ns }
+        let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
     
     /// Provisioner for CSI eg. blob.csi.azure.com
@@ -157,9 +155,7 @@ type PersistentVolumeClaim with
         }
     member _.K8sVersion() = "v1"
     member _.K8sKind() = "PersistentVolumeClaim"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() =
         {|
             volumeName = this.volumeName
@@ -184,7 +180,7 @@ type PersistentVolumeClaimBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "name">]
     member _.Name(state: PersistentVolumeClaim, metaName: string) = 
-        let newMetadata = { state.metadata with name = Some metaName }
+        let newMetadata = { state.metadata with name = metaName }
         { state with metadata = newMetadata}
 
     /// volumeName is the binding reference to the PersistentVolume backing this claim
@@ -249,9 +245,7 @@ type PersistentVolume<'a> with
         }
     member _.K8sVersion() = "v1"
     member _.K8sKind() = "PersistentVolume"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() =
         let (volType,volTypeSpec) = this.volumeSpec |> Option.get
 
@@ -336,7 +330,7 @@ type CsiVolumeBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "name">]
     member _.Name(state: PersistentVolume<CSIPersistentVolumeSource>, metaName: string) = 
-        let newMetadata = { state.metadata with name = Some metaName }
+        let newMetadata = { state.metadata with name = metaName }
         { state with metadata = newMetadata}
 
     /// capacity is the description of the persistent volume's resources and capacity. 
@@ -403,7 +397,9 @@ type CsiVolumeBuilder() =
         let newCsi = { csi with volumeAttributes = Some (volumeAttributes |> Map.ofList) }
         { state with volumeSpec = Some (label, newCsi) }
 
-// OPEN BUILDERS
+//====================================
+// Builder init
+//====================================
 
 [<AutoOpen>]
 module PersistentVolumeBuilders =

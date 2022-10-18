@@ -13,6 +13,7 @@ let config = configMap {
         ("enemies", "aliens")
         ("lives", "3")
     ]
+    add_file ("fileContent", "./some.txt")
 }
 
 let port1 = containerPort {
@@ -83,8 +84,20 @@ let ingress1 = ingress {
     ingressClassName "test-ingress"
 }
 
+let secret1 = secret {
+    name "my-secret-1"
+}
+
+let secret2 = secret {
+    name "my-secret-2"
+    add_stringData ("key1", "some text")
+}
+
+let secrets = SecretList.init [secret1;secret2]
+
 let k8s1 = k8s {
     configMap config
+    secretList secrets
     service service1
     ingress ingress1
     deployment deployment1

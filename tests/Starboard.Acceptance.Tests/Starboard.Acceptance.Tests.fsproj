@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<Compile Include="DeploymentResourceTests.fs" />
+		<Compile Include="SecretTests.fs" />
 		<Compile Include="IngressResourceTests.fs" />
 		<Compile Include="K8sTests.fs" />
 	</ItemGroup>

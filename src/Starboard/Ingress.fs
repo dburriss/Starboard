@@ -69,9 +69,7 @@ type IngressClass with
     }
     member this.K8sVersion() = "networking.k8s.io/v1"
     member this.K8sKind() = "IngressClass"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() = {|
         controller = this.controller
         parameters = this.parameters |> Option.map (fun x -> x.Spec()) 
@@ -93,7 +91,7 @@ type IngressClassBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "name">]
     member _.Name(state: IngressClass, name: string) = 
-        let newMetadata = { state.metadata with name = Some name }
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
     
     /// Namespace of the IngressClass.
@@ -101,7 +99,7 @@ type IngressClassBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "ns">]
     member _.Namespace(state: IngressClass, ns: string) = 
-        let newMetadata = { state.metadata with ns = Some ns }
+        let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
     
     /// Labels for the IngressClass
@@ -277,9 +275,7 @@ type Ingress with
     }
     member this.K8sVersion() = "networking.k8s.io/v1"
     member this.K8sKind() = "Ingress"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() =
         // https://kubernetes.io/docs/reference/kubernetes-api/service-resources/ingress-v1/#IngressSpec
         {|
@@ -289,7 +285,8 @@ type Ingress with
             tls = this.tls |> Helpers.mapEach  (fun t -> t.Spec() )
         |}
     member this.Valdidate() =
-        (Validation.requiredIfEmpty (fun ingress -> ingress.defaultBackend) (fun ingress -> ingress.rules) "Ingress `defaultBackend` is required if no `rules` are specified." this)
+        (this.metadata.Validate(this.K8sKind()))
+        @ (Validation.requiredIfEmpty (fun ingress -> ingress.defaultBackend) (fun ingress -> ingress.rules) "Ingress `defaultBackend` is required if no `rules` are specified." this)
         @ (this.rules |> List.map (fun rule -> rule.Validate()) |> List.concat)
 
     member this.ToResource() =
@@ -308,7 +305,7 @@ type IngressBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "name">]
     member _.Name(state: Ingress, name: string) = 
-        let newMetadata = { state.metadata with name = Some name }
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
     
     /// Namespace of the Ingress.
@@ -316,7 +313,7 @@ type IngressBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "ns">]
     member _.Namespace(state: Ingress, ns: string) = 
-        let newMetadata = { state.metadata with ns = Some ns }
+        let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
     
     /// Labels for the Ingress
@@ -343,6 +340,9 @@ type IngressBuilder() =
     [<CustomOperation "tls">]
     member _.Tls(state: Ingress, tls: IngressTLS list) = { state with tls = tls }
     
+//====================================
+// Builder init
+//====================================
 
 [<AutoOpen>]
 module IngressBuilders =

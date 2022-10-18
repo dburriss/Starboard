@@ -95,9 +95,7 @@ type Service with
 // template: metadata, spec
     member this.K8sVersion() = "v1"
     member this.K8sKind() = "Service"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() =
         // https://kubernetes.io/docs/reference/kubernetes-api/service-resources/service-v1/#ServiceSpec
         {|
@@ -123,7 +121,7 @@ type ServiceBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "name">]
     member _.Name(state: Service, name: string) = 
-        let newMetadata = { state.metadata with name = Some name }
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
 
     /// Namespace of the Service.
@@ -131,7 +129,7 @@ type ServiceBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "ns">]
     member _.Namespace(state: Service, ns: string) = 
-        let newMetadata = { state.metadata with ns = Some ns }
+        let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
         
     /// Labels for the Service

@@ -97,5 +97,3 @@ module K8s_Resources =
         Assert.Contains("image: nginx", yaml)
         Assert.Contains("name: my-name", yaml)
         
-
-    //TODO: validate against schemas

@@ -41,7 +41,7 @@ module DeploymentTests =
             podTemplate aPod
         }
 
-        Assert.Equal(Some "my-name", deployment1.metadata.name)
+        Assert.Equal("my-name", deployment1.metadata.name)
 
     [<Fact>]
     let ``DeploymentBuilder sets replicas`` () =
@@ -62,7 +62,7 @@ module DeploymentTests =
             podTemplate aPod
         }
 
-        Assert.Equal(Some "test", deployment1.metadata.ns)
+        Assert.Equal("test", deployment1.metadata.ns)
 
     [<Fact>]
     let ``DeploymentBuilder sets labels`` () =

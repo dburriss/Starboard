@@ -105,6 +105,7 @@ module K8s_Ingress =
     [<Fact>]
     let ``defaultBackend required if no rules`` () =
         let theIngress = ingress {
+            name "my-ingress"
             rules []
         }
         let result = theIngress.Valdidate()

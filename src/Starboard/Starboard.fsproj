@@ -12,6 +12,7 @@
     <Compile Include="Common.fs" />
     <Compile Include="Volumes.fs" />
     <Compile Include="ConfigMap.fs" />
+    <Compile Include="Secret.fs" />
     <Compile Include="PersistentVolume.fs" />
     <Compile Include="Pods.fs" />
     <Compile Include="Ingress.fs" />

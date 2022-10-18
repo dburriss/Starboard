@@ -1,0 +1,121 @@
+﻿namespace Starboard.Resources
+
+open Starboard
+open Starboard.Resources
+
+//====================================
+// Secrets
+// Ref: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/secret-v1/
+// API: https://v1-24.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#secret-v1-core
+//====================================
+
+type Secret = { 
+    metadata: Metadata
+    stringData: Map<string,string>
+    data: Map<string,byte array>
+    immutable: bool
+    secretType: string
+}
+
+type Secret with
+    static member empty =
+        { 
+            metadata = Metadata.empty
+            stringData = Map.empty
+            data = Map.empty
+            immutable = false
+            secretType = "Opaque"
+        }
+
+// resource: version, kind, metadata, spec
+// template: metadata, spec
+    member this.K8sVersion() = "v1"
+    member this.K8sKind() = "Secret"
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
+    member this.ToResource() =
+
+        {|
+            apiVersion = this.K8sVersion()
+            kind = this.K8sKind()
+            metadata = this.K8sMetadata()
+            stringData = this.stringData |> Helpers.emptyAsNone |> Option.map Helpers.mapToIDictionary
+            data = this.data |> Map.map (fun _ v -> v |> String.toBase64) |> Helpers.emptyAsNone |> Option.map Helpers.mapToIDictionary 
+            immutable = this.immutable
+            ``type`` = this.secretType
+        |}
+        
+
+type SecretBuilder() =
+    
+    member _.Yield (_) = Secret.empty
+    /// Name of the Secret. 
+    /// Name must be unique within a namespace. 
+    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+    [<CustomOperation "name">]
+    member _.Name(state: Secret, name: string) = 
+        let newMetadata = { state.metadata with name = name }
+        { state with metadata = newMetadata }
+
+    /// Namespace of the Secret.
+    /// Namespace defines the space within which each name must be unique. Default is "default".
+    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+    [<CustomOperation "ns">]
+    member _.Namespace(state: Secret, ns: string) = 
+        let newMetadata = { state.metadata with ns = ns }
+        { state with metadata = newMetadata }
+        
+    /// Labels for the Secret
+    [<CustomOperation "labels">]
+    member _.Labels(state: Secret, labels: (string*string) list) = 
+        let newMetadata = { state.metadata with labels = labels }
+        { state with metadata = newMetadata }
+
+    /// Annotations for the Secret
+    [<CustomOperation "annotations">]
+    member _.Annotations(state: Secret, annotations: (string*string) list) = 
+        let newMetadata = { state.metadata with annotations = annotations }
+        { state with metadata = newMetadata }
+
+    /// Sets Secret to immutable
+    [<CustomOperation "immutable">]
+    member _.Immutable(state: Secret) = { state with immutable = true }
+    
+    /// Adds an item to the Secret stringdata
+    [<CustomOperation "add_stringData">]
+    member _.AddStringData(state: Secret, (key, value)) = { state with stringData = state.stringData |> Map.add key value }
+
+    /// Sets Secret string data
+    [<CustomOperation "stringData">]
+    member _.StringData(state: Secret, data: (string*string) list) = 
+        { state with stringData = data |> Map.ofList }
+        
+    /// Adds an item to the Secret data
+    [<CustomOperation "add_data">]
+    member _.AddData(state: Secret, (key, value)) = { state with data = state.data |> Map.add key value }
+
+    /// Sets Secret binary data
+    [<CustomOperation "data">]
+    member _.Data(state: Secret, binaryData: (string*(byte array)) list) = 
+        { state with data = binaryData |> Map.ofList }
+
+    /// Adds a file to the ConfigMap binary data
+    [<CustomOperation "add_file">]
+    member _.AddFileToBinaryData(state: Secret, (key, filePath)) = 
+        let bytes = System.IO.File.ReadAllBytes(filePath)
+        { state with data = state.data |> Map.add key bytes }
+
+
+//====================================
+// CONFIGMAP LIST
+// https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/config-map-v1/#ConfigMapList
+//====================================
+
+type SecretList = ResourceList<Secret>
+
+//====================================
+// Builder init
+//====================================
+
+[<AutoOpen>]
+module SecretBuilders =
+    let secret = new SecretBuilder()

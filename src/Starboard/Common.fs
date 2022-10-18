@@ -5,39 +5,41 @@ module Common =
 
     open Starboard
 
-    type K8sResource =
-        abstract member JsonModel : unit -> obj
-
-    type Metadata = {
-        name: string option
-        generateName : string option
-        ns: string option
-        labels: (string*string) list
-        annotations: (string*string) list
-    }
+    type Metadata = 
+        {
+            name: string
+            generateName : string option
+            ns: string
+            labels: (string*string) list
+            annotations: (string*string) list }
 
     type Metadata with
         static member empty = {
-            name = None
+            name = ""
             generateName = None
-            ns = Some "default"
+            ns = "default"
             labels = List.empty
             annotations = List.empty 
         }
 
         static member setName metadata name =
-            { metadata with name = Some name }
+            { metadata with name = name }
 
         static member setNamespace metadata nsName =
-            { metadata with ns = Some nsName }
+            { metadata with ns = nsName }
 
         static member ToK8sModel metadata =
             {|
                 name = metadata.name
                 ``namespace`` = metadata.ns
-                labels = Helpers.toDict metadata.labels
-                annotations = Helpers.toDict metadata.annotations
+                labels = Helpers.listToDict metadata.labels
+                annotations = Helpers.listToDict metadata.annotations
             |}
+        member this.Validate(context: string) =
+            (this |> Validation.required (fun m -> m.name) $"{context} 'metadata.name' is required.")
+            @ (this |> Validation.notEmpty (fun m -> m.name) $"{context} 'metadata.name' cannot be empty.")
+            @ (this |> Validation.required (fun m -> m.ns) $"{context} 'metadata.namespace' is required.")
+            @ (this |> Validation.notEmpty (fun m -> m.ns) $"{context} 'metadata.namespace' cannot be empty.")
 
     type MatchExpressionOperator = | In | NotIn | Exists | DoesNotExist 
         with override this.ToString() =
@@ -413,11 +415,50 @@ module Common =
         
         [<CustomOperation "apiGroup">]
         member _.ApiGroup(state: TypedLocalObjectReference, apiGroup: string) = { state with apiGroup = Some apiGroup }
-        
-        
+     
+    type ResourceList = {
+        apiVersion: string
+        kind: string
+        items: obj list
+    }
+    type ResourceList with
+        static member empty = {
+            apiVersion = "v1"
+            kind = "List"
+            items = List.empty
+        }
+        static member init items = { (ResourceList.empty) with items = items }
+        member this.ToResource() = {|
+            apiVersion = this.apiVersion
+            kind = this.kind
+            items = this.items
+        |}
+
+    type ResourceList<'a> = {
+        apiVersion: string
+        kind: string
+        items: 'a list
+    }
+    type ResourceList<'a> with
+        static member empty = {
+            apiVersion = "v1"
+            kind = "List"
+            items = List.empty<'a>
+        }
+        static member init<'a> (items: 'a list) = 
+            let name = $"{typedefof<'a>.Name}List"
+            { (ResourceList<'a>.empty) with kind = name ; items = items }
+        member this.ToResource(f) = {|
+            apiVersion = this.apiVersion
+            kind = this.kind
+            items = this.items |> List.map f
+        |}
 
     /// A single application container that you want to run within a pod.
     /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
-    
+
+//====================================
+// Builder init
+//====================================
     let container = new ContainerBuilder()
     let objRef = new ObjectReferenceBuilder()

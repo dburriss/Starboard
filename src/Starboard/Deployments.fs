@@ -21,9 +21,7 @@ type Deployment with
         }
     member this.K8sVersion() = "apps/v1"
     member this.K8sKind() = "Deployment"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() = 
         {|
             replicas = this.replicas
@@ -33,7 +31,7 @@ type Deployment with
             selector = LabelSelector.ToK8sModel this.selector
             // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/
             template = {|
-                metadata = this.pod |> Option.bind (fun p -> p.K8sMetadata())
+                metadata = this.pod |> Option.map (fun p -> p.K8sMetadata())
                 // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/#PodTemplateSpec
                 spec = this.pod |> Option.map (fun p -> p.Spec())
                 //spec = {|
@@ -69,7 +67,7 @@ type DeploymentBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "name">]
     member _.Name(state: Deployment, name: string) = 
-        let newMetadata = { state.metadata with name = Some name }
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
 
     /// Namespace of the Deployment.
@@ -77,7 +75,7 @@ type DeploymentBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "ns">]
     member _.Namespace(state: Deployment, ns: string) = 
-        let newMetadata = { state.metadata with ns = Some ns }
+        let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
         
     /// Labels for the Deployment

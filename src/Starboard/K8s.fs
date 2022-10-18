@@ -5,14 +5,10 @@ module K8s =
     open Starboard
     open Starboard.Resources
 
-    // TODO: Service
-    // TODO: Volume, 
-    // TODO: PersistentVolume: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/
-    // TODO: PersistentVolumeClaim: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/
-    // TODO: Secret: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/secret-v1/
     // TODO: Jobs
     // TODO: ReplicaSet?
     // TODO: Argo?
+    // TODO: Dapper?
 
 
     //-------------------------
@@ -43,9 +39,21 @@ module K8s =
     type K8sBuilder() =
         member _.Yield _ = K8s.empty
 
+        [<CustomOperation "secret">]
+        member _.Secret(state: K8s, secret: Secret) = 
+            state.AddResource (box (secret.ToResource()))
+
+        [<CustomOperation "secretList">]
+        member _.SecretList(state: K8s, secretList: SecretList) = 
+            state.AddResource (box (secretList.ToResource(fun s -> s.ToResource() )))
+
         [<CustomOperation "configMap">]
         member _.ConfigMap(state: K8s, configMap: ConfigMap) = 
             state.AddResource (box (configMap.ToResource()))
+            
+        [<CustomOperation "configMapList">]
+        member _.ConfigMapList(state: K8s, configMapList: ConfigMapList) = 
+            state.AddResource (box (configMapList.ToResource(fun c -> c.ToResource() )))
 
         [<CustomOperation "pod">]
         member _.Pod(state: K8s, pod: Pod) = 
