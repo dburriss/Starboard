@@ -31,7 +31,7 @@ module K8s_Resources =
         }
 
         let k8s1 = k8s {
-            deployment deployment1
+            add_deployment deployment1
         }
 
         let json = KubeCtlWriter.toJson k8s1 |> fun o -> JsonValue.Parse o.content
@@ -58,7 +58,7 @@ module K8s_Resources =
         }
 
         let k8s1 = k8s {
-            deployment deployment1
+            add_deployment deployment1
         }
 
         let deploymentJson = KubeCtlWriter.toJson k8s1 |> fun o -> JsonValue.Parse o.content |> fun json -> json?items.AsArray() |> Array.head
@@ -86,7 +86,7 @@ module K8s_Resources =
         }
 
         let k8s1 = k8s {
-            deployment deployment1
+            add_deployment deployment1
         }
 
         let output = KubeCtlWriter.toYaml k8s1

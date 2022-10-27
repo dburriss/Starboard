@@ -95,17 +95,37 @@ let secret2 = secret {
 
 let secrets = SecretList.init [secret1;secret2]
 
-let k8s1 = k8s {
-    configMap config
-    secretList secrets
-    service service1
-    ingress ingress1
-    deployment deployment1
-    deployment deployment2
-    persistentVolume persistentVol
+// let k8s1 = k8s {
+//     configMap config
+//     secretList secrets
+//     service service1
+//     ingress ingress1
+//     deployment deployment1
+//     deployment deployment2
+//     persistentVolume persistentVol
+// }
+
+let k8s2 = k8s {
+    add_CsiPersistentVolume persistentVol
+    configMap {
+        name "test-config-map"
+        data [
+            ("allowed", "true")
+            ("enemies", "aliens")
+            ("lives", "3")
+        ]
+        add_file ("fileContent", "./some.txt")
+    }
+    add_secretList secrets
+    secret {
+        name "my-secret-1"
+    }
+    service1;ingress1
+    [ deployment1; deployment2 ]
 }
 
-KubeCtlWriter.print k8s1
+
+KubeCtlWriter.print k8s2
 
 let save k8s =
     let fsxName = fsi.CommandLineArgs[0].Replace(".fsx", "")
@@ -114,4 +134,4 @@ let save k8s =
     let fileName = $"{fsxName}.deployment.yaml"
     KubeCtlWriter.toYamlFile k8s fileName |> ignore
 
-save k8s1 
+save k8s2
