@@ -1,5 +1,6 @@
 ﻿namespace Starboard.Resources
 
+open Starboard
 open Starboard.Resources
 
 /// Represents state that is later converted to a k8s Deployment Resource
@@ -12,7 +13,7 @@ type Deployment =
         selector: LabelSelector }
 
 type Deployment with
-    static member Empty =
+    static member empty =
         { 
             pod = None
             replicas = 1
@@ -54,7 +55,24 @@ type Deployment with
 
 
 type DeploymentBuilder() =
-    member _.Yield _ = Deployment.Empty
+    member _.Yield _ = Deployment.empty
+
+    member __.Zero () = Deployment.empty
+    
+    member __.Combine (currentValueFromYield: Deployment, accumulatorFromDelay: Deployment) = 
+        { currentValueFromYield with 
+            metadata  = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
+            pod = Helpers.mergeOption (currentValueFromYield.pod) (accumulatorFromDelay.pod)
+            replicas = Helpers.mergeInt (currentValueFromYield.replicas) (accumulatorFromDelay.replicas)
+            selector = LabelSelector.combine currentValueFromYield.selector accumulatorFromDelay.selector
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: Deployment , f: unit -> Deployment) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
 
     [<CustomOperation "podTemplate">]
     member _.Pod(state: Deployment, pod: Pod) = { state with pod = Some pod }

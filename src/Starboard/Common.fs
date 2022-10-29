@@ -82,6 +82,10 @@ module Common =
         static member empty =
             { matchExpressions = List.empty
               matchLabels = List.empty }
+            
+        static member combine x1 x2 =
+            if x1 = LabelSelector.empty then x2
+            else x1
 
         static member ToK8sModel (labelSelector: LabelSelector) =
             let matchLabels = labelSelector.matchLabels
@@ -188,7 +192,7 @@ module Common =
                 memoryRequest = 256<Mi>
                 //hugePages = List.empty
             }
-        static member merge x1 x2 =
+        static member combine x1 x2 =
             if x1 = Resources.empty then x2
             else x1
 
@@ -327,7 +331,7 @@ module Common =
                 args = List.append (currentValueFromYield.args) (accumulatorFromDelay.args)
                 command = List.append (currentValueFromYield.command) (accumulatorFromDelay.command)
                 workingDir = Helpers.mergeOption (currentValueFromYield.workingDir) (accumulatorFromDelay.workingDir)
-                resources = Resources.merge (currentValueFromYield.resources) (accumulatorFromDelay.resources)
+                resources = Resources.combine (currentValueFromYield.resources) (accumulatorFromDelay.resources)
                 ports = List.append (currentValueFromYield.ports) (accumulatorFromDelay.ports)
                 volumeMounts = List.append (currentValueFromYield.volumeMounts) (accumulatorFromDelay.volumeMounts)
             } 
