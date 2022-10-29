@@ -62,6 +62,31 @@ type StorageClass with
 type StorageClassBuilder() =
     member _.Yield _ = StorageClass.empty
 
+    member __.Zero () = StorageClass.empty
+    
+    member __.Combine (currentValueFromYield: StorageClass, accumulatorFromDelay: StorageClass) = 
+        let mergeReclaimPolicy v1 v2 =
+            match (v1,v2) with
+            | v1, Delete -> v1
+            | Delete, v2 -> v2
+            | _ -> v1
+        { currentValueFromYield with 
+            metadata = Metadata.combine currentValueFromYield.metadata  accumulatorFromDelay.metadata
+            provisioner = Helpers.mergeOption (currentValueFromYield.provisioner) (accumulatorFromDelay.provisioner)
+            volumeBindingMode = Helpers.mergeString (currentValueFromYield.volumeBindingMode) (accumulatorFromDelay.volumeBindingMode)
+            reclaimPolicy = mergeReclaimPolicy currentValueFromYield.reclaimPolicy accumulatorFromDelay.reclaimPolicy
+            allowVolumeExpansion = Helpers.mergeBool (currentValueFromYield.allowVolumeExpansion) (accumulatorFromDelay.allowVolumeExpansion)
+            parameters = List.append (currentValueFromYield.parameters) (accumulatorFromDelay.parameters)
+            mountOptions = List.append (currentValueFromYield.mountOptions) (accumulatorFromDelay.mountOptions)            
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: StorageClass , f: unit -> StorageClass) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+
     /// Name of the StorageClass. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
@@ -90,6 +115,10 @@ type StorageClassBuilder() =
     member _.VolumeBindingMode(state: StorageClass, volumeBindingMode: string) = 
         { state with volumeBindingMode = volumeBindingMode }
     
+    // ReclaimPolicy
+    member this.Yield(reclaimPolicy: ReclaimPolicy) = this.ReclaimPolicy(StorageClass.empty, reclaimPolicy)
+    member this.Yield(reclaimPolicy: ReclaimPolicy seq) = reclaimPolicy |> Seq.fold (fun state x -> this.ReclaimPolicy(state, x)) StorageClass.empty
+    member this.YieldFrom(reclaimPolicy: ReclaimPolicy seq) = this.Yield(reclaimPolicy)
     /// Reclaim policy for the PersistentVolume created with this StorageClass. 
     /// Options are "Delete" (default) or "Reclaim".
     [<CustomOperation "reclaimPolicy">]
@@ -100,7 +129,9 @@ type StorageClassBuilder() =
     [<CustomOperation "allowVolumeExpansion">]
     member _.AllowVolumeExpansion(state: StorageClass) = 
         { state with allowVolumeExpansion = true }
-        
+    
+    // Parameters
+    member this.Yield(parameters: (string*string) seq) = this.Parameters(StorageClass.empty, parameters |> List.ofSeq)
     [<CustomOperation "parameters">]
     member _.Parameters(state: StorageClass, parameters: (string*string) list) = 
         { state with parameters = parameters }

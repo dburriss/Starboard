@@ -21,6 +21,19 @@ module Common =
             labels = List.empty
             annotations = List.empty 
         }
+        static member combine metadata1 metadata2 =
+            let mergeNamespace ns1 ns2 =
+                match(ns1,ns2) with
+                | ns1, "default" -> ns1
+                | "default", ns2 -> ns2
+                | _ -> ns1
+            {
+                name = Helpers.mergeString metadata1.name metadata2.name
+                generateName = Helpers.mergeOption metadata1.generateName metadata2.generateName
+                ns = mergeNamespace metadata1.ns metadata2.ns
+                labels = List.append (metadata1.labels) (metadata2.labels)
+                annotations = List.append (metadata1.annotations) (metadata2.annotations)
+            }
 
         static member setName metadata name =
             { metadata with name = name }
@@ -176,8 +189,8 @@ module Common =
                 //hugePages = List.empty
             }
         static member merge x1 x2 =
-            if x2 = Resources.empty then x1
-            else x2
+            if x1 = Resources.empty then x2
+            else x1
 
         member this.Spec() =
             //TODO: return dictionary of string*obj to handle variable hugepage key 
@@ -251,7 +264,7 @@ module Common =
         member _.MountPath(state: VolumeMount, mountPath: string) = { state with mountPath = Some mountPath }
         
         [<CustomOperation "readOnly">]
-        member _.ReadOnly(state: VolumeMount, isReadOnly: bool) = { state with readOnly = isReadOnly }
+        member _.ReadOnly(state: VolumeMount) = { state with readOnly = true }
         
 
     let volumeMount = new VolumeMountBuilder()
