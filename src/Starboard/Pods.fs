@@ -42,6 +42,22 @@ type PodBuilder() =
         
     member _.Yield (_) = Pod.empty
 
+    member __.Zero () = Pod.empty
+    
+    member __.Combine (currentValueFromYield: Pod, accumulatorFromDelay: Pod) = 
+        { currentValueFromYield with 
+            metadata = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
+            containers = List.append (currentValueFromYield.containers) (accumulatorFromDelay.containers)
+            volumes = List.append (currentValueFromYield.volumes) (accumulatorFromDelay.volumes)
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: Pod , f: unit -> Pod) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+
     /// Name of the Pod. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
@@ -69,13 +85,21 @@ type PodBuilder() =
     member _.Annotations(state: Pod, annotations: (string*string) list) = 
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
-        
+
+    // Container
+    member this.Yield(container: Container) = this.Container(Pod.empty, container)
+    member this.Yield(container: Container seq) = container |> Seq.fold (fun state x -> this.Container(state, x)) Pod.empty
+    member this.YieldFrom(container: Container seq) = this.Yield(container)    
     [<CustomOperation "container">]
     member _.Container(state: Pod, container: Container) = { state with containers = List.append state.containers [container] }
         
     [<CustomOperation "containers">]
     member _.Containers(state: Pod, containers: Container list) = { state with containers = containers }
 
+    // Volume
+    member this.Yield(volume: Volume) = this.Volume(Pod.empty, volume)
+    member this.Yield(volume: Volume seq) = volume |> Seq.fold (fun state x -> this.Volume(state, x)) Pod.empty
+    member this.YieldFrom(volume: Volume seq) = this.Yield(volume)
     [<CustomOperation "volume">]
     member _.Volume(state: Pod, volume: Volume) = { state with volumes = List.append state.volumes [volume] }
 
