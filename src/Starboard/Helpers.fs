@@ -33,6 +33,31 @@ module Helpers =
         if Seq.isEmpty ss then None
         else Some ss
 
+    let mergeInt v1 v2 =
+        match (v1,v2) with
+        | v1, 0 -> v1
+        | 0, v2 -> v2
+        | _ -> v1
+
+    let mergeString v1 v2 =
+        match (v1,v2) with
+        | v1, "" -> v1
+        | "", v2 -> v2
+        | _ -> v1
+
+    let mergeBool v1 v2 = 
+        match (v1,v2) with
+        | v1, false -> v1
+        | false, v2 -> v2
+        | _ -> v1
+    
+    let mergeOption v1 v2 =
+        match (v1,v2) with
+        | Some v1', None -> v1
+        | None, Some v2' -> v2
+        | None, None -> None
+        | _ -> v1
+
 module String =
     open System
 

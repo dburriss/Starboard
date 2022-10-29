@@ -175,6 +175,9 @@ module Common =
                 memoryRequest = 256<Mi>
                 //hugePages = List.empty
             }
+        static member merge x1 x2 =
+            if x2 = Resources.empty then x1
+            else x2
 
         member this.Spec() =
             //TODO: return dictionary of string*obj to handle variable hugepage key 
@@ -248,7 +251,7 @@ module Common =
         member _.MountPath(state: VolumeMount, mountPath: string) = { state with mountPath = Some mountPath }
         
         [<CustomOperation "readOnly">]
-        member _.ReadOnly(state: VolumeMount) = { state with readOnly = true }
+        member _.ReadOnly(state: VolumeMount, isReadOnly: bool) = { state with readOnly = isReadOnly }
         
 
     let volumeMount = new VolumeMountBuilder()
@@ -299,7 +302,29 @@ module Common =
 
 
     type ContainerBuilder() =
+
+        member _.Zero _ = Container.empty
         member _.Yield _ = Container.empty
+
+        member __.Combine (currentValueFromYield: Container, accumulatorFromDelay: Container) = 
+            // TODO: test combine 
+            { currentValueFromYield with 
+                name = Helpers.mergeOption (currentValueFromYield.name) (accumulatorFromDelay.name) 
+                image = Helpers.mergeString (currentValueFromYield.image) (accumulatorFromDelay.image)
+                args = List.append (currentValueFromYield.args) (accumulatorFromDelay.args)
+                command = List.append (currentValueFromYield.command) (accumulatorFromDelay.command)
+                workingDir = Helpers.mergeOption (currentValueFromYield.workingDir) (accumulatorFromDelay.workingDir)
+                resources = Resources.merge (currentValueFromYield.resources) (accumulatorFromDelay.resources)
+                ports = List.append (currentValueFromYield.ports) (accumulatorFromDelay.ports)
+                volumeMounts = List.append (currentValueFromYield.volumeMounts) (accumulatorFromDelay.volumeMounts)
+            } 
+                
+        
+        member __.Delay f = f()
+        
+        member this.For(state: Container , f: unit -> Container) =
+            let delayed = f()
+            this.Combine(state, delayed)        
 
         [<CustomOperation "name">]
         member _.Name(state: Container, name: string) = { state with name = Some name }
@@ -316,8 +341,12 @@ module Common =
         [<CustomOperation "workingDir">]
         member _.WorkingDir(state: Container, dir: string) = { state with workingDir = Some dir }
 
-        [<CustomOperation "port">]
-        member _.Port(state: Container, port: ContainerPort) = { state with ports = List.append state.ports [port] }
+        // ContainerPort
+        member this.Yield(containerPort: ContainerPort) = this.ContainerPort(Container.empty, containerPort)
+        member this.Yield(containerPort: ContainerPort seq) = containerPort |> Seq.fold (fun state x -> this.ContainerPort(state, x)) Container.empty
+        member this.YieldFrom(containerPort: ContainerPort seq) = this.Yield(containerPort)
+        [<CustomOperation "add_port">]
+        member _.ContainerPort(state: Container, port: ContainerPort) = { state with ports = List.append state.ports [port] }
         
         [<CustomOperation "cpuLimit">]
         member _.CpuLimit(state: Container, cpuLimit: int<m>) = 
@@ -339,10 +368,13 @@ module Common =
             let newResources = { state.resources with memoryRequest = memoryRequest }
             { state with resources = newResources }
 
-        [<CustomOperation "volumeMount">]
+        // VolumeMount
+        member this.Yield(volumeMount: VolumeMount) = this.VolumeMount(Container.empty, volumeMount)
+        member this.Yield(volumeMount: VolumeMount seq) = volumeMount |> Seq.fold (fun state x -> this.VolumeMount(state, x)) Container.empty
+        member this.YieldFrom(volumeMount: VolumeMount seq) = this.Yield(volumeMount)
+        [<CustomOperation "add_volumeMount">]
         member _.VolumeMount(state: Container, volumeMount: VolumeMount) = { state with volumeMounts = List.append state.volumeMounts [volumeMount] }
         
-
 
     type ObjectReference = {
         apiVersion: string option

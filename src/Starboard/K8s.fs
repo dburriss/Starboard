@@ -38,6 +38,7 @@ module K8s =
 
     type K8sBuilder() =
 
+        member __.Zero(_) = K8s.empty
         member __.Yield(_) = K8s.empty
 
         member __.Combine (currentValueFromYield: K8s, accumulatorFromDelay: K8s) = 

@@ -33,15 +33,21 @@ module ContainerTests =
         
     [<Fact>]
     let ``ContainerBuilder sets port`` () =
-        let port1 = {
-            containerPort = Some 5000
-            hostIP = Some "127.0.0.1"
-            hostPort = Some 80
-            name = Some "test"
-            protocol = TCP
+        let port1 = containerPort {
+            containerPort 5000
+            hostIP "127.0.0.1"
+            hostPort 80
+            name "test"
+            protocol TCP
         }
         let container1 = container {
-            port port1
+            containerPort {
+                containerPort 5000
+                hostIP "127.0.0.1"
+                hostPort 80
+                name "test"
+                protocol TCP
+            }
         }
 
         Assert.Equal(Some 5000, container1.ports[0].containerPort)
@@ -67,13 +73,13 @@ module ContainerTests =
         
     [<Fact>]
     let ``ContainerBuilder sets volumeMount`` () =
-        let v = volumeMount {
-            name "test-volume"
-            mountPath "/bin"
-            readOnly
-        }
         let container1 = container {
-            volumeMount v
+            name "test-container"
+            volumeMount {
+                name "test-volume"
+                mountPath "/bin"
+                readOnly
+            }
         }
         let volumeMount = container1.volumeMounts[0]
         Assert.Equal(Some "test-volume", volumeMount.name)
