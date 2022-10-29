@@ -43,16 +43,16 @@ let container1 = container {
     name "nginx"
     image "nginx:latest"
     workingDir "/test-dir"
-    port port1
+    add_port port1
     memoryLimit 2000<Mi>
-    volumeMount vMount
+    add_volumeMount vMount
 }
 
 let appLabels = [("app","ngnix")]
 let pod1 = pod {
-    containers [container1]
     labels appLabels
-    volume cfVolume
+    cfVolume
+    [container1]
 }
 
 let deployment1 = deployment {
@@ -73,7 +73,7 @@ let deployment2 = deployment {
 
 let service1 = service {
     name "my-service"
-    port (servicePort {
+    add_port (servicePort {
         port 80
         targetPortInt 9376
     })

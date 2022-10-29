@@ -44,7 +44,7 @@ type ServicePort with
 
 type ServicePortBuilder() =
     member _.Yield _ = ServicePort.empty
-
+    
     [<CustomOperation "port">]
     member _.Port(state: ServicePort, port: int) = { state with port = Some port }
         
@@ -115,7 +115,29 @@ type Service with
 type ServiceBuilder() =
         
     member _.Yield (_) = Service.empty
-        
+    
+    member __.Zero () = Service.empty
+    
+    member __.Combine (currentValueFromYield: Service, accumulatorFromDelay: Service) = 
+        let mergeServiceType x1 x2 =
+            match (x1,x2) with
+            | v, ClusterIP -> v
+            | ClusterIP, v -> v
+            | _ -> x1
+        { currentValueFromYield with 
+            metadata = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
+            selector = LabelSelector.combine currentValueFromYield.selector accumulatorFromDelay.selector
+            ports = List.append (currentValueFromYield.ports) (accumulatorFromDelay.ports)
+            ``type`` = mergeServiceType currentValueFromYield.``type`` accumulatorFromDelay.``type``
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: Service , f: unit -> Service) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+
     /// Name of the Service. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
@@ -144,9 +166,13 @@ type ServiceBuilder() =
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
         
+    // LabelSelector
+    member this.Yield(labelSelector: LabelSelector) = this.LabelSelector(Service.empty, labelSelector)
+    member this.Yield(labelSelector: LabelSelector seq) = labelSelector |> Seq.fold (fun state x -> this.LabelSelector(state, x)) Service.empty
+    member this.YieldFrom(labelSelector: LabelSelector seq) = this.Yield(labelSelector)
     /// Selector for the Service. Used for complex selections. Use `matchLabel(s)` for simple label matching.
     [<CustomOperation "selector">]
-    member _.Selector(state: Service, selectors: LabelSelector) = { state with selector = selectors }
+    member _.LabelSelector(state: Service, selectors: LabelSelector) = { state with selector = selectors }
 
     /// Add a single label selector to the Service.
     [<CustomOperation "matchLabel">]
@@ -158,8 +184,12 @@ type ServiceBuilder() =
     member _.MatchLabels(state: Service, labels) =
         { state with selector = { state.selector with matchLabels = List.append state.selector.matchLabels labels } }
     
-    [<CustomOperation "port">]
-    member _.Port(state: Service, port: ServicePort) = { state with ports = List.append state.ports [port] }
+    // ServicePort
+    member this.Yield(servicePort: ServicePort) = this.ServicePort(Service.empty, servicePort)
+    member this.Yield(servicePort: ServicePort seq) = servicePort |> Seq.fold (fun state x -> this.ServicePort(state, x)) Service.empty
+    member this.YieldFrom(servicePort: ServicePort seq) = this.Yield(servicePort)
+    [<CustomOperation "add_port">]
+    member _.ServicePort(state: Service, port: ServicePort) = { state with ports = List.append state.ports [port] }
 
     /// Type of the Service.
     [<CustomOperation "typeOf">]
