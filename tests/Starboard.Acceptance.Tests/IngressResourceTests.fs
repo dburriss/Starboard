@@ -78,7 +78,7 @@ module K8s_Ingress =
     let ``rules matches input`` () =
         let theIngress = ingress {
             defaultBackend aBackend
-            rules [ aRule ]
+            set_rules [ aRule ]
         }
         let spec = theIngress.ToResource() |> fun r -> r.spec
         let rule = spec.rules.Value[0]
@@ -94,7 +94,22 @@ module K8s_Ingress =
     let ``TLS matches input`` () =
         let theIngress = ingress {
             defaultBackend aBackend
-            tls [ aTLS ]
+            set_tls [ aTLS ]
+        }
+        let spec = theIngress.ToResource() |> fun r -> r.spec
+        let tls = spec.tls.Value[0]
+
+        test <@ tls.hosts.Value[0] = aHost @>
+        test <@ tls.secretName.Value = aSecretName @>
+        
+    [<Fact>]
+    let ``TLS input inline sets values`` () =
+        let theIngress = ingress {
+            defaultBackend aBackend
+            ingressTLS {
+                hosts [ aHost ]
+                secretName aSecretName
+            }
         }
         let spec = theIngress.ToResource() |> fun r -> r.spec
         let tls = spec.tls.Value[0]
@@ -106,7 +121,7 @@ module K8s_Ingress =
     let ``defaultBackend required if no rules`` () =
         let theIngress = ingress {
             name "my-ingress"
-            rules []
+            set_rules []
         }
         let result = theIngress.Valdidate()
 

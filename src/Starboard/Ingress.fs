@@ -86,6 +86,22 @@ type IngressClass with
 type IngressClassBuilder() =
     member _.Yield _ = IngressClass.empty
 
+    member __.Zero () = IngressClass.empty
+    
+    member __.Combine (currentValueFromYield: IngressClass, accumulatorFromDelay: IngressClass) = 
+        { currentValueFromYield with 
+            metadata = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
+            controller = Helpers.mergeOption (currentValueFromYield.controller) (accumulatorFromDelay.controller)
+            parameters = Helpers.mergeOption (currentValueFromYield.parameters) (accumulatorFromDelay.parameters)
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: IngressClass , f: unit -> IngressClass) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+
     /// Name of the IngressClass. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
@@ -117,8 +133,10 @@ type IngressClassBuilder() =
     [<CustomOperation "controller">]
     member _.Controller(state: IngressClass, controller: string) = { state with controller = Some controller }
 
+    // IngressClassParameters
+    member this.Yield(ingressClassParameters: IngressClassParameters) = this.IngressClassParameters(IngressClass.empty, ingressClassParameters)
     [<CustomOperation "parameters">]
-    member _.Parameters(state: IngressClass, parameters: IngressClassParameters) = { state with parameters = Some parameters }
+    member _.IngressClassParameters(state: IngressClass, parameters: IngressClassParameters) = { state with parameters = Some parameters }
 
 //====================================
 // Ingress
@@ -155,6 +173,24 @@ type IngressBackend with
 type IngressBackendBuilder() =
     member _.Yield _ = IngressBackend.empty
 
+    member __.Zero () = IngressBackend.empty
+    
+    member __.Combine (currentValueFromYield: IngressBackend, accumulatorFromDelay: IngressBackend) = 
+        { currentValueFromYield with 
+            resource = Helpers.mergeOption (currentValueFromYield.resource) (accumulatorFromDelay.resource)
+            serviceName = Helpers.mergeOption (currentValueFromYield.serviceName) (accumulatorFromDelay.serviceName)
+            servicePort = Helpers.mergeOption (currentValueFromYield.servicePort) (accumulatorFromDelay.servicePort)
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: IngressBackend , f: unit -> IngressBackend) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+
+    // TypedLocalObjectReference
+    member this.Yield(typedLocalObjectReference: TypedLocalObjectReference) = this.Resource(IngressBackend.empty, typedLocalObjectReference)
     [<CustomOperation "resource">]
     member _.Resource(state: IngressBackend, resource: TypedLocalObjectReference) = { state with resource = Some resource }
 
@@ -226,9 +262,27 @@ type IngressRule with
 type IngressRuleBuilder() =
     member _.Yield _ = IngressRule.empty
 
+    member __.Zero () = IngressRule.empty
+    
+    member __.Combine (currentValueFromYield: IngressRule, accumulatorFromDelay: IngressRule) = 
+        { currentValueFromYield with 
+            host = Helpers.mergeOption (currentValueFromYield.host) (accumulatorFromDelay.host)
+            httpPaths = List.append (currentValueFromYield.httpPaths) (accumulatorFromDelay.httpPaths)
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: IngressRule , f: unit -> IngressRule) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+
     [<CustomOperation "host">]
     member _.Host(state: IngressRule, host: string) = { state with host = Some host }
     
+    // name
+    member this.Yield(httpPaths: HTTPIngressPath seq) = this.HttpPaths(IngressRule.empty, httpPaths |> List.ofSeq)
+    member this.YieldFrom(httpPaths: HTTPIngressPath seq) = this.Yield(httpPaths)
     [<CustomOperation "httpPaths">]
     member _.HttpPaths(state: IngressRule, httpPaths: HTTPIngressPath list) = { state with httpPaths =  httpPaths }
     
@@ -300,6 +354,24 @@ type Ingress with
 type IngressBuilder() =
     member _.Yield _ = Ingress.empty
 
+    member __.Zero () = Ingress.empty
+    
+    member __.Combine (currentValueFromYield: Ingress, accumulatorFromDelay: Ingress) = 
+        { currentValueFromYield with 
+            metadata = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
+            defaultBackend = Helpers.mergeOption (currentValueFromYield.defaultBackend) (accumulatorFromDelay.defaultBackend)
+            ingressClassName = Helpers.mergeOption (currentValueFromYield.ingressClassName) (accumulatorFromDelay.ingressClassName)
+            rules = List.append (currentValueFromYield.rules) (accumulatorFromDelay.rules)
+            tls = List.append (currentValueFromYield.tls) (accumulatorFromDelay.tls)
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: Ingress , f: unit -> Ingress) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+
     /// Name of the Ingress. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
@@ -328,17 +400,36 @@ type IngressBuilder() =
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
 
+    // IngressBackend
+    member this.Yield(ingressBackend: IngressBackend) = this.DefaultBackend(Ingress.empty, ingressBackend)
     [<CustomOperation "defaultBackend">]
     member _.DefaultBackend(state: Ingress, defaultBackend: IngressBackend) = { state with defaultBackend = Some defaultBackend }
 
     [<CustomOperation "ingressClassName">]
     member _.IngressClassName(state: Ingress, ingressClassName: string) = { state with ingressClassName = Some ingressClassName }
 
-    [<CustomOperation "rules">]
-    member _.Rules(state: Ingress, rules: IngressRule list) = { state with rules = rules }
+    // TODO: operation should replace and yields append
+    // IngressRule
+    member this.Yield(ingressRule: IngressRule) = this.AddRules(Ingress.empty, [ingressRule])
+    member this.Yield(ingressRule: IngressRule seq) = ingressRule |> Seq.fold (fun state x -> this.AddRules(state, [x])) Ingress.empty
+    member this.YieldFrom(ingressRule: IngressRule seq) = this.Yield(ingressRule)
+    [<CustomOperation "add_rules">]
+    member _.AddRules(state: Ingress, rules: IngressRule list) = { state with rules = List.append state.rules rules }
     
-    [<CustomOperation "tls">]
-    member _.Tls(state: Ingress, tls: IngressTLS list) = { state with tls = tls }
+    /// Sets the ingress rules, overwriting any existing rules
+    [<CustomOperation "set_rules">]
+    member _.SetRules(state: Ingress, rules: IngressRule list) = { state with rules = rules }
+
+    // IngressTls
+    member this.Yield(ingressTls: IngressTLS) = this.AddTls(Ingress.empty, [ingressTls])
+    member this.Yield(ingressTls: IngressTLS seq) = ingressTls |> Seq.fold (fun state x -> this.AddTls(state, [x])) Ingress.empty
+    member this.YieldFrom(ingressTls: IngressTLS seq) = this.Yield(ingressTls)
+    [<CustomOperation "add_tls">]
+    member _.AddTls(state: Ingress, tls: IngressTLS list) = { state with tls = List.append state.tls tls }
+
+    /// Sets the TLS, overwriting any existing TLS
+    [<CustomOperation "set_tls">]
+    member _.SetTls(state: Ingress, tls: IngressTLS list) = { state with tls = tls }
     
 //====================================
 // Builder init
