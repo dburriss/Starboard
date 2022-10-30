@@ -58,6 +58,17 @@ module Helpers =
         | None, None -> None
         | _ -> v1
 
+    let mergeMap (m1: Map<string,'a>) (m2: Map<string,'a>) = 
+        let getValue k =
+            if Map.containsKey k m1 then m1[k]
+            else m2[k]
+        let allKeys: string seq = Seq.append (Map.keys m1) (Map.keys m2)
+        allKeys
+        |> Seq.distinct
+        |> Seq.map (fun key -> key,getValue key)
+        |> Map.ofSeq
+
+
 module String =
     open System
 

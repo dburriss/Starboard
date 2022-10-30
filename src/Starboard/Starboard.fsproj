@@ -15,9 +15,9 @@
     <Compile Include="Secret.fs" />
     <Compile Include="PersistentVolume.fs" />
     <Compile Include="Pods.fs" />
-    <Compile Include="Ingress.fs" />
-    <Compile Include="Service.fs" />
     <Compile Include="Deployments.fs" />
+    <Compile Include="Service.fs" />
+    <Compile Include="Ingress.fs" />
     <Compile Include="K8s.fs" />
   </ItemGroup>
 

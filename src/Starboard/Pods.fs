@@ -107,8 +107,11 @@ type PodBuilder() =
     member this.Yield(volume: Volume) = this.Volume(Pod.empty, volume)
     member this.Yield(volume: Volume seq) = volume |> Seq.fold (fun state x -> this.Volume(state, x)) Pod.empty
     member this.YieldFrom(volume: Volume seq) = this.Yield(volume)
-    [<CustomOperation "volume">]
+    [<CustomOperation "add_volume">]
     member _.Volume(state: Pod, volume: Volume) = { state with volumes = List.append state.volumes [volume] }
+    
+    [<CustomOperation "volumes">]
+    member _.Volumes(state: Pod, volumes: Volume list) = { state with volumes = volumes }
 
 
 

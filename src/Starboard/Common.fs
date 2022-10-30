@@ -363,6 +363,8 @@ module Common =
         member this.For(state: Container , f: unit -> Container) =
             let delayed = f()
             this.Combine(state, delayed)        
+        
+        member this.Yield(name: string) = this.Name(Container.empty, name)
 
         [<CustomOperation "name">]
         member _.Name(state: Container, name: string) = { state with name = Some name }

@@ -7,7 +7,7 @@ open Starboard.Resources
 open Starboard.Resources.K8s
 
 let config = configMap {
-    name "test-config-map"
+    _name "test-config-map"
     data [
         ("allowed", "true")
         ("enemies", "aliens")
@@ -32,7 +32,7 @@ let cfVolume = configMapVolume {
 }
 
 let persistentVol = csi {
-    name "pvol"
+    _name "pvol"
     capacity 8000<Mi>
     accessModes [ReadWriteMany]
     driver "disk.csi.azure.com"
@@ -56,23 +56,23 @@ let pod1 = pod {
 }
 
 let deployment1 = deployment {
-    name "test-deployment"
+    "test-deployment"
+    _labels appLabels
     replicas 3
     podTemplate pod1
-    labels appLabels
     matchLabels appLabels
 }
 
 let deployment2 = deployment {
-    name "test-another-deployment"
+    "test-another-deployment"
+    _labels appLabels
     replicas 3
     podTemplate pod1
-    labels appLabels
     matchLabels appLabels
 }
 
 let service1 = service {
-    name "my-service"
+    "my-service"
     add_port (servicePort {
         port 80
         targetPortInt 9376
@@ -85,11 +85,11 @@ let ingress1 = ingress {
 }
 
 let secret1 = secret {
-    name "my-secret-1"
+    "my-secret-1"
 }
 
 let secret2 = secret {
-    name "my-secret-2"
+    "my-secret-2"
     add_stringData ("key1", "some text")
 }
 
@@ -108,7 +108,7 @@ let secrets = SecretList.init [secret1;secret2]
 let k8s2 = k8s {
     add_CsiPersistentVolume persistentVol
     configMap {
-        name "test-config-map"
+        "test-config-map"
         data [
             ("allowed", "true")
             ("enemies", "aliens")
@@ -118,7 +118,7 @@ let k8s2 = k8s {
     }
     add_secretList secrets
     secret {
-        name "my-secret-1"
+        "my-secret-1"
     }
     service1;ingress1
     [ deployment1; deployment2 ]

@@ -52,6 +52,22 @@ type ConfigMapBuilder() =
     
     member _.Yield (_) = ConfigMap.empty
     
+    member __.Zero () = ConfigMap.empty
+    
+    member __.Combine (currentValueFromYield: ConfigMap, accumulatorFromDelay: ConfigMap) = 
+        { currentValueFromYield with 
+            metadata = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
+            data = Helpers.mergeMap currentValueFromYield.data accumulatorFromDelay.data
+            binaryData = Helpers.mergeMap currentValueFromYield.binaryData accumulatorFromDelay.binaryData
+            immutable = Helpers.mergeBool (currentValueFromYield.immutable) (accumulatorFromDelay.immutable)
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: ConfigMap , f: unit -> ConfigMap) =
+        let delayed = f()
+        this.Combine(state, delayed)
+
     // Metadata
     member this.Yield(name: string) = this.Name(ConfigMap.empty, name)
     
