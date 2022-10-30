@@ -1,59 +1,80 @@
 ﻿namespace Starboard.Resources
 
-module Helpers =
-    open System
-
-    let nullableOfOption = function
-        | None -> new Nullable<_>()
-        | Some x -> new Nullable<_>(x)
-
-    let mapValues f = function
-        | [] -> None
-        | xs -> Some (f xs)
-
-    let mapEach f = function
-        | [] -> None
-        | xs -> Some (List.map f xs)
-
-    let toDict lst = mapValues dict lst
-
 [<AutoOpen>]
 module Common =
-    
-    type K8sResource =
-        abstract member JsonModel : unit -> obj
 
-    type Metadata = {
-        name: string option
-        generateName : string option
-        ns: string option
-        labels: (string*string) list
-        annotations: (string*string) list
-    }
+    open Starboard
+
+    type Metadata = 
+        {
+            name: string
+            generateName : string option
+            ns: string
+            labels: (string*string) list
+            annotations: (string*string) list }
 
     type Metadata with
         static member empty = {
-            name = None
+            name = ""
             generateName = None
-            ns = Some "default"
+            ns = "default"
             labels = List.empty
             annotations = List.empty 
         }
+        static member combine metadata1 metadata2 =
+            let mergeNamespace ns1 ns2 =
+                match(ns1,ns2) with
+                | ns1, "default" -> ns1
+                | "default", ns2 -> ns2
+                | _ -> ns1
+            {
+                name = Helpers.mergeString metadata1.name metadata2.name
+                generateName = Helpers.mergeOption metadata1.generateName metadata2.generateName
+                ns = mergeNamespace metadata1.ns metadata2.ns
+                labels = List.append (metadata1.labels) (metadata2.labels)
+                annotations = List.append (metadata1.annotations) (metadata2.annotations)
+            }
 
         static member setName metadata name =
-            { metadata with name = Some name }
+            { metadata with name = name }
 
         static member setNamespace metadata nsName =
-            { metadata with ns = Some nsName }
+            { metadata with ns = nsName }
 
         static member ToK8sModel metadata =
             {|
                 name = metadata.name
                 ``namespace`` = metadata.ns
-                labels = Helpers.toDict metadata.labels
-                annotations = Helpers.toDict metadata.annotations
+                labels = Helpers.listToDict metadata.labels
+                annotations = Helpers.listToDict metadata.annotations
             |}
+        member this.Validate(context: string) =
+            (this |> Validation.required (fun m -> m.name) $"{context} 'metadata.name' is required.")
+            @ (this |> Validation.notEmpty (fun m -> m.name) $"{context} 'metadata.name' cannot be empty.")
+            @ (this |> Validation.required (fun m -> m.ns) $"{context} 'metadata.namespace' is required.")
+            @ (this |> Validation.notEmpty (fun m -> m.ns) $"{context} 'metadata.namespace' cannot be empty.")
 
+    
+    type MetadataBuilder() =
+        member _.Yield _ = Metadata.empty
+    
+        [<CustomOperation "name">]
+        member _.Name(state: Metadata, name: string) = { state with name = name }
+        
+        [<CustomOperation "generateName">]
+        member _.GenerateName(state: Metadata, generateName: string) = { state with generateName = Some generateName }
+        
+        [<CustomOperation "ns">]
+        member _.Namespace(state: Metadata, ns: string) = { state with ns = ns }      
+        
+        [<CustomOperation "labels">]
+        member _.Labels(state: Metadata, labels: (string*string) list) = { state with labels = labels }      
+        
+        [<CustomOperation "annotations">]
+        member _.Annotations(state: Metadata, annotations: (string*string) list) = { state with annotations = annotations }      
+
+    let metadata = MetadataBuilder()
+        
     type MatchExpressionOperator = | In | NotIn | Exists | DoesNotExist 
         with override this.ToString() =
                 match this with
@@ -82,6 +103,10 @@ module Common =
         static member empty =
             { matchExpressions = List.empty
               matchLabels = List.empty }
+            
+        static member combine x1 x2 =
+            if x1 = LabelSelector.empty then x2
+            else x1
 
         static member ToK8sModel (labelSelector: LabelSelector) =
             let matchLabels = labelSelector.matchLabels
@@ -188,6 +213,9 @@ module Common =
                 memoryRequest = 256<Mi>
                 //hugePages = List.empty
             }
+        static member combine x1 x2 =
+            if x1 = Resources.empty then x2
+            else x1
 
         member this.Spec() =
             //TODO: return dictionary of string*obj to handle variable hugepage key 
@@ -312,7 +340,31 @@ module Common =
 
 
     type ContainerBuilder() =
+
+        member _.Zero _ = Container.empty
         member _.Yield _ = Container.empty
+
+        member __.Combine (currentValueFromYield: Container, accumulatorFromDelay: Container) = 
+            // TODO: test combine 
+            { currentValueFromYield with 
+                name = Helpers.mergeOption (currentValueFromYield.name) (accumulatorFromDelay.name) 
+                image = Helpers.mergeString (currentValueFromYield.image) (accumulatorFromDelay.image)
+                args = List.append (currentValueFromYield.args) (accumulatorFromDelay.args)
+                command = List.append (currentValueFromYield.command) (accumulatorFromDelay.command)
+                workingDir = Helpers.mergeOption (currentValueFromYield.workingDir) (accumulatorFromDelay.workingDir)
+                resources = Resources.combine (currentValueFromYield.resources) (accumulatorFromDelay.resources)
+                ports = List.append (currentValueFromYield.ports) (accumulatorFromDelay.ports)
+                volumeMounts = List.append (currentValueFromYield.volumeMounts) (accumulatorFromDelay.volumeMounts)
+            } 
+                
+        
+        member __.Delay f = f()
+        
+        member this.For(state: Container , f: unit -> Container) =
+            let delayed = f()
+            this.Combine(state, delayed)        
+        
+        member this.Yield(name: string) = this.Name(Container.empty, name)
 
         [<CustomOperation "name">]
         member _.Name(state: Container, name: string) = { state with name = Some name }
@@ -329,8 +381,12 @@ module Common =
         [<CustomOperation "workingDir">]
         member _.WorkingDir(state: Container, dir: string) = { state with workingDir = Some dir }
 
-        [<CustomOperation "port">]
-        member _.Port(state: Container, port: ContainerPort) = { state with ports = List.append state.ports [port] }
+        // ContainerPort
+        member this.Yield(containerPort: ContainerPort) = this.ContainerPort(Container.empty, containerPort)
+        member this.Yield(containerPort: ContainerPort seq) = containerPort |> Seq.fold (fun state x -> this.ContainerPort(state, x)) Container.empty
+        member this.YieldFrom(containerPort: ContainerPort seq) = this.Yield(containerPort)
+        [<CustomOperation "add_port">]
+        member _.ContainerPort(state: Container, port: ContainerPort) = { state with ports = List.append state.ports [port] }
         
         [<CustomOperation "cpuLimit">]
         member _.CpuLimit(state: Container, cpuLimit: int<m>) = 
@@ -352,10 +408,13 @@ module Common =
             let newResources = { state.resources with memoryRequest = memoryRequest }
             { state with resources = newResources }
 
-        [<CustomOperation "volumeMount">]
+        // VolumeMount
+        member this.Yield(volumeMount: VolumeMount) = this.VolumeMount(Container.empty, volumeMount)
+        member this.Yield(volumeMount: VolumeMount seq) = volumeMount |> Seq.fold (fun state x -> this.VolumeMount(state, x)) Container.empty
+        member this.YieldFrom(volumeMount: VolumeMount seq) = this.Yield(volumeMount)
+        [<CustomOperation "add_volumeMount">]
         member _.VolumeMount(state: Container, volumeMount: VolumeMount) = { state with volumeMounts = List.append state.volumeMounts [volumeMount] }
         
-
 
     type ObjectReference = {
         apiVersion: string option
@@ -406,8 +465,72 @@ module Common =
         member _.Uid(state: ObjectReference, uid : string) = 
             { state with uid  = Some uid  }
 
+    type TypedLocalObjectReference = {
+        kind:string option
+        name: string option
+        apiGroup: string option
+    }
+    type TypedLocalObjectReference with
+        static member empty = {
+            kind = None
+            name = None
+            apiGroup = None
+        }
+    type TypedLocalObjectReferenceBuilder() =
+        member _.Yield _ = TypedLocalObjectReference.empty
+    
+        [<CustomOperation "kind">]
+        member _.Kind(state: TypedLocalObjectReference, kind: string) = { state with kind = Some kind }
+        
+        [<CustomOperation "name">]
+        member _.Name(state: TypedLocalObjectReference, name: string) = { state with name = Some name }
+        
+        [<CustomOperation "apiGroup">]
+        member _.ApiGroup(state: TypedLocalObjectReference, apiGroup: string) = { state with apiGroup = Some apiGroup }
+     
+    type ResourceList = {
+        apiVersion: string
+        kind: string
+        items: obj list
+    }
+    type ResourceList with
+        static member empty = {
+            apiVersion = "v1"
+            kind = "List"
+            items = List.empty
+        }
+        static member init items = { (ResourceList.empty) with items = items }
+        member this.ToResource() = {|
+            apiVersion = this.apiVersion
+            kind = this.kind
+            items = this.items
+        |}
+
+    type ResourceList<'a> = {
+        apiVersion: string
+        kind: string
+        items: 'a list
+    }
+    type ResourceList<'a> with
+        static member empty = {
+            apiVersion = "v1"
+            kind = "List"
+            items = List.empty<'a>
+        }
+        static member init<'a> (items: 'a list) = 
+            let name = $"{typedefof<'a>.Name}List"
+            { (ResourceList<'a>.empty) with kind = name ; items = items }
+        member this.ToResource(f) = {|
+            apiVersion = this.apiVersion
+            kind = this.kind
+            items = this.items |> List.map f
+        |}
+
     /// A single application container that you want to run within a pod.
     /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
-    
+
+//====================================
+// Builder init
+//====================================
     let container = new ContainerBuilder()
     let objRef = new ObjectReferenceBuilder()

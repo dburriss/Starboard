@@ -1,5 +1,7 @@
 ﻿namespace Starboard.Resources
 
+open Starboard
+
 type ReclaimPolicy = | Delete | Retain
 
 type ReclaimPolicy with
@@ -41,9 +43,7 @@ type StorageClass with
         }
     member _.K8sVersion() = "storage.k8s.io/v1"
     member _.K8sKind() = "StorageClass"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.ToResource() =
     
         // https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/storage-class-v1/
@@ -55,29 +55,74 @@ type StorageClass with
             volumeBindingMode = this.volumeBindingMode
             reclaimPolicy = this.reclaimPolicy.ToString()
             allowVolumeExpansion = this.allowVolumeExpansion
-            parameters = this.parameters |> Helpers.toDict
+            parameters = this.parameters |> Helpers.listToDict
             mountOptions = this.mountOptions |> Helpers.mapValues id
         |}
 
 type StorageClassBuilder() =
     member _.Yield _ = StorageClass.empty
 
+    member __.Zero () = StorageClass.empty
+    
+    member __.Combine (currentValueFromYield: StorageClass, accumulatorFromDelay: StorageClass) = 
+        let mergeReclaimPolicy v1 v2 =
+            match (v1,v2) with
+            | v1, Delete -> v1
+            | Delete, v2 -> v2
+            | _ -> v1
+        { currentValueFromYield with 
+            metadata = Metadata.combine currentValueFromYield.metadata  accumulatorFromDelay.metadata
+            provisioner = Helpers.mergeOption (currentValueFromYield.provisioner) (accumulatorFromDelay.provisioner)
+            volumeBindingMode = Helpers.mergeString (currentValueFromYield.volumeBindingMode) (accumulatorFromDelay.volumeBindingMode)
+            reclaimPolicy = mergeReclaimPolicy currentValueFromYield.reclaimPolicy accumulatorFromDelay.reclaimPolicy
+            allowVolumeExpansion = Helpers.mergeBool (currentValueFromYield.allowVolumeExpansion) (accumulatorFromDelay.allowVolumeExpansion)
+            parameters = List.append (currentValueFromYield.parameters) (accumulatorFromDelay.parameters)
+            mountOptions = List.append (currentValueFromYield.mountOptions) (accumulatorFromDelay.mountOptions)            
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: StorageClass , f: unit -> StorageClass) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+    // Metadata
+    member this.Yield(name: string) = this.Name(StorageClass.empty, name)
+    
     /// Name of the StorageClass. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
+    [<CustomOperation "_name">]
     member _.Name(state: StorageClass, name: string) = 
-        let newMetadata = { state.metadata with name = Some name }
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
-
+    
     /// Namespace of the StorageClass.
     /// Namespace defines the space within which each name must be unique. Default is "default".
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "ns">]
+    [<CustomOperation "_namespace">]
     member _.Namespace(state: StorageClass, ns: string) = 
-        let newMetadata = { state.metadata with ns = Some ns }
+        let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
     
+    /// Labels for the StorageClass
+    [<CustomOperation "_labels">]
+    member _.Labels(state: StorageClass, labels: (string*string) list) = 
+        let newMetadata = { state.metadata with labels = labels }
+        { state with metadata = newMetadata }
+    
+    /// Annotations for the StorageClass
+    [<CustomOperation "_annotations">]
+    member _.Annotations(state: StorageClass, annotations: (string*string) list) = 
+        let newMetadata = { state.metadata with annotations = annotations }
+        { state with metadata = newMetadata }
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(StorageClass.empty, metadata)
+    /// Sets the StorageClass metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: StorageClass, metadata: Metadata) =
+        { state with metadata = metadata }
+
     /// Provisioner for CSI eg. blob.csi.azure.com
     /// See: https://kubernetes.io/docs/concepts/storage/storage-classes/#provisioner
     [<CustomOperation "provisioner">]
@@ -90,6 +135,10 @@ type StorageClassBuilder() =
     member _.VolumeBindingMode(state: StorageClass, volumeBindingMode: string) = 
         { state with volumeBindingMode = volumeBindingMode }
     
+    // ReclaimPolicy
+    member this.Yield(reclaimPolicy: ReclaimPolicy) = this.ReclaimPolicy(StorageClass.empty, reclaimPolicy)
+    member this.Yield(reclaimPolicy: ReclaimPolicy seq) = reclaimPolicy |> Seq.fold (fun state x -> this.ReclaimPolicy(state, x)) StorageClass.empty
+    member this.YieldFrom(reclaimPolicy: ReclaimPolicy seq) = this.Yield(reclaimPolicy)
     /// Reclaim policy for the PersistentVolume created with this StorageClass. 
     /// Options are "Delete" (default) or "Reclaim".
     [<CustomOperation "reclaimPolicy">]
@@ -100,7 +149,9 @@ type StorageClassBuilder() =
     [<CustomOperation "allowVolumeExpansion">]
     member _.AllowVolumeExpansion(state: StorageClass) = 
         { state with allowVolumeExpansion = true }
-        
+    
+    // Parameters
+    member this.Yield(parameters: (string*string) seq) = this.Parameters(StorageClass.empty, parameters |> List.ofSeq)
     [<CustomOperation "parameters">]
     member _.Parameters(state: StorageClass, parameters: (string*string) list) = 
         { state with parameters = parameters }
@@ -155,9 +206,7 @@ type PersistentVolumeClaim with
         }
     member _.K8sVersion() = "v1"
     member _.K8sKind() = "PersistentVolumeClaim"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() =
         {|
             volumeName = this.volumeName
@@ -177,14 +226,44 @@ type PersistentVolumeClaim with
 type PersistentVolumeClaimBuilder() =
     member _.Yield _ = PersistentVolumeClaim.empty
 
-    /// Name of the StorageClass. 
+    // Metadata
+    member this.Yield(name: string) = this.Name(PersistentVolumeClaim.empty, name)
+    
+    /// Name of the PersistentVolumeClaim. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
-    member _.Name(state: PersistentVolumeClaim, metaName: string) = 
-        let newMetadata = { state.metadata with name = Some metaName }
+    [<CustomOperation "_name">]
+    member _.Name(state: PersistentVolumeClaim, name: string) = 
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
-
+    
+    /// Namespace of the PersistentVolumeClaim.
+    /// Namespace defines the space within which each name must be unique. Default is "default".
+    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+    [<CustomOperation "_namespace">]
+    member _.Namespace(state: PersistentVolumeClaim, ns: string) = 
+        let newMetadata = { state.metadata with ns = ns }
+        { state with metadata = newMetadata }
+    
+    /// Labels for the PersistentVolumeClaim
+    [<CustomOperation "_labels">]
+    member _.Labels(state: PersistentVolumeClaim, labels: (string*string) list) = 
+        let newMetadata = { state.metadata with labels = labels }
+        { state with metadata = newMetadata }
+    
+    /// Annotations for the PersistentVolumeClaim
+    [<CustomOperation "_annotations">]
+    member _.Annotations(state: PersistentVolumeClaim, annotations: (string*string) list) = 
+        let newMetadata = { state.metadata with annotations = annotations }
+        { state with metadata = newMetadata }
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(PersistentVolumeClaim.empty, metadata)
+    /// Sets the PersistentVolumeClaim metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: PersistentVolumeClaim, metadata: Metadata) =
+        { state with metadata = metadata }
+    
+    
     /// volumeName is the binding reference to the PersistentVolume backing this claim
     [<CustomOperation "volumeName">]
     member _.VolumeName(state: PersistentVolumeClaim, volumeName: string) = 
@@ -247,9 +326,7 @@ type PersistentVolume<'a> with
         }
     member _.K8sVersion() = "v1"
     member _.K8sKind() = "PersistentVolume"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() =
         let (volType,volTypeSpec) = this.volumeSpec |> Option.get
 
@@ -329,14 +406,43 @@ type CsiVolumeBuilder() =
     // TODO: see what it feels like with inheritance
     member _.Yield _ = PersistentVolume<CSIPersistentVolumeSource>.empty
 
-    /// Name of the PersistentVolume. 
+    // Metadata
+    member this.Yield(name: string) = this.Name(PersistentVolume<CSIPersistentVolumeSource>.empty, name)
+    
+    /// Name of the PersistentVolume<CSIPersistentVolumeSource>. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
-    member _.Name(state: PersistentVolume<CSIPersistentVolumeSource>, metaName: string) = 
-        let newMetadata = { state.metadata with name = Some metaName }
+    [<CustomOperation "_name">]
+    member _.Name(state: PersistentVolume<CSIPersistentVolumeSource>, name: string) = 
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
-
+    
+    /// Namespace of the PersistentVolume<CSIPersistentVolumeSource>.
+    /// Namespace defines the space within which each name must be unique. Default is "default".
+    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+    [<CustomOperation "_namespace">]
+    member _.Namespace(state: PersistentVolume<CSIPersistentVolumeSource>, ns: string) = 
+        let newMetadata = { state.metadata with ns = ns }
+        { state with metadata = newMetadata }
+    
+    /// Labels for the PersistentVolume<CSIPersistentVolumeSource>
+    [<CustomOperation "_labels">]
+    member _.Labels(state: PersistentVolume<CSIPersistentVolumeSource>, labels: (string*string) list) = 
+        let newMetadata = { state.metadata with labels = labels }
+        { state with metadata = newMetadata }
+    
+    /// Annotations for the PersistentVolume<CSIPersistentVolumeSource>
+    [<CustomOperation "_annotations">]
+    member _.Annotations(state: PersistentVolume<CSIPersistentVolumeSource>, annotations: (string*string) list) = 
+        let newMetadata = { state.metadata with annotations = annotations }
+        { state with metadata = newMetadata }
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(PersistentVolume<CSIPersistentVolumeSource>.empty, metadata)
+    /// Sets the PersistentVolume<CSIPersistentVolumeSource> metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: PersistentVolume<CSIPersistentVolumeSource>, metadata: Metadata) =
+        { state with metadata = metadata }
+    
     /// capacity is the description of the persistent volume's resources and capacity. 
     /// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#capacity
     [<CustomOperation "capacity">]
@@ -401,7 +507,9 @@ type CsiVolumeBuilder() =
         let newCsi = { csi with volumeAttributes = Some (volumeAttributes |> Map.ofList) }
         { state with volumeSpec = Some (label, newCsi) }
 
-// OPEN BUILDERS
+//====================================
+// Builder init
+//====================================
 
 [<AutoOpen>]
 module PersistentVolumeBuilders =

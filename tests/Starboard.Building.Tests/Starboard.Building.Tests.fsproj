@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Include="DeploymentTests.fs" />
+    <Compile Include="ValidationTests.fs" />
     <Compile Include="PodTests.fs" />
     <Compile Include="ContainerTests.fs" />
     <Compile Include="Program.fs" />

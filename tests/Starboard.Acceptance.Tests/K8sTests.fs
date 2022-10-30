@@ -1,6 +1,6 @@
 ﻿namespace Starboard.Acceptance.Tests
 
-module K8sTests =
+module K8s_Resources =
 
     open Xunit
     open Starboard.Resources
@@ -14,9 +14,8 @@ module K8sTests =
         let a : IEnumerable<'a> = List.toSeq actual
         Assert.Equal<'a>(e, a)
 
-        
     [<Fact>]
-    let ``K8s resources appear in a List schema`` () =
+    let ``appear in a List schema`` () =
         let container1 = container {
             image "nginx"
             command ["systemctl"]
@@ -28,14 +27,14 @@ module K8sTests =
         }
 
         let deployment1 = deployment {
-            pod pod1
+            podTemplate pod1
         }
 
         let k8s1 = k8s {
-            deployment deployment1
+            add_deployment deployment1
         }
 
-        let json = KubeCtlWriter.toJson k8s1 |> JsonValue.Parse
+        let json = KubeCtlWriter.toJson k8s1 |> fun o -> JsonValue.Parse o.content
 
         Assert.Equal(json?apiVersion.AsString(), "v1")
         Assert.Equal(json?kind.AsString(), "List")
@@ -50,26 +49,25 @@ module K8sTests =
         }
 
         let pod1 = pod {
-            container container1
+            add_container container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
-            pod pod1
+            "my-name"
+            podTemplate pod1
         }
 
         let k8s1 = k8s {
-            deployment deployment1
+            add_deployment deployment1
         }
 
-        let deploymentJson = KubeCtlWriter.toJson k8s1 |> JsonValue.Parse |> fun json -> json?items.AsArray() |> Array.head
+        let deploymentJson = KubeCtlWriter.toJson k8s1 |> fun o -> JsonValue.Parse o.content |> fun json -> json?items.AsArray() |> Array.head
 
         Assert.Equal(deploymentJson?apiVersion.AsString(), "apps/v1")
         Assert.Equal(deploymentJson?kind.AsString(), "Deployment")
         Assert.Equal(deploymentJson?metadata?name.AsString(), "my-name")
         Assert.NotEqual(deploymentJson?spec, JsonValue.Null)
         
-
     [<Fact>]
     let ``K8s to yaml`` () =
         let container1 = container {
@@ -79,24 +77,23 @@ module K8sTests =
         }
 
         let pod1 = pod {
-            container container1
+            add_container container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
-            pod pod1
+            _name "my-name"
+            podTemplate pod1
         }
 
         let k8s1 = k8s {
-            deployment deployment1
+            add_deployment deployment1
         }
 
-        let yaml = KubeCtlWriter.toYaml k8s1
+        let output = KubeCtlWriter.toYaml k8s1
+        let yaml = output.content
 
         Assert.NotEmpty(yaml)
         Assert.Contains("apiVersion: apps/v1", yaml)
         Assert.Contains("image: nginx", yaml)
         Assert.Contains("name: my-name", yaml)
         
-
-    //TODO: validate against schemas

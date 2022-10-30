@@ -28,7 +28,7 @@ module DeploymentTests =
             containers [aContainer]
         }
         let deployment1 = deployment {
-            pod aPod
+            podTemplate aPod
         }
 
         Assert.Equal(Some pod1, deployment1.pod)
@@ -37,18 +37,18 @@ module DeploymentTests =
     let ``DeploymentBuilder with a name sets name`` () =
 
         let deployment1 = deployment {
-            name "my-name"
-            pod aPod
+            "my-name"
+            podTemplate aPod
         }
 
-        Assert.Equal(Some "my-name", deployment1.metadata.name)
+        Assert.Equal("my-name", deployment1.metadata.name)
 
     [<Fact>]
     let ``DeploymentBuilder sets replicas`` () =
 
         let deployment1 = deployment {
             replicas 2
-            pod aPod
+            podTemplate aPod
         }
 
         Assert.Equal(2, deployment1.replicas)
@@ -58,18 +58,18 @@ module DeploymentTests =
     let ``DeploymentBuilder sets namespace`` () =
 
         let deployment1 = deployment {
-            ns "test"
-            pod aPod
+            _namespace "test"
+            podTemplate aPod
         }
 
-        Assert.Equal(Some "test", deployment1.metadata.ns)
+        Assert.Equal("test", deployment1.metadata.ns)
 
     [<Fact>]
     let ``DeploymentBuilder sets labels`` () =
         let expected = [("key","value")]
         let deployment1 = deployment {
-            labels expected
-            pod aPod
+            _labels expected
+            podTemplate aPod
         }
 
         listsEqual expected deployment1.metadata.labels
@@ -78,8 +78,8 @@ module DeploymentTests =
     let ``DeploymentBuilder sets annotations`` () =
         let expected = [("key","value")]
         let deployment1 = deployment {
-            annotations expected
-            pod aPod
+            _annotations expected
+            podTemplate aPod
         }
 
         listsEqual expected deployment1.metadata.annotations
@@ -92,7 +92,7 @@ module DeploymentTests =
         }
         let deployment1 = deployment {
             selector labelsToMatch
-            pod aPod
+            podTemplate aPod
         }
 
         listsEqual expected deployment1.selector.matchExpressions
@@ -105,7 +105,7 @@ module DeploymentTests =
         }
         let deployment1 = deployment {
             selector labelsToMatch
-            pod aPod
+            podTemplate aPod
         }
 
         listsEqual expected deployment1.selector.matchLabels
@@ -117,7 +117,7 @@ module DeploymentTests =
 
         let deployment1 = deployment {
             matchLabel ("key","value")
-            pod aPod
+            podTemplate aPod
         }
 
         listsEqual expected deployment1.selector.matchLabels

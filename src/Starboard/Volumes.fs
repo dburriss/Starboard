@@ -79,6 +79,7 @@ type HostPathVolumeSource with
 
 
 type Volume = { 
+    
     configMap: ConfigMapVolumeSource option
     emptyDir: EmptyDirVolumeSource option
 }
@@ -99,6 +100,8 @@ type Volume with
 
 type ConfigMapVolumeBuilder() =
     member _.Yield _ = Volume.empty
+
+    member this.Yield(name: string) = this.Name(Volume.empty, name)
 
     [<CustomOperation "name">]
     member _.Name(state: Volume, name: string) = 

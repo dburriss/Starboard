@@ -1,6 +1,6 @@
-namespace Starboard.Comms.Tests
+namespace Starboard.Acceptance.Tests
 
-module DeploymentResourceTests =
+module K8s_Deployment =
 
     open Xunit
     open Starboard.Resources
@@ -23,12 +23,12 @@ module DeploymentResourceTests =
         }
 
         let pod1 = pod {
-            container container1
+            add_container container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
-            pod pod1
+            _name "my-name"
+            podTemplate pod1
         }
 
         let resource = deployment1.ToResource()
@@ -49,12 +49,12 @@ module DeploymentResourceTests =
         }
 
         let pod1 = pod {
-            container container1
+            add_container container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
-            pod pod1
+            "my-name"
+            podTemplate pod1
             replicas 2
         }
 
@@ -64,20 +64,20 @@ module DeploymentResourceTests =
     
     [<Fact>]
     let ``Deployment spec with no selectors`` () =
-        let container1 = container {
-            name "nginx"
-            image "nginx:1.14.2"
-            command ["systemctl"]
-            args ["config"; "nginx"]
-        }
-
-        let pod1 = pod {
-            container container1
-        }
 
         let deployment1 = deployment {
-            name "my-name"
-            pod pod1
+            metadata {
+                name "my-name"
+            }
+            pod {
+                "pod-test"
+                container {
+                    name "nginx"
+                    image "nginx:1.14.2"
+                    command ["systemctl"]
+                    args ["config"; "nginx"]
+                }
+            }
         }
 
         let deploymentResource = deployment1.ToResource()
@@ -94,12 +94,12 @@ module DeploymentResourceTests =
         }
 
         let pod1 = pod {
-            container container1
+            container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
-            pod pod1
+            "my-name"
+            podTemplate pod1
             matchLabel ("key","value")
         }
 
@@ -121,18 +121,18 @@ module DeploymentResourceTests =
         }
 
         let pod1 = pod {
-            container container1
+            container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
-            pod pod1
-            labels [("key","value")]
+            _name "my-name"
+            podTemplate pod1
+            _labels [("key","value")]
         }
 
         let deploymentResource = deployment1.ToResource()
-        let labels = deploymentResource.metadata.Value.labels.Value.Keys |> Seq.toList
-        let labelValues = deploymentResource.metadata.Value.labels.Value.Values |> Seq.toList
+        let labels = deploymentResource.metadata.labels.Value.Keys |> Seq.toList
+        let labelValues = deploymentResource.metadata.labels.Value.Values |> Seq.toList
 
         test <@ labels = ["key"] @>
         test <@ labelValues = ["value"] @>
@@ -147,18 +147,18 @@ module DeploymentResourceTests =
         }
 
         let pod1 = pod {
-            container container1
+            container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
-            pod pod1
-            annotations [("key","value")]
+            "my-name"
+            podTemplate pod1
+            _annotations [("key","value")]
         }
 
         let deploymentResource = deployment1.ToResource()
-        let annotations = deploymentResource.metadata.Value.annotations.Value.Keys |> Seq.toList
-        let annotationValues = deploymentResource.metadata.Value.annotations.Value.Values |> Seq.toList
+        let annotations = deploymentResource.metadata.annotations.Value.Keys |> Seq.toList
+        let annotationValues = deploymentResource.metadata.annotations.Value.Values |> Seq.toList
 
         test <@ annotations = ["key"] @>
         test <@ annotationValues = ["value"] @>
@@ -173,14 +173,14 @@ module DeploymentResourceTests =
         }
 
         let pod1 = pod {
-            container container1
-            labels [("pod-label","pod-label-value")]
+            container1
+            _labels [("pod-label","pod-label-value")]
         }
 
         let deployment1 = deployment {
-            name "my-name"
-            pod pod1
-            annotations [("key","value")]
+            "my-name"
+            podTemplate pod1
+            _annotations [("key","value")]
         }
 
         let deploymentResource = deployment1.ToResource()

@@ -1,5 +1,6 @@
 ﻿namespace Starboard.Resources
 
+open Starboard
 open Starboard.Resources
 
 /// Represents state that is later converted to a k8s Deployment Resource
@@ -12,7 +13,7 @@ type Deployment =
         selector: LabelSelector }
 
 type Deployment with
-    static member Empty =
+    static member empty =
         { 
             pod = None
             replicas = 1
@@ -21,9 +22,7 @@ type Deployment with
         }
     member this.K8sVersion() = "apps/v1"
     member this.K8sKind() = "Deployment"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() = 
         {|
             replicas = this.replicas
@@ -33,7 +32,7 @@ type Deployment with
             selector = LabelSelector.ToK8sModel this.selector
             // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/
             template = {|
-                metadata = this.pod |> Option.bind (fun p -> p.K8sMetadata())
+                metadata = this.pod |> Option.map (fun p -> p.K8sMetadata())
                 // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/#PodTemplateSpec
                 spec = this.pod |> Option.map (fun p -> p.Spec())
                 //spec = {|
@@ -56,41 +55,66 @@ type Deployment with
 
 
 type DeploymentBuilder() =
-    member _.Yield _ = Deployment.Empty
+    member _.Yield _ = Deployment.empty
 
-    [<CustomOperation "pod">]
-    member _.Pods(state: Deployment, pod: Pod) = { state with pod = Some pod }
-        
-    [<CustomOperation "replicas">]
-    member _.Replicas(state: Deployment, replicaCount: int) = { state with replicas = replicaCount }
-        
+    member __.Zero () = Deployment.empty
+    
+    member __.Combine (currentValueFromYield: Deployment, accumulatorFromDelay: Deployment) = 
+        { currentValueFromYield with 
+            metadata  = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
+            pod = Helpers.mergeOption (currentValueFromYield.pod) (accumulatorFromDelay.pod)
+            replicas = Helpers.mergeInt (currentValueFromYield.replicas) (accumulatorFromDelay.replicas)
+            selector = LabelSelector.combine currentValueFromYield.selector accumulatorFromDelay.selector
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: Deployment , f: unit -> Deployment) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+    // Metadata
+    member this.Yield(name: string) = this.Name(Deployment.empty, name)
+    
     /// Name of the Deployment. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
+    [<CustomOperation "_name">]
     member _.Name(state: Deployment, name: string) = 
-        let newMetadata = { state.metadata with name = Some name }
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
-
+    
     /// Namespace of the Deployment.
     /// Namespace defines the space within which each name must be unique. Default is "default".
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "ns">]
+    [<CustomOperation "_namespace">]
     member _.Namespace(state: Deployment, ns: string) = 
-        let newMetadata = { state.metadata with ns = Some ns }
+        let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
-        
+    
     /// Labels for the Deployment
-    [<CustomOperation "labels">]
+    [<CustomOperation "_labels">]
     member _.Labels(state: Deployment, labels: (string*string) list) = 
         let newMetadata = { state.metadata with labels = labels }
         { state with metadata = newMetadata }
-
+    
     /// Annotations for the Deployment
-    [<CustomOperation "annotations">]
+    [<CustomOperation "_annotations">]
     member _.Annotations(state: Deployment, annotations: (string*string) list) = 
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(Deployment.empty, metadata)
+    /// Sets the Deployment metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: Deployment, metadata: Metadata) =
+        { state with metadata = metadata }
+    
+    [<CustomOperation "podTemplate">]
+    member _.Pod(state: Deployment, pod: Pod) = { state with pod = Some pod }
+        
+    [<CustomOperation "replicas">]
+    member _.Replicas(state: Deployment, replicaCount: int) = { state with replicas = replicaCount }
         
     /// Selector for the Deployment. Used for complex selections. Use `matchLabel(s)` for simple label matching.
     [<CustomOperation "selector">]

@@ -1,5 +1,6 @@
 ﻿namespace Starboard.Resources
 
+open Starboard
 open Starboard.Resources
 open System.Text.Json.Nodes
 
@@ -19,7 +20,6 @@ type ServicePort = {
     nodePort: int option
     appProtocol : string option
 }
-
 
 type ServicePort with
     static member empty = 
@@ -44,7 +44,7 @@ type ServicePort with
 
 type ServicePortBuilder() =
     member _.Yield _ = ServicePort.empty
-
+    
     [<CustomOperation "port">]
     member _.Port(state: ServicePort, port: int) = { state with port = Some port }
         
@@ -79,7 +79,7 @@ type Service = {
     metadata: Metadata
     selector: LabelSelector
     ports: ServicePort list
-    ``type``: ServiceType
+    serviceType: ServiceType
 }
 
 type Service with
@@ -88,22 +88,20 @@ type Service with
             metadata = Metadata.empty
             selector = LabelSelector.empty
             ports = List.empty
-            ``type`` = ClusterIP
+            serviceType = ClusterIP
         }
 
 // resource: version, kind, metadata, spec
 // template: metadata, spec
     member this.K8sVersion() = "v1"
     member this.K8sKind() = "Service"
-    member this.K8sMetadata() = 
-        if this.metadata = Metadata.empty then None
-        else this.metadata |> Metadata.ToK8sModel |> Some
+    member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() =
         // https://kubernetes.io/docs/reference/kubernetes-api/service-resources/service-v1/#ServiceSpec
         {|
             selector = this.selector.Spec()
             ports = this.ports |> Helpers.mapEach (fun p -> p.Spec())
-            ``type`` = this.``type``.ToString()
+            ``type`` = this.serviceType.ToString()
         |}
     member this.ToResource() =
         {|
@@ -117,38 +115,72 @@ type Service with
 type ServiceBuilder() =
         
     member _.Yield (_) = Service.empty
-        
+    
+    member __.Zero () = Service.empty
+    
+    member __.Combine (currentValueFromYield: Service, accumulatorFromDelay: Service) = 
+        let mergeServiceType x1 x2 =
+            match (x1,x2) with
+            | v, ClusterIP -> v
+            | ClusterIP, v -> v
+            | _ -> x1
+        { currentValueFromYield with 
+            metadata = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
+            selector = LabelSelector.combine currentValueFromYield.selector accumulatorFromDelay.selector
+            ports = List.append (currentValueFromYield.ports) (accumulatorFromDelay.ports)
+            serviceType = mergeServiceType currentValueFromYield.serviceType accumulatorFromDelay.serviceType
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: Service , f: unit -> Service) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+    // Metadata
+    member this.Yield(name: string) = this.Name(Service.empty, name)
+    
     /// Name of the Service. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
+    [<CustomOperation "_name">]
     member _.Name(state: Service, name: string) = 
-        let newMetadata = { state.metadata with name = Some name }
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
-
+    
     /// Namespace of the Service.
     /// Namespace defines the space within which each name must be unique. Default is "default".
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "ns">]
+    [<CustomOperation "_namespace">]
     member _.Namespace(state: Service, ns: string) = 
-        let newMetadata = { state.metadata with ns = Some ns }
+        let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
-        
+    
     /// Labels for the Service
-    [<CustomOperation "labels">]
+    [<CustomOperation "_labels">]
     member _.Labels(state: Service, labels: (string*string) list) = 
         let newMetadata = { state.metadata with labels = labels }
         { state with metadata = newMetadata }
-
+    
     /// Annotations for the Service
-    [<CustomOperation "annotations">]
+    [<CustomOperation "_annotations">]
     member _.Annotations(state: Service, annotations: (string*string) list) = 
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
-        
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(Service.empty, metadata)
+    /// Sets the Service metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: Service, metadata: Metadata) =
+        { state with metadata = metadata }
+    
+    // LabelSelector
+    member this.Yield(labelSelector: LabelSelector) = this.LabelSelector(Service.empty, labelSelector)
+    member this.Yield(labelSelector: LabelSelector seq) = labelSelector |> Seq.fold (fun state x -> this.LabelSelector(state, x)) Service.empty
+    member this.YieldFrom(labelSelector: LabelSelector seq) = this.Yield(labelSelector)
     /// Selector for the Service. Used for complex selections. Use `matchLabel(s)` for simple label matching.
     [<CustomOperation "selector">]
-    member _.Selector(state: Service, selectors: LabelSelector) = { state with selector = selectors }
+    member _.LabelSelector(state: Service, selectors: LabelSelector) = { state with selector = selectors }
 
     /// Add a single label selector to the Service.
     [<CustomOperation "matchLabel">]
@@ -160,15 +192,17 @@ type ServiceBuilder() =
     member _.MatchLabels(state: Service, labels) =
         { state with selector = { state.selector with matchLabels = List.append state.selector.matchLabels labels } }
     
-    [<CustomOperation "port">]
-    member _.Port(state: Service, port: ServicePort) = { state with ports = List.append state.ports [port] }
+    // ServicePort
+    member this.Yield(servicePort: ServicePort) = this.ServicePort(Service.empty, servicePort)
+    member this.Yield(servicePort: ServicePort seq) = servicePort |> Seq.fold (fun state x -> this.ServicePort(state, x)) Service.empty
+    member this.YieldFrom(servicePort: ServicePort seq) = this.Yield(servicePort)
+    [<CustomOperation "add_port">]
+    member _.ServicePort(state: Service, port: ServicePort) = { state with ports = List.append state.ports [port] }
 
     /// Type of the Service.
     [<CustomOperation "typeOf">]
     member _.Type(state: Service, typeof: ServiceType) = 
-        { state with ``type`` = typeof }
-
-// TODO: Specific builders per service type
+        { state with serviceType = typeof }
 
 [<AutoOpen>]
 module ServicerBuilders =
