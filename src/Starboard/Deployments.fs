@@ -73,40 +73,48 @@ type DeploymentBuilder() =
         let delayed = f()
         this.Combine(state, delayed)
     
-
+    // Metadata
+    member this.Yield(name: string) = this.Name(Deployment.empty, name)
+    
+    /// Name of the Deployment. 
+    /// Name must be unique within a namespace. 
+    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+    [<CustomOperation "_name">]
+    member _.Name(state: Deployment, name: string) = 
+        let newMetadata = { state.metadata with name = name }
+        { state with metadata = newMetadata}
+    
+    /// Namespace of the Deployment.
+    /// Namespace defines the space within which each name must be unique. Default is "default".
+    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+    [<CustomOperation "_namespace">]
+    member _.Namespace(state: Deployment, ns: string) = 
+        let newMetadata = { state.metadata with ns = ns }
+        { state with metadata = newMetadata }
+    
+    /// Labels for the Deployment
+    [<CustomOperation "_labels">]
+    member _.Labels(state: Deployment, labels: (string*string) list) = 
+        let newMetadata = { state.metadata with labels = labels }
+        { state with metadata = newMetadata }
+    
+    /// Annotations for the Deployment
+    [<CustomOperation "_annotations">]
+    member _.Annotations(state: Deployment, annotations: (string*string) list) = 
+        let newMetadata = { state.metadata with annotations = annotations }
+        { state with metadata = newMetadata }
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(Deployment.empty, metadata)
+    /// Sets the Deployment metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: Deployment, metadata: Metadata) =
+        { state with metadata = metadata }
+    
     [<CustomOperation "podTemplate">]
     member _.Pod(state: Deployment, pod: Pod) = { state with pod = Some pod }
         
     [<CustomOperation "replicas">]
     member _.Replicas(state: Deployment, replicaCount: int) = { state with replicas = replicaCount }
-        
-    /// Name of the Deployment. 
-    /// Name must be unique within a namespace. 
-    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
-    member _.Name(state: Deployment, name: string) = 
-        let newMetadata = { state.metadata with name = name }
-        { state with metadata = newMetadata}
-
-    /// Namespace of the Deployment.
-    /// Namespace defines the space within which each name must be unique. Default is "default".
-    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "ns">]
-    member _.Namespace(state: Deployment, ns: string) = 
-        let newMetadata = { state.metadata with ns = ns }
-        { state with metadata = newMetadata }
-        
-    /// Labels for the Deployment
-    [<CustomOperation "labels">]
-    member _.Labels(state: Deployment, labels: (string*string) list) = 
-        let newMetadata = { state.metadata with labels = labels }
-        { state with metadata = newMetadata }
-
-    /// Annotations for the Deployment
-    [<CustomOperation "annotations">]
-    member _.Annotations(state: Deployment, annotations: (string*string) list) = 
-        let newMetadata = { state.metadata with annotations = annotations }
-        { state with metadata = newMetadata }
         
     /// Selector for the Deployment. Used for complex selections. Use `matchLabel(s)` for simple label matching.
     [<CustomOperation "selector">]

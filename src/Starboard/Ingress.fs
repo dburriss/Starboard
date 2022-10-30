@@ -371,11 +371,13 @@ type IngressBuilder() =
         let delayed = f()
         this.Combine(state, delayed)
     
-
+    // Metadata
+    member this.Yield(name: string) = this.Name(Ingress.empty, name)
+    
     /// Name of the Ingress. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
+    [<CustomOperation "_name">]
     member _.Name(state: Ingress, name: string) = 
         let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
@@ -383,23 +385,29 @@ type IngressBuilder() =
     /// Namespace of the Ingress.
     /// Namespace defines the space within which each name must be unique. Default is "default".
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "ns">]
+    [<CustomOperation "_namespace">]
     member _.Namespace(state: Ingress, ns: string) = 
         let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
     
     /// Labels for the Ingress
-    [<CustomOperation "labels">]
+    [<CustomOperation "_labels">]
     member _.Labels(state: Ingress, labels: (string*string) list) = 
         let newMetadata = { state.metadata with labels = labels }
         { state with metadata = newMetadata }
     
     /// Annotations for the Ingress
-    [<CustomOperation "annotations">]
+    [<CustomOperation "_annotations">]
     member _.Annotations(state: Ingress, annotations: (string*string) list) = 
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
-
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(Ingress.empty, metadata)
+    /// Sets the Ingress metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: Ingress, metadata: Metadata) =
+        { state with metadata = metadata }
+    
     // IngressBackend
     member this.Yield(ingressBackend: IngressBackend) = this.DefaultBackend(Ingress.empty, ingressBackend)
     [<CustomOperation "defaultBackend">]

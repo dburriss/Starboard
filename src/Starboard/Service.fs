@@ -79,7 +79,7 @@ type Service = {
     metadata: Metadata
     selector: LabelSelector
     ports: ServicePort list
-    ``type``: ServiceType
+    serviceType: ServiceType
 }
 
 type Service with
@@ -88,7 +88,7 @@ type Service with
             metadata = Metadata.empty
             selector = LabelSelector.empty
             ports = List.empty
-            ``type`` = ClusterIP
+            serviceType = ClusterIP
         }
 
 // resource: version, kind, metadata, spec
@@ -101,7 +101,7 @@ type Service with
         {|
             selector = this.selector.Spec()
             ports = this.ports |> Helpers.mapEach (fun p -> p.Spec())
-            ``type`` = this.``type``.ToString()
+            ``type`` = this.serviceType.ToString()
         |}
     member this.ToResource() =
         {|
@@ -128,7 +128,7 @@ type ServiceBuilder() =
             metadata = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
             selector = LabelSelector.combine currentValueFromYield.selector accumulatorFromDelay.selector
             ports = List.append (currentValueFromYield.ports) (accumulatorFromDelay.ports)
-            ``type`` = mergeServiceType currentValueFromYield.``type`` accumulatorFromDelay.``type``
+            serviceType = mergeServiceType currentValueFromYield.serviceType accumulatorFromDelay.serviceType
         }
     
     member __.Delay f = f()
@@ -137,35 +137,43 @@ type ServiceBuilder() =
         let delayed = f()
         this.Combine(state, delayed)
     
-
+    // Metadata
+    member this.Yield(name: string) = this.Name(Service.empty, name)
+    
     /// Name of the Service. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
+    [<CustomOperation "_name">]
     member _.Name(state: Service, name: string) = 
         let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
-
+    
     /// Namespace of the Service.
     /// Namespace defines the space within which each name must be unique. Default is "default".
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "ns">]
+    [<CustomOperation "_namespace">]
     member _.Namespace(state: Service, ns: string) = 
         let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
-        
+    
     /// Labels for the Service
-    [<CustomOperation "labels">]
+    [<CustomOperation "_labels">]
     member _.Labels(state: Service, labels: (string*string) list) = 
         let newMetadata = { state.metadata with labels = labels }
         { state with metadata = newMetadata }
-
+    
     /// Annotations for the Service
-    [<CustomOperation "annotations">]
+    [<CustomOperation "_annotations">]
     member _.Annotations(state: Service, annotations: (string*string) list) = 
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
-        
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(Service.empty, metadata)
+    /// Sets the Service metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: Service, metadata: Metadata) =
+        { state with metadata = metadata }
+    
     // LabelSelector
     member this.Yield(labelSelector: LabelSelector) = this.LabelSelector(Service.empty, labelSelector)
     member this.Yield(labelSelector: LabelSelector seq) = labelSelector |> Seq.fold (fun state x -> this.LabelSelector(state, x)) Service.empty
@@ -194,7 +202,7 @@ type ServiceBuilder() =
     /// Type of the Service.
     [<CustomOperation "typeOf">]
     member _.Type(state: Service, typeof: ServiceType) = 
-        { state with ``type`` = typeof }
+        { state with serviceType = typeof }
 
 [<AutoOpen>]
 module ServicerBuilders =

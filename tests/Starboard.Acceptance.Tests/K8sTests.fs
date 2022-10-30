@@ -49,11 +49,11 @@ module K8s_Resources =
         }
 
         let pod1 = pod {
-            container container1
+            add_container container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
+            "my-name"
             podTemplate pod1
         }
 
@@ -77,11 +77,11 @@ module K8s_Resources =
         }
 
         let pod1 = pod {
-            container container1
+            add_container container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
+            _name "my-name"
             podTemplate pod1
         }
 

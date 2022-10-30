@@ -86,23 +86,43 @@ type StorageClassBuilder() =
         let delayed = f()
         this.Combine(state, delayed)
     
-
+    // Metadata
+    member this.Yield(name: string) = this.Name(StorageClass.empty, name)
+    
     /// Name of the StorageClass. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
+    [<CustomOperation "_name">]
     member _.Name(state: StorageClass, name: string) = 
         let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
-
+    
     /// Namespace of the StorageClass.
     /// Namespace defines the space within which each name must be unique. Default is "default".
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "ns">]
+    [<CustomOperation "_namespace">]
     member _.Namespace(state: StorageClass, ns: string) = 
         let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
     
+    /// Labels for the StorageClass
+    [<CustomOperation "_labels">]
+    member _.Labels(state: StorageClass, labels: (string*string) list) = 
+        let newMetadata = { state.metadata with labels = labels }
+        { state with metadata = newMetadata }
+    
+    /// Annotations for the StorageClass
+    [<CustomOperation "_annotations">]
+    member _.Annotations(state: StorageClass, annotations: (string*string) list) = 
+        let newMetadata = { state.metadata with annotations = annotations }
+        { state with metadata = newMetadata }
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(StorageClass.empty, metadata)
+    /// Sets the StorageClass metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: StorageClass, metadata: Metadata) =
+        { state with metadata = metadata }
+
     /// Provisioner for CSI eg. blob.csi.azure.com
     /// See: https://kubernetes.io/docs/concepts/storage/storage-classes/#provisioner
     [<CustomOperation "provisioner">]
@@ -206,14 +226,44 @@ type PersistentVolumeClaim with
 type PersistentVolumeClaimBuilder() =
     member _.Yield _ = PersistentVolumeClaim.empty
 
-    /// Name of the StorageClass. 
+    // Metadata
+    member this.Yield(name: string) = this.Name(PersistentVolumeClaim.empty, name)
+    
+    /// Name of the PersistentVolumeClaim. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
-    member _.Name(state: PersistentVolumeClaim, metaName: string) = 
-        let newMetadata = { state.metadata with name = metaName }
+    [<CustomOperation "_name">]
+    member _.Name(state: PersistentVolumeClaim, name: string) = 
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
-
+    
+    /// Namespace of the PersistentVolumeClaim.
+    /// Namespace defines the space within which each name must be unique. Default is "default".
+    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+    [<CustomOperation "_namespace">]
+    member _.Namespace(state: PersistentVolumeClaim, ns: string) = 
+        let newMetadata = { state.metadata with ns = ns }
+        { state with metadata = newMetadata }
+    
+    /// Labels for the PersistentVolumeClaim
+    [<CustomOperation "_labels">]
+    member _.Labels(state: PersistentVolumeClaim, labels: (string*string) list) = 
+        let newMetadata = { state.metadata with labels = labels }
+        { state with metadata = newMetadata }
+    
+    /// Annotations for the PersistentVolumeClaim
+    [<CustomOperation "_annotations">]
+    member _.Annotations(state: PersistentVolumeClaim, annotations: (string*string) list) = 
+        let newMetadata = { state.metadata with annotations = annotations }
+        { state with metadata = newMetadata }
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(PersistentVolumeClaim.empty, metadata)
+    /// Sets the PersistentVolumeClaim metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: PersistentVolumeClaim, metadata: Metadata) =
+        { state with metadata = metadata }
+    
+    
     /// volumeName is the binding reference to the PersistentVolume backing this claim
     [<CustomOperation "volumeName">]
     member _.VolumeName(state: PersistentVolumeClaim, volumeName: string) = 
@@ -356,14 +406,43 @@ type CsiVolumeBuilder() =
     // TODO: see what it feels like with inheritance
     member _.Yield _ = PersistentVolume<CSIPersistentVolumeSource>.empty
 
-    /// Name of the PersistentVolume. 
+    // Metadata
+    member this.Yield(name: string) = this.Name(PersistentVolume<CSIPersistentVolumeSource>.empty, name)
+    
+    /// Name of the PersistentVolume<CSIPersistentVolumeSource>. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
-    member _.Name(state: PersistentVolume<CSIPersistentVolumeSource>, metaName: string) = 
-        let newMetadata = { state.metadata with name = metaName }
+    [<CustomOperation "_name">]
+    member _.Name(state: PersistentVolume<CSIPersistentVolumeSource>, name: string) = 
+        let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata}
-
+    
+    /// Namespace of the PersistentVolume<CSIPersistentVolumeSource>.
+    /// Namespace defines the space within which each name must be unique. Default is "default".
+    /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+    [<CustomOperation "_namespace">]
+    member _.Namespace(state: PersistentVolume<CSIPersistentVolumeSource>, ns: string) = 
+        let newMetadata = { state.metadata with ns = ns }
+        { state with metadata = newMetadata }
+    
+    /// Labels for the PersistentVolume<CSIPersistentVolumeSource>
+    [<CustomOperation "_labels">]
+    member _.Labels(state: PersistentVolume<CSIPersistentVolumeSource>, labels: (string*string) list) = 
+        let newMetadata = { state.metadata with labels = labels }
+        { state with metadata = newMetadata }
+    
+    /// Annotations for the PersistentVolume<CSIPersistentVolumeSource>
+    [<CustomOperation "_annotations">]
+    member _.Annotations(state: PersistentVolume<CSIPersistentVolumeSource>, annotations: (string*string) list) = 
+        let newMetadata = { state.metadata with annotations = annotations }
+        { state with metadata = newMetadata }
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(PersistentVolume<CSIPersistentVolumeSource>.empty, metadata)
+    /// Sets the PersistentVolume<CSIPersistentVolumeSource> metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: PersistentVolume<CSIPersistentVolumeSource>, metadata: Metadata) =
+        { state with metadata = metadata }
+    
     /// capacity is the description of the persistent volume's resources and capacity. 
     /// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#capacity
     [<CustomOperation "capacity">]

@@ -48,33 +48,71 @@ type Secret with
 type SecretBuilder() =
     
     member _.Yield (_) = Secret.empty
+    
+    member __.Zero () = Secret.empty
+    
+    member __.Combine (currentValueFromYield: Secret, accumulatorFromDelay: Secret) = 
+        let mergeMap (m1: Map<string,'a>) (m2: Map<string,'a>) = 
+            let getValue k =
+                if Map.containsKey k m1 then m1[k]
+                else m2[k]
+            let allKeys: string seq = Seq.append (Map.keys m1) (Map.keys m2)
+            allKeys
+            |> Seq.distinct
+            |> Seq.map (fun key -> key,getValue key)
+            |> Map.ofSeq
+
+        { currentValueFromYield with 
+            metadata = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
+            stringData = mergeMap (currentValueFromYield.stringData) (accumulatorFromDelay.stringData)
+            data =  mergeMap (currentValueFromYield.data) (accumulatorFromDelay.data)
+            immutable = Helpers.mergeBool (currentValueFromYield.immutable) (accumulatorFromDelay.immutable)
+            secretType = Helpers.mergeString (currentValueFromYield.secretType) (accumulatorFromDelay.secretType)
+        }
+    
+    member __.Delay f = f()
+    
+    member this.For(state: Secret , f: unit -> Secret) =
+        let delayed = f()
+        this.Combine(state, delayed)
+    
+
+    // Metadata
+    member this.Yield(name: string) = this.Name(Secret.empty, name)
+    
     /// Name of the Secret. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
+    [<CustomOperation "_name">]
     member _.Name(state: Secret, name: string) = 
         let newMetadata = { state.metadata with name = name }
-        { state with metadata = newMetadata }
-
+        { state with metadata = newMetadata}
+    
     /// Namespace of the Secret.
     /// Namespace defines the space within which each name must be unique. Default is "default".
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "ns">]
+    [<CustomOperation "_namespace">]
     member _.Namespace(state: Secret, ns: string) = 
         let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
-        
+    
     /// Labels for the Secret
-    [<CustomOperation "labels">]
+    [<CustomOperation "_labels">]
     member _.Labels(state: Secret, labels: (string*string) list) = 
         let newMetadata = { state.metadata with labels = labels }
         { state with metadata = newMetadata }
-
+    
     /// Annotations for the Secret
-    [<CustomOperation "annotations">]
+    [<CustomOperation "_annotations">]
     member _.Annotations(state: Secret, annotations: (string*string) list) = 
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(Secret.empty, metadata)
+    /// Sets the Secret metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: Secret, metadata: Metadata) =
+        { state with metadata = metadata }
 
     /// Sets Secret to immutable
     [<CustomOperation "immutable">]

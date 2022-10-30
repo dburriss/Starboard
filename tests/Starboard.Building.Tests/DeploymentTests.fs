@@ -37,7 +37,7 @@ module DeploymentTests =
     let ``DeploymentBuilder with a name sets name`` () =
 
         let deployment1 = deployment {
-            name "my-name"
+            "my-name"
             podTemplate aPod
         }
 
@@ -58,7 +58,7 @@ module DeploymentTests =
     let ``DeploymentBuilder sets namespace`` () =
 
         let deployment1 = deployment {
-            ns "test"
+            _namespace "test"
             podTemplate aPod
         }
 
@@ -68,7 +68,7 @@ module DeploymentTests =
     let ``DeploymentBuilder sets labels`` () =
         let expected = [("key","value")]
         let deployment1 = deployment {
-            labels expected
+            _labels expected
             podTemplate aPod
         }
 
@@ -78,7 +78,7 @@ module DeploymentTests =
     let ``DeploymentBuilder sets annotations`` () =
         let expected = [("key","value")]
         let deployment1 = deployment {
-            annotations expected
+            _annotations expected
             podTemplate aPod
         }
 

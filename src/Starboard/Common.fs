@@ -54,6 +54,27 @@ module Common =
             @ (this |> Validation.required (fun m -> m.ns) $"{context} 'metadata.namespace' is required.")
             @ (this |> Validation.notEmpty (fun m -> m.ns) $"{context} 'metadata.namespace' cannot be empty.")
 
+    
+    type MetadataBuilder() =
+        member _.Yield _ = Metadata.empty
+    
+        [<CustomOperation "name">]
+        member _.Name(state: Metadata, name: string) = { state with name = name }
+        
+        [<CustomOperation "generateName">]
+        member _.GenerateName(state: Metadata, generateName: string) = { state with generateName = Some generateName }
+        
+        [<CustomOperation "ns">]
+        member _.Namespace(state: Metadata, ns: string) = { state with ns = ns }      
+        
+        [<CustomOperation "labels">]
+        member _.Labels(state: Metadata, labels: (string*string) list) = { state with labels = labels }      
+        
+        [<CustomOperation "annotations">]
+        member _.Annotations(state: Metadata, annotations: (string*string) list) = { state with annotations = annotations }      
+
+    let metadata = MetadataBuilder()
+        
     type MatchExpressionOperator = | In | NotIn | Exists | DoesNotExist 
         with override this.ToString() =
                 match this with

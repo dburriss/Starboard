@@ -51,35 +51,44 @@ type ConfigMap with
 type ConfigMapBuilder() =
     
     member _.Yield (_) = ConfigMap.empty
+    
+    // Metadata
+    member this.Yield(name: string) = this.Name(ConfigMap.empty, name)
+    
     /// Name of the ConfigMap. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
+    [<CustomOperation "_name">]
     member _.Name(state: ConfigMap, name: string) = 
         let newMetadata = { state.metadata with name = name }
-        { state with metadata = newMetadata }
-
+        { state with metadata = newMetadata}
+    
     /// Namespace of the ConfigMap.
     /// Namespace defines the space within which each name must be unique. Default is "default".
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "ns">]
+    [<CustomOperation "_namespace">]
     member _.Namespace(state: ConfigMap, ns: string) = 
         let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
-        
+    
     /// Labels for the ConfigMap
-    [<CustomOperation "labels">]
+    [<CustomOperation "_labels">]
     member _.Labels(state: ConfigMap, labels: (string*string) list) = 
         let newMetadata = { state.metadata with labels = labels }
         { state with metadata = newMetadata }
-
+    
     /// Annotations for the ConfigMap
-    [<CustomOperation "annotations">]
+    [<CustomOperation "_annotations">]
     member _.Annotations(state: ConfigMap, annotations: (string*string) list) = 
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
+    
+    member this.Yield(metadata: Metadata) = this.SetMetadata(ConfigMap.empty, metadata)
+    /// Sets the ConfigMap metadata
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: ConfigMap, metadata: Metadata) =
+        { state with metadata = metadata }
 
-    /// Adds an item to the ConfigMap data
     [<CustomOperation "add_data">]
     member _.AddData(state: ConfigMap, (key, value)) = { state with data = state.data |> Map.add key value }
 

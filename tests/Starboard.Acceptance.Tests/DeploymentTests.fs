@@ -23,11 +23,11 @@ module K8s_Deployment =
         }
 
         let pod1 = pod {
-            container container1
+            add_container container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
+            _name "my-name"
             podTemplate pod1
         }
 
@@ -49,11 +49,11 @@ module K8s_Deployment =
         }
 
         let pod1 = pod {
-            container container1
+            add_container container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
+            "my-name"
             podTemplate pod1
             replicas 2
         }
@@ -64,20 +64,20 @@ module K8s_Deployment =
     
     [<Fact>]
     let ``Deployment spec with no selectors`` () =
-        let container1 = container {
-            name "nginx"
-            image "nginx:1.14.2"
-            command ["systemctl"]
-            args ["config"; "nginx"]
-        }
-
-        let pod1 = pod {
-            container container1
-        }
 
         let deployment1 = deployment {
-            name "my-name"
-            podTemplate pod1
+            metadata {
+                name "my-name"
+            }
+            pod {
+                "pod-test"
+                container {
+                    name "nginx"
+                    image "nginx:1.14.2"
+                    command ["systemctl"]
+                    args ["config"; "nginx"]
+                }
+            }
         }
 
         let deploymentResource = deployment1.ToResource()
@@ -94,11 +94,11 @@ module K8s_Deployment =
         }
 
         let pod1 = pod {
-            container container1
+            container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
+            "my-name"
             podTemplate pod1
             matchLabel ("key","value")
         }
@@ -121,13 +121,13 @@ module K8s_Deployment =
         }
 
         let pod1 = pod {
-            container container1
+            container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
+            _name "my-name"
             podTemplate pod1
-            labels [("key","value")]
+            _labels [("key","value")]
         }
 
         let deploymentResource = deployment1.ToResource()
@@ -147,13 +147,13 @@ module K8s_Deployment =
         }
 
         let pod1 = pod {
-            container container1
+            container1
         }
 
         let deployment1 = deployment {
-            name "my-name"
+            "my-name"
             podTemplate pod1
-            annotations [("key","value")]
+            _annotations [("key","value")]
         }
 
         let deploymentResource = deployment1.ToResource()
@@ -173,14 +173,14 @@ module K8s_Deployment =
         }
 
         let pod1 = pod {
-            container container1
-            labels [("pod-label","pod-label-value")]
+            container1
+            _labels [("pod-label","pod-label-value")]
         }
 
         let deployment1 = deployment {
-            name "my-name"
+            "my-name"
             podTemplate pod1
-            annotations [("key","value")]
+            _annotations [("key","value")]
         }
 
         let deploymentResource = deployment1.ToResource()

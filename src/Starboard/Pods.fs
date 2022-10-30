@@ -57,11 +57,13 @@ type PodBuilder() =
         let delayed = f()
         this.Combine(state, delayed)
     
-
+    // Metadata
+    member this.Yield(name: string) = this.Name(Pod.empty, name)
+    
     /// Name of the Pod. 
     /// Name must be unique within a namespace. 
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "name">]
+    [<CustomOperation "_name">]
     member _.Name(state: Pod, name: string) = 
         let newMetadata = { state.metadata with name = name }
         { state with metadata = newMetadata }
@@ -69,28 +71,33 @@ type PodBuilder() =
     /// Namespace of the Pod.
     /// Namespace defines the space within which each name must be unique. Default is "default".
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
-    [<CustomOperation "ns">]
+    [<CustomOperation "_namespace">]
     member _.Namespace(state: Pod, ns: string) = 
         let newMetadata = { state.metadata with ns = ns }
         { state with metadata = newMetadata }
         
     /// Labels for the Pod
-    [<CustomOperation "labels">]
+    [<CustomOperation "_labels">]
     member _.Labels(state: Pod, labels: (string*string) list) = 
         let newMetadata = { state.metadata with labels = labels }
         { state with metadata = newMetadata }
 
     /// Annotations for the Pod
-    [<CustomOperation "annotations">]
+    [<CustomOperation "_annotations">]
     member _.Annotations(state: Pod, annotations: (string*string) list) = 
         let newMetadata = { state.metadata with annotations = annotations }
         { state with metadata = newMetadata }
+
+    member this.Yield(metadata: Metadata) = this.SetMetadata(Pod.empty, metadata)
+    [<CustomOperation "set_metadata">]
+    member _.SetMetadata(state: Pod, metadata: Metadata) =
+        { state with metadata = metadata }
 
     // Container
     member this.Yield(container: Container) = this.Container(Pod.empty, container)
     member this.Yield(container: Container seq) = container |> Seq.fold (fun state x -> this.Container(state, x)) Pod.empty
     member this.YieldFrom(container: Container seq) = this.Yield(container)    
-    [<CustomOperation "container">]
+    [<CustomOperation "add_container">]
     member _.Container(state: Pod, container: Container) = { state with containers = List.append state.containers [container] }
         
     [<CustomOperation "containers">]

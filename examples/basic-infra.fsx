@@ -50,7 +50,7 @@ let container1 = container {
 
 let appLabels = [("app","ngnix")]
 let pod1 = pod {
-    labels appLabels
+    _labels appLabels
     cfVolume
     [container1]
 }

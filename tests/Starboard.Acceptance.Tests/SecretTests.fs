@@ -16,7 +16,7 @@ module K8s_Secret =
     [<Fact>]
     let ``kind is Secret`` () =
         let sut = secret {
-            name "my-secret"
+            "my-secret"
         }
         let result = sut.ToResource()
 
@@ -25,7 +25,7 @@ module K8s_Secret =
     [<Fact>]
     let ``apiVersion is v1`` () =
         let sut = secret {
-            name "my-secret"
+            _name "my-secret"
         }
         let result = sut.ToResource()
 
@@ -34,7 +34,7 @@ module K8s_Secret =
     [<Fact>]
     let ``name is set in metadata`` () =
         let sut = secret {
-            name "my-secret"
+            "my-secret"
         }
         let result = sut.ToResource()
 
@@ -43,7 +43,7 @@ module K8s_Secret =
     [<Fact>]
     let ``immutable is false by default`` () =
         let sut = secret {
-            name "my-secret"
+            "my-secret"
         }
         let result = sut.ToResource()
         test <@ result.immutable = false  @>
@@ -51,7 +51,7 @@ module K8s_Secret =
     [<Fact>]
     let ``immutable is true when set`` () =
         let sut = secret {
-            name "my-secret"
+            "my-secret"
             immutable
         }
         let result = sut.ToResource()
@@ -60,7 +60,7 @@ module K8s_Secret =
     [<Fact>]
     let ``type is Opaque`` () =
         let sut = secret {
-            name "my-secret"
+            "my-secret"
         }
         let result = sut.ToResource()
         test <@ result.``type`` = "Opaque"  @>
@@ -68,7 +68,7 @@ module K8s_Secret =
     [<Fact>]
     let ``default map data is None`` () =
         let sut = secret {
-            name "my-secret"
+            "my-secret"
         }
         let result = sut.ToResource()
 
@@ -78,7 +78,7 @@ module K8s_Secret =
     [<Fact>]
     let ``data is saved as base64`` () =
         let sut = secret {
-            name "my-secret"
+            "my-secret"
             data [
                 ("k1", Encoding.UTF8.GetBytes("some text"))
             ]
@@ -95,7 +95,7 @@ module K8s_Secret =
             "k2", "v2"
         ]
         let sut = secret {
-            name "my-secret"
+            "my-secret"
             stringData sd
         }
         let expected = sd |> Map.ofList |> Helpers.mapToIDictionary |> Some
