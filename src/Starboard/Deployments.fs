@@ -1,7 +1,7 @@
-﻿namespace Starboard.Resources
+﻿namespace Starboard.Workload
 
 open Starboard
-open Starboard.Resources
+open Starboard.Common
 
 /// Represents state that is later converted to a k8s Deployment Resource
 /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/deployment-v1/

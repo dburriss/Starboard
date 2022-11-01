@@ -3,8 +3,8 @@ namespace Starboard.Building.Tests
 module DeploymentTests =
 
     open Xunit
-    open Starboard.Resources
-    open Starboard.Resources.K8s
+    open Starboard.Common
+    open Starboard.Workload
     open System.Collections.Generic
 
     let listsEqual<'a> expected actual = 

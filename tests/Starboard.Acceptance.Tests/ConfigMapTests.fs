@@ -10,7 +10,7 @@ module K8s_ConfigMap =
 
     open Xunit
     open Starboard
-    open Starboard.Resources
+    open Starboard.Storage
     open Swensen.Unquote
 
     [<Fact>]

@@ -1,7 +1,7 @@
-﻿namespace Starboard.Resources
+﻿namespace Starboard.Storage
 
 open Starboard
-open Starboard.Resources
+open Starboard.Common
 
 //====================================
 // ConfigMap

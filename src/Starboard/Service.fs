@@ -1,7 +1,7 @@
-﻿namespace Starboard.Resources
+﻿namespace Starboard.Service
 
 open Starboard
-open Starboard.Resources
+open Starboard.Common
 open System.Text.Json.Nodes
 
 type IntOrString = | I of int32 | S of string

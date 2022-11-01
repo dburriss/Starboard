@@ -3,8 +3,8 @@ namespace Starboard.Acceptance.Tests
 module K8s_Deployment =
 
     open Xunit
-    open Starboard.Resources
-    open Starboard.Resources.K8s
+    open Starboard.Common
+    open Starboard.Workload
     open System.Collections.Generic
     open Swensen.Unquote
 

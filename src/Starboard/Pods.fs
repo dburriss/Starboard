@@ -1,7 +1,8 @@
-﻿namespace Starboard.Resources
+﻿namespace Starboard.Workload
 
 open Starboard
-open Starboard.Resources
+open Starboard.Common
+open Starboard.Storage
 
 type Pod = { 
     metadata: Metadata
@@ -108,7 +109,8 @@ type PodBuilder() =
     member this.Yield(volume: Volume seq) = volume |> Seq.fold (fun state x -> this.Volume(state, x)) Pod.empty
     member this.YieldFrom(volume: Volume seq) = this.Yield(volume)
     [<CustomOperation "add_volume">]
-    member _.Volume(state: Pod, volume: Volume) = { state with volumes = List.append state.volumes [volume] }
+    member _.Volume(state: Pod, volume: Volume) = 
+        { state with volumes = List.append state.volumes [volume] }
     
     [<CustomOperation "volumes">]
     member _.Volumes(state: Pod, volumes: Volume list) = { state with volumes = volumes }

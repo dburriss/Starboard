@@ -1,9 +1,12 @@
-﻿namespace Starboard.Resources
-
+﻿namespace Starboard
+[<AutoOpen>]
 module K8s =
 
     open Starboard
-    open Starboard.Resources
+    open Starboard.Storage
+    open Starboard.Workload
+    open Starboard.Service
+
 
     // TODO: Jobs
     // TODO: ReplicaSet?

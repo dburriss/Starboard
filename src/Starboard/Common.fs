@@ -1,4 +1,4 @@
-﻿namespace Starboard.Resources
+﻿namespace Starboard.Common
 
 [<AutoOpen>]
 module Common =
@@ -416,6 +416,19 @@ module Common =
         member _.VolumeMount(state: Container, volumeMount: VolumeMount) = { state with volumeMounts = List.append state.volumeMounts [volumeMount] }
         
 
+    type LocalObjectReference = {
+        name: string option
+    }
+    type LocalObjectReference with
+        static member empty = {
+            name = None
+        }
+    type LocalObjectReferenceBuilder() =
+        member _.Yield _ = LocalObjectReference.empty
+    
+        [<CustomOperation "name">]
+        member _.Name(state: LocalObjectReference, name: string) = { state with name = Some name }
+        
     type ObjectReference = {
         apiVersion: string option
         fieldPath: string option
@@ -533,4 +546,6 @@ module Common =
 // Builder init
 //====================================
     let container = new ContainerBuilder()
-    let objRef = new ObjectReferenceBuilder()
+    let localObjectRef = new LocalObjectReferenceBuilder()
+    let objectReference = new ObjectReferenceBuilder()
+    let typedLocalObjectReference = new TypedLocalObjectReferenceBuilder()

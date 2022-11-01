@@ -7,7 +7,9 @@ module K8s_Ingress =
 
     open Xunit
     open Starboard
-    open Starboard.Resources
+    open Starboard.Common
+    open Starboard.Workload
+    open Starboard.Service
     open Swensen.Unquote
 
     let defaultBackend_serviceName = "my-service-name"
