@@ -1,6 +1,7 @@
-﻿namespace Starboard.Resources
+﻿namespace Starboard.Service
 
 open Starboard
+open Starboard.Common
 //====================================
 // IngressClass
 // https://kubernetes.io/docs/reference/kubernetes-api/service-resources/ingress-class-v1/

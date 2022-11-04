@@ -1,7 +1,8 @@
-﻿namespace Starboard.Resources
+﻿namespace Starboard.Workload
 
 open Starboard
-open Starboard.Resources
+open Starboard.Common
+open Starboard.Storage
 
 type Pod = { 
     metadata: Metadata
@@ -36,6 +37,12 @@ type Pod with
             metadata = this.K8sMetadata()
             spec = this.Spec()
         |}
+    member this.Validate() =
+        let kind = this.K8sKind()
+        (this.metadata.Validate(kind))
+        @ Validation.notEmpty (fun x -> x.containers) $"{kind} `containers` cannot be empty." this
+        @ (this.containers |> List.map (fun container -> container.Validate()) |> List.concat)
+        @ (this.volumes |> List.map (fun volume -> volume.Validate()) |> List.concat)
         
 
 type PodBuilder() =
@@ -108,7 +115,8 @@ type PodBuilder() =
     member this.Yield(volume: Volume seq) = volume |> Seq.fold (fun state x -> this.Volume(state, x)) Pod.empty
     member this.YieldFrom(volume: Volume seq) = this.Yield(volume)
     [<CustomOperation "add_volume">]
-    member _.Volume(state: Pod, volume: Volume) = { state with volumes = List.append state.volumes [volume] }
+    member _.Volume(state: Pod, volume: Volume) = 
+        { state with volumes = List.append state.volumes [volume] }
     
     [<CustomOperation "volumes">]
     member _.Volumes(state: Pod, volumes: Volume list) = { state with volumes = volumes }

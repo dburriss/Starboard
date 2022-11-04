@@ -3,7 +3,7 @@ namespace Starboard.Building.Tests
 module ContainerTests =
 
     open Xunit
-    open Starboard.Resources
+    open Starboard.Common
     open System.Collections.Generic
 
     let listsEqual<'a> expected actual = 

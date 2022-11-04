@@ -10,7 +10,9 @@ module K8s_Secret =
 
     open Xunit
     open Starboard
-    open Starboard.Resources
+    open Starboard.Common
+    open Starboard.Workload
+    open Starboard.Storage
     open Swensen.Unquote
 
     [<Fact>]

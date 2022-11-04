@@ -3,8 +3,9 @@
 module K8s_Resources =
 
     open Xunit
-    open Starboard.Resources
-    open Starboard.Resources.K8s
+    open Starboard
+    open Starboard.Common
+    open Starboard.Workload
     open System.Collections.Generic
     open FSharp.Data
     open FSharp.Data.JsonExtensions

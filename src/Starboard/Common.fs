@@ -1,4 +1,4 @@
-﻿namespace Starboard.Resources
+﻿namespace Starboard.Common
 
 [<AutoOpen>]
 module Common =
@@ -48,11 +48,11 @@ module Common =
                 labels = Helpers.listToDict metadata.labels
                 annotations = Helpers.listToDict metadata.annotations
             |}
-        member this.Validate(context: string) =
-            (this |> Validation.required (fun m -> m.name) $"{context} 'metadata.name' is required.")
-            @ (this |> Validation.notEmpty (fun m -> m.name) $"{context} 'metadata.name' cannot be empty.")
-            @ (this |> Validation.required (fun m -> m.ns) $"{context} 'metadata.namespace' is required.")
-            @ (this |> Validation.notEmpty (fun m -> m.ns) $"{context} 'metadata.namespace' cannot be empty.")
+        member this.Validate(kind: string) =
+            (this |> Validation.required (fun m -> m.name) $"{kind} 'metadata.name' is required.")
+            @ (this |> Validation.notEmpty (fun m -> m.name) $"{kind} 'metadata.name' cannot be empty.")
+            @ (this |> Validation.required (fun m -> m.ns) $"{kind} 'metadata.namespace' is required.")
+            @ (this |> Validation.notEmpty (fun m -> m.ns) $"{kind} 'metadata.namespace' cannot be empty.")
 
     
     type MetadataBuilder() =
@@ -125,6 +125,9 @@ module Common =
                     matchExpressions = Helpers.mapValues mapToMatchExpressions exprs
                 |} |> Some
         member this.Spec() = LabelSelector.ToK8sModel this
+        member this.Validate() = 
+            let kind = "LabelSelector"
+            Validation.requiredOneOfTwoLists (fun x -> x.matchExpressions) (fun y -> y.matchLabels) $"{kind} requires at least one of `matchLabels` or `matchExpressions`" this
 
     type LabelSelectorBuilder() =
         member _.Yield _ = LabelSelector.empty
@@ -191,6 +194,9 @@ module Common =
                 name = this.name
                 protocol = this.protocol.ToString()
             |}
+        member this.Validate() =
+            let kind = "ContainerPort"
+            Validation.required (fun x -> x.containerPort) $"{kind} `containerPort` is required." this
 
     /// Millicpus: 1000m = 1cpu
     [<Measure>] type m
@@ -337,6 +343,9 @@ module Common =
                 resources = this.resources.Spec()
                 volumeMounts = this.volumeMounts |> Helpers.mapEach ((fun v -> v.Spec()))
             |}
+        member this.Validate() =
+            let kind = "Container"
+            Validation.notEmpty (fun x -> x.name) $"{kind} `name` is required." this
 
 
     type ContainerBuilder() =
@@ -416,6 +425,19 @@ module Common =
         member _.VolumeMount(state: Container, volumeMount: VolumeMount) = { state with volumeMounts = List.append state.volumeMounts [volumeMount] }
         
 
+    type LocalObjectReference = {
+        name: string option
+    }
+    type LocalObjectReference with
+        static member empty = {
+            name = None
+        }
+    type LocalObjectReferenceBuilder() =
+        member _.Yield _ = LocalObjectReference.empty
+    
+        [<CustomOperation "name">]
+        member _.Name(state: LocalObjectReference, name: string) = { state with name = Some name }
+        
     type ObjectReference = {
         apiVersion: string option
         fieldPath: string option
@@ -533,4 +555,6 @@ module Common =
 // Builder init
 //====================================
     let container = new ContainerBuilder()
-    let objRef = new ObjectReferenceBuilder()
+    let localObjectRef = new LocalObjectReferenceBuilder()
+    let objectReference = new ObjectReferenceBuilder()
+    let typedLocalObjectReference = new TypedLocalObjectReferenceBuilder()

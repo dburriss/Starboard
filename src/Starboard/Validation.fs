@@ -80,9 +80,19 @@ module Validation =
         | None, None -> [RequiredMemberIsMissing msg]
         | _ -> []
 
+    let requiredIfNotNone (optF: 'a -> 'b option) (lense: 'b -> 'c) msg (toTest: 'a) =
+        match (optF toTest) with
+        | None -> []
+        | Some x -> required lense msg x
+
     let requiredIfEmpty requiredProp possibleEmpty msg toTest =
         match ((requiredProp toTest), (possibleEmpty toTest)) with
         | None, [] -> [RequiredMemberIsMissing msg]
+        | _ -> []
+
+    let requiredOneOfTwoLists requiredProp possibleEmpty msg toTest =
+        match ((requiredProp toTest), (possibleEmpty toTest)) with
+        | [], [] -> [RequiredMemberIsMissing msg]
         | _ -> []
 
     let startsWith (start: string) (lense: 'a -> 'b) msg toTest =

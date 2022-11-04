@@ -6,8 +6,8 @@
 module K8s_Service =
 
     open Xunit
-    open Starboard
-    open Starboard.Resources
+    open Starboard.Service
+
     open Swensen.Unquote
 
     [<Fact>]

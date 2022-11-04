@@ -1,6 +1,7 @@
-﻿namespace Starboard.Resources
+﻿namespace Starboard.Storage
 
 open Starboard
+open Starboard.Common
 
 type ReclaimPolicy = | Delete | Retain
 
@@ -350,18 +351,6 @@ type PersistentVolume<'a> with
         |> Map.add volType (volTypeSpec |> box)
         |> Map.toSeq
         |> dict
-        //[
-        //    "accessModes", this.accessModes |> Helpers.mapEach (fun a -> a.ToString()) |> box
-        //    "capacity", this.capacity |> Option.map (fun x -> $"{x}Mi") |> box
-        //    "claimRef", this.claimRef
-        //    "storageClassName", this.storageClassName
-        //    "mountOptions", this.mountOptions |> Helpers.mapValues id |> box
-        //    "persistentVolumeReclaimPolicy", this.persistentVolumeReclaimPolicy
-        //    "volumeMode", this.volumeMode.ToString()
-        //    (vs |> fst), (vs |> snd |> box)
-        //] 
-        //|> List.filter (fun (_,v) -> not(isNull v))
-        //|> dict
         
     member this.ToResource() =
         {|
@@ -400,7 +389,7 @@ type CSIPersistentVolumeSource with
 /// csi represents storage that is handled by an external CSI driver.
 /// See: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/
 /// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes
-type CsiVolumeBuilder() =
+type CsiPersistentVolumeBuilder() =
     let csiInit spec = spec |> Option.defaultValue ("csi", CSIPersistentVolumeSource.empty)
 
     // TODO: see what it feels like with inheritance
@@ -516,4 +505,4 @@ module PersistentVolumeBuilders =
     
     let storageClass = new StorageClassBuilder()
     let persistentVolumeClaim = new PersistentVolumeClaimBuilder();
-    let csi = new CsiVolumeBuilder()
+    let csi = new CsiPersistentVolumeBuilder()

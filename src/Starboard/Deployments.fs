@@ -1,7 +1,7 @@
-﻿namespace Starboard.Resources
+﻿namespace Starboard.Workload
 
 open Starboard
-open Starboard.Resources
+open Starboard.Common
 
 /// Represents state that is later converted to a k8s Deployment Resource
 /// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/deployment-v1/
@@ -52,7 +52,12 @@ type Deployment with
             metadata = this.K8sMetadata()
             spec = this.Spec()
         |}
-
+    member this.Validate() =
+        let kind = this.K8sKind()
+        (this.metadata.Validate(kind))
+        @ (Validation.required (fun x -> x.selector) $"{kind} `selector` is required." this)
+        @ (this.selector.Validate())
+        @ (Validation.required (fun x -> x.pod) $"{kind} `template` is required." this)
 
 type DeploymentBuilder() =
     member _.Yield _ = Deployment.empty

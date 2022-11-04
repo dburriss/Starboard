@@ -3,8 +3,11 @@
 #r "../src/Starboard/bin/debug/net6.0/Starboard.dll"
 
 
-open Starboard.Resources
-open Starboard.Resources.K8s
+open Starboard
+open Starboard.Common
+open Starboard.Workload
+open Starboard.Storage
+open Starboard.Service
 
 let config = configMap {
     _name "test-config-map"
