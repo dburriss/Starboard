@@ -37,6 +37,12 @@ type Pod with
             metadata = this.K8sMetadata()
             spec = this.Spec()
         |}
+    member this.Validate() =
+        let kind = this.K8sKind()
+        (this.metadata.Validate(kind))
+        @ Validation.notEmpty (fun x -> x.containers) $"{kind} `containers` cannot be empty." this
+        @ (this.containers |> List.map (fun container -> container.Validate()) |> List.concat)
+        @ (this.volumes |> List.map (fun volume -> volume.Validate()) |> List.concat)
         
 
 type PodBuilder() =

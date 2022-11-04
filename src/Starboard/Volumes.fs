@@ -241,6 +241,25 @@ type Volume with
                 hostPath = None
                 csi = Some (v.Spec())
             |}
+    member this.Validate() =
+        let kind = "Volume"
+        let validatePersistentVolumeClaimVolume = function 
+            | PersistentVolumeClaimVolume v -> Validation.notEmpty (fun x -> x.claimName) $"{kind} `persistentVolumeClaim.claimName` is required." v 
+            | _ -> []
+
+        let validateHostPathVolume = function 
+            | HostPathVolume v -> Validation.notEmpty (fun x -> x.path) $"{kind} `hostPath.path` is required." v 
+            | _ -> []
+
+        let validateCsiVolume = function 
+            | CsiVolume v -> Validation.notEmpty (fun x -> x.driver) $"{kind} `csi.driver` is required." v 
+            | _ -> []
+
+        Validation.notEmpty (fun x -> x.name) $"{kind} `name` is required." this
+        @ validatePersistentVolumeClaimVolume this.volume
+        @ validateHostPathVolume this.volume
+        @ validateCsiVolume this.volume
+
 
 // =============================
 // PVC
@@ -445,6 +464,7 @@ type CsiVolumeBuilder() =
         let delayed = f()
         this.Combine(state, delayed)
     
+    member this.Yield(name: string) = this.Name(this.Zero(), name)
 
     [<CustomOperation "name">]
     member _.Name(state: Volume, name: string) = 

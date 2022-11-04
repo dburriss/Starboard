@@ -141,7 +141,7 @@ module K8s_Pod =
         let thePod = pod {
             "pod-test"
             csiVolume {
-                name "csi-path-name"
+                name "csi-name"
                 driver "my-driver"
                 fsType "Ext4"
                 readOnly
@@ -153,10 +153,34 @@ module K8s_Pod =
         let result = thePod.ToResource()
 
         test <@ result.spec.volumes.Value.Head.csi.IsSome = true @>
-        test <@ result.spec.volumes.Value.Head.name = "csi-path-name" @>
+        test <@ result.spec.volumes.Value.Head.name = "csi-name" @>
         test <@ result.spec.volumes.Value.Head.csi.Value.driver = "my-driver" @>
         test <@ result.spec.volumes.Value.Head.csi.Value.fsType = "Ext4" @>
         test <@ result.spec.volumes.Value.Head.csi.Value.readOnly = true @>
         test <@ result.spec.volumes.Value.Head.csi.Value.volumeAttributes.IsSome = true @>
         test <@ result.spec.volumes.Value.Head.csi.Value.volumeAttributes.Value.Count = 1 @>
+        
+    [<Fact>]
+    let ``with no containers is invalid`` () =
+        let thePod = pod {
+            "pod-test"
+        }
+        let result = thePod.Validate()
+
+        Assert.NotEmpty result
+
+    [<Fact>]
+    let ``runs validation on container content`` () =
+        let thePod = pod {
+            "pod-test"
+            container {
+                "my-container"
+            }
+            csiVolume {
+                "csi-name"
+            }
+        }
+        let result = thePod.Validate()
+
+        Assert.NotEmpty result
         

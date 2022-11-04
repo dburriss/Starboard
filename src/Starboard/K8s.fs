@@ -98,6 +98,7 @@ module K8s =
         [<CustomOperation "add_pod">]
         member __.Pod(state: K8s, pod: Pod) = 
             state.AddResource (box (pod.ToResource()))
+            |> fun s -> s.AddErrors(pod.Validate())
 
         // Deployments
         member this.Yield(deployment: Deployment) = this.Deployment(K8s.empty, deployment)
@@ -106,6 +107,7 @@ module K8s =
         [<CustomOperation "add_deployment">]
         member __.Deployment(state: K8s, deployment: Deployment) = 
             state.AddResource (box (deployment.ToResource()))
+            |> fun s -> s.AddErrors(deployment.Validate())
 
         // Service
         member this.Yield(service: Service) = this.Service(K8s.empty, service)
