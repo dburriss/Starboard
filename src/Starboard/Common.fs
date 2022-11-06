@@ -459,6 +459,8 @@ module Common =
                 resourceVersion = None
                 uid = None
             }
+        static member combine curr prev: ObjectReference = 
+            curr
     
     type ObjectReferenceBuilder() =
         member _.Yield _ = ObjectReference.empty

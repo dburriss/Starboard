@@ -85,3 +85,4 @@ module String =
                 true
             with
             | _ -> false
+    let toOption (s: string) = if String.IsNullOrWhiteSpace s then None else Some s

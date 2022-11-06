@@ -97,6 +97,7 @@ type Service with
     member this.K8sKind() = "Service"
     member this.K8sMetadata() = Metadata.ToK8sModel this.metadata
     member this.Spec() =
+        // TODO: flesh out all missing props for ServiceSpec
         // https://kubernetes.io/docs/reference/kubernetes-api/service-resources/service-v1/#ServiceSpec
         {|
             selector = this.selector.Spec()
