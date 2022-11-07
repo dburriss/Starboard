@@ -1,5 +1,7 @@
 namespace Starboard.Building.Tests
 
+open Swensen.Unquote
+
 module DeploymentTests =
 
     open Xunit
@@ -91,7 +93,7 @@ module DeploymentTests =
             matchIn ("key",["value"])   
         }
         let deployment1 = deployment {
-            selector labelsToMatch
+            set_selector labelsToMatch
             podTemplate aPod
         }
 
@@ -104,7 +106,7 @@ module DeploymentTests =
             matchLabel ("key","value")   
         }
         let deployment1 = deployment {
-            selector labelsToMatch
+            set_selector labelsToMatch
             podTemplate aPod
         }
 
@@ -116,11 +118,27 @@ module DeploymentTests =
         let expected = [("key","value")]
 
         let deployment1 = deployment {
-            matchLabel ("key","value")
+            add_matchLabel ("key","value")
             podTemplate aPod
         }
 
         listsEqual expected deployment1.selector.matchLabels
+
+    [<Fact>]
+    let ``DeploymentBuilder sets pod from yield`` () =
+
+        let deployment1 = deployment {
+            "my-deployment"
+            aPod
+            selector {
+                matchLabel ("k", "v")
+            }
+        }
+
+        test <@ deployment1.pod.IsSome @>
+        test <@ deployment1.metadata.name = "my-deployment" @>
+        test <@ deployment1.pod.Value = aPod @>
+        test <@ deployment1.selector.matchLabels = [("k", "v")] @>
 
 
 

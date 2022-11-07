@@ -181,7 +181,6 @@ type ClusterRoleBindingBuilder() =
 
     // RoleRef
     member this.Yield(roleRef: RoleRef) = this.RoleRef(ClusterRoleBinding.empty, roleRef)
-
     [<CustomOperation "set_roleRef">]
     member this.RoleRef(state: ClusterRoleBinding, roleRef: RoleRef) = 
         { state with roleRef = roleRef }

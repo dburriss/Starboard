@@ -115,23 +115,25 @@ type DeploymentBuilder() =
     member _.SetMetadata(state: Deployment, metadata: Metadata) =
         { state with metadata = metadata }
     
+    member this.Yield(pod: Pod) = this.Pod(Deployment.empty, pod)
     [<CustomOperation "podTemplate">]
     member _.Pod(state: Deployment, pod: Pod) = { state with pod = Some pod }
         
     [<CustomOperation "replicas">]
     member _.Replicas(state: Deployment, replicaCount: int) = { state with replicas = replicaCount }
-        
+    
+    member this.Yield(labelSelector: LabelSelector) = this.Selector(Deployment.empty, labelSelector)
     /// Selector for the Deployment. Used for complex selections. Use `matchLabel(s)` for simple label matching.
-    [<CustomOperation "selector">]
+    [<CustomOperation "set_selector">]
     member _.Selector(state: Deployment, selectors: LabelSelector) = { state with selector = selectors }
 
     /// Add a single label selector to the Deployment.
-    [<CustomOperation "matchLabel">]
+    [<CustomOperation "add_matchLabel">]
     member _.MatchLabel(state: Deployment, (key,value)) =
         { state with selector = { state.selector with matchLabels = List.append state.selector.matchLabels [(key,value)] } }
 
     /// Add multiple label selectors to the Deployment.
-    [<CustomOperation "matchLabels">]
+    [<CustomOperation "add_matchLabels">]
     member _.MatchLabels(state: Deployment, labels) =
         { state with selector = { state.selector with matchLabels = List.append state.selector.matchLabels labels } }
 
