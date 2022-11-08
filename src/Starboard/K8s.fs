@@ -165,6 +165,15 @@ module K8s =
         [<CustomOperation "add_resources">]
         member __.Resources(state: K8s, resources: obj list) = state.AddResources (resources |> List.map box)
 
+        // K8s
+        member this.Yield(k8s: K8s) = this.Append(K8s.empty, k8s)
+        member this.Yield(k8s: K8s seq) = k8s |> Seq.fold (fun state x -> this.Append(state, x)) K8s.empty
+        member this.YieldFrom(k8s: K8s seq) = this.Yield(k8s)
+        [<CustomOperation "append">]
+        member this.Append(state: K8s, toAppend: K8s) = this.Combine(state, toAppend)
+        
+        
+
     let k8s = new K8sBuilder()
 
     type K8sOutput = {
