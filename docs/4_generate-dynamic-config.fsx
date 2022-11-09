@@ -63,15 +63,17 @@ let publicApi appName portNumber =
         }
     }
 
+// Use the `publicApi` function to create 2 lists or resources and combine them into a new `K8s` instance. 
 let k8sConfig = k8s {
     publicApi "Checkout" 80
     publicApi "Payments" 81
  }
 
-let k8sOutput' = KubeCtlWriter.toYaml k8sConfig
+// Get the output content and validation errors
+let k8sOutput = KubeCtlWriter.toYaml k8sConfig
 (*** hide ***)
 let md = $"
-{k8sOutput'.content}
+{k8sOutput.content}
 "
 (**
 ### Output

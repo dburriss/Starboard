@@ -47,7 +47,8 @@ module K8s =
         member __.Combine (currentValueFromYield: K8s, accumulatorFromDelay: K8s) = 
             { currentValueFromYield with 
                 resources = currentValueFromYield.resources @ accumulatorFromDelay.resources;
-                errors = currentValueFromYield.errors @ accumulatorFromDelay.errors }
+                errors = (currentValueFromYield.errors @ accumulatorFromDelay.errors) |> List.distinct
+            }
         member __.Delay f = f()
 
         member this.For(state: K8s , f: unit -> K8s) =

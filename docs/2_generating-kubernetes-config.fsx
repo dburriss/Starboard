@@ -67,6 +67,17 @@ It will still generate the config you specify but gives you errors that you can 
 
 
 let k8sOutput = KubeCtlWriter.toYaml kubeConfig
-(*** hide ***)
-k8sOutput
+k8sOutput.content
 (*** include-it ***)
+
+(**
+## Validation errors
+
+As mentioned, `cref:T:Starboard.K8s.K8sOutput` contains an `errors` field that contains a list of validation errors.
+
+Each `cref:T:Starboard.ValidationProblem` has a `Message` field on it that gives back a `string`. You can print these errors out:
+*)
+
+k8sOutput.errors 
+|> List.map (fun err -> err.Message)
+|> List.iter (eprintfn "%s")

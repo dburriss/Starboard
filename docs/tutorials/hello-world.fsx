@@ -11,9 +11,19 @@ index: 1
 # Starboard: Hello world
 
 In this tutorial we will create your first Starboard script and generate the Kubernetes YAML config to a file.
-See 
+
+## Requirements
+
+1. [dotnet SDK]() installed
+2. Optionally, any IDE that supports F# (Visual Studio Code, IntelliJ Rider, Visual Studio, NeoVim)
+
+> Visual Studio Code with the [Ionide](https://ionide.io/) is a great choice. See [Setup your environment](../setup-environment.fsx) for more details.
 
 ## Initial configuration
+
+Create a F# script file called `deployment.fsx`
+
+Copy the following code into the script file:
 *)
 
 // import from Nuget
@@ -42,7 +52,7 @@ let theInvalidDeployment = k8s {
 }
 
 // Write the YAML to infra.yaml file and get the list of validation issues
-let validations = KubeCtlWriter.toYamlFile theInvalidDeployment "deployment-invalid.yaml"
+let validations = KubeCtlWriter.toYamlFile theInvalidDeployment "deployment.yaml"
 // Let's print out the validation errors
 for err in validations do
     eprintfn "%s" err.Message
@@ -60,10 +70,29 @@ let errorOutput1 =
 (*** include-value: errorOutput1 ***)
 
 (**
-### Fixing the config
+
+Now you can call the fsx file to generate your YAML config.
+
+```bash
+dotnet fsi deployment.fsx
+```
+
+If you run the apply command on your YAML file, you will see Kubernetes agrees with the validation errors.
+
+```bash
+kubectl apply -f deployment.yaml
+```
+
+## Fixed config
+
+Let's address the validation errors that Starboard found. 
+
+1. Call the `add_matchLabel` operation with a key/value pair for the label. 
+2. Next, add the label to the pod using the `_labels` metadata operation, passing in a list of key/value pairs.
+
 *)
 
-let theValidDeployment = k8s { // leave the `let` in if you are editing the existing deployment
+let theValidDeployment = k8s { 
     deployment {
         "test-deployment"
         replicas 2
@@ -79,8 +108,8 @@ let theValidDeployment = k8s { // leave the `let` in if you are editing the exis
     }
 }
 
+KubeCtlWriter.toYamlFile theValidDeployment "deployment.yaml"
 (*** hide ***)
-KubeCtlWriter.toYamlFile theValidDeployment "deployment-valid.yaml"
 let output2 = KubeCtlWriter.toYaml theValidDeployment
 let content2 = output2.content
 (**
@@ -96,9 +125,18 @@ Our validation errors are gone and we have a valid Kubernetes configuration.
 Let's execute this deployment against our Kubernetes cluster to confirm it is indeed correct.
 
 ```bash
+dotnet fsi deployment.fsx
 kubectl apply -f deployment.yaml
+kubectl get deployments
 ```
 
 You should get the message: _deployment.apps/test-deployment created_
+
+## Summary
+
+In this tutorial you created your first Starboard script and generated the YAML. We saw how to get and print out the validation errors.
+Finally, we saw how we can successfully deploy our generated script.
+
+Congratulations! You have taken a turn toward a new way of configuring your infrastructure.
 *)
 

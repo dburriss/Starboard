@@ -140,5 +140,3 @@ module DeploymentTests =
         test <@ deployment1.pod.Value = aPod @>
         test <@ deployment1.selector.matchLabels = [("k", "v")] @>
 
-
-
