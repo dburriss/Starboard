@@ -58,6 +58,7 @@ type Deployment with
         @ (Validation.required (fun x -> x.selector) $"{kind} `selector` is required." this)
         @ (this.selector.Validate())
         @ (Validation.required (fun x -> x.pod) $"{kind} `template` is required." this)
+        // TODO: matchLabels should match at least 1 label on pod(s)
 
 type DeploymentBuilder() =
     member _.Yield _ = Deployment.empty
@@ -86,7 +87,7 @@ type DeploymentBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_name">]
     member _.Name(state: Deployment, name: string) = 
-        let newMetadata = { state.metadata with name = name }
+        let newMetadata = { state.metadata with name = Some name }
         { state with metadata = newMetadata}
     
     /// Namespace of the Deployment.
@@ -94,7 +95,7 @@ type DeploymentBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_namespace">]
     member _.Namespace(state: Deployment, ns: string) = 
-        let newMetadata = { state.metadata with ns = ns }
+        let newMetadata = { state.metadata with ns = Some ns }
         { state with metadata = newMetadata }
     
     /// Labels for the Deployment

@@ -59,7 +59,7 @@ type ServiceAccountBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_name">]
     member _.Name(state: ServiceAccount, name: string) = 
-        let newMetadata = { state.metadata with name = name }
+        let newMetadata = { state.metadata with name = Some name }
         { state with metadata = newMetadata}
     
     /// Namespace of the ServiceAccount.
@@ -67,7 +67,7 @@ type ServiceAccountBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_namespace">]
     member _.Namespace(state: ServiceAccount, ns: string) = 
-        let newMetadata = { state.metadata with ns = ns }
+        let newMetadata = { state.metadata with ns = Some ns }
         { state with metadata = newMetadata }
     
     /// Labels for the ServiceAccount

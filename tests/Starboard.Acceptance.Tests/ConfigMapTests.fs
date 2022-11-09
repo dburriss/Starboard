@@ -38,7 +38,7 @@ module K8s_ConfigMap =
         }
         let result = sut.ToResource()
 
-        test <@ result.metadata.name = "my-config" @>
+        test <@ result.metadata.name = Some "my-config" @>
                   
     [<Fact>]
     let ``immutable is false by default`` () =

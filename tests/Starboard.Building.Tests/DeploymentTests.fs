@@ -43,7 +43,7 @@ module DeploymentTests =
             podTemplate aPod
         }
 
-        Assert.Equal("my-name", deployment1.metadata.name)
+        Assert.Equal(Some "my-name", deployment1.metadata.name)
 
     [<Fact>]
     let ``DeploymentBuilder sets replicas`` () =
@@ -64,7 +64,7 @@ module DeploymentTests =
             podTemplate aPod
         }
 
-        Assert.Equal("test", deployment1.metadata.ns)
+        Assert.Equal(Some "test", deployment1.metadata.ns)
 
     [<Fact>]
     let ``DeploymentBuilder sets labels`` () =
@@ -136,7 +136,7 @@ module DeploymentTests =
         }
 
         test <@ deployment1.pod.IsSome @>
-        test <@ deployment1.metadata.name = "my-deployment" @>
+        test <@ deployment1.metadata.name = Some "my-deployment" @>
         test <@ deployment1.pod.Value = aPod @>
         test <@ deployment1.selector.matchLabels = [("k", "v")] @>
 

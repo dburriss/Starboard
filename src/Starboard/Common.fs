@@ -7,28 +7,30 @@ module Common =
 
     type Metadata = 
         {
-            name: string
+            name: string option
             generateName : string option
-            ns: string
+            ns: string option
             labels: (string*string) list
             annotations: (string*string) list }
 
     type Metadata with
         static member empty = {
-            name = ""
+            name = None
             generateName = None
-            ns = "default"
+            ns = Some "default"
             labels = List.empty
             annotations = List.empty 
         }
         static member combine metadata1 metadata2 =
             let mergeNamespace ns1 ns2 =
                 match(ns1,ns2) with
-                | ns1, "default" -> ns1
-                | "default", ns2 -> ns2
+                | ns1, Some "default" -> ns1
+                | ns1, None -> ns1
+                | Some "default", ns2 -> ns2
+                | None, ns2 -> ns2
                 | _ -> ns1
             {
-                name = Helpers.mergeString metadata1.name metadata2.name
+                name = Helpers.mergeOption metadata1.name metadata2.name
                 generateName = Helpers.mergeOption metadata1.generateName metadata2.generateName
                 ns = mergeNamespace metadata1.ns metadata2.ns
                 labels = List.append (metadata1.labels) (metadata2.labels)
@@ -59,13 +61,13 @@ module Common =
         member _.Yield _ = Metadata.empty
     
         [<CustomOperation "name">]
-        member _.Name(state: Metadata, name: string) = { state with name = name }
+        member _.Name(state: Metadata, name: string) = { state with name = Some name }
         
         [<CustomOperation "generateName">]
         member _.GenerateName(state: Metadata, generateName: string) = { state with generateName = Some generateName }
         
         [<CustomOperation "ns">]
-        member _.Namespace(state: Metadata, ns: string) = { state with ns = ns }      
+        member _.Namespace(state: Metadata, ns: string) = { state with ns = Some ns }      
         
         [<CustomOperation "labels">]
         member _.Labels(state: Metadata, labels: (string*string) list) = { state with labels = labels }      

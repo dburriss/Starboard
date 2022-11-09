@@ -33,7 +33,7 @@ module K8s_ServiceAccount =
         }
         let result = sut.ToResource()
 
-        test <@ result.metadata.name = "my-service-account" @>
+        test <@ result.metadata.name = Some "my-service-account" @>
                   
     [<Fact>]
     let ``automountServiceAccountToken is false by default`` () =

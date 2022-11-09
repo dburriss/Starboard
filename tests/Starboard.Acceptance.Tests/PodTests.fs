@@ -40,8 +40,8 @@ module K8s_Pod =
         }
         let result = thePod.ToResource()
 
-        test <@ result.metadata.name = "pod-test" @>
-        test <@ result.metadata.``namespace`` = "default" @>
+        test <@ result.metadata.name = Some "pod-test" @>
+        test <@ result.metadata.``namespace`` = Some "default" @>
         test <@ result.metadata.annotations = None @>
         test <@ result.metadata.labels = None @>
             

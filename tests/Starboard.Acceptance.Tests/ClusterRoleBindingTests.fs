@@ -32,7 +32,7 @@ module K8s_ClusterRoleBinding =
         }
         let result = sut.ToResource()
 
-        test <@ result.metadata.name = "my-cluster-role-binding" @>
+        test <@ result.metadata.name = Some "my-cluster-role-binding" @>
                                 
     [<Fact>]
     let ``default imagePullSecrets None`` () =
