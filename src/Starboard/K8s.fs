@@ -229,10 +229,16 @@ module K8s =
             output.errors
         
         let print k8s = 
-            do k8s |> toYaml |> fun output -> printfn "%s" (output.content)
+            let output =  k8s |> toYaml
             let errs = mapErrorToMessage k8s.errors
-            let stdErr = Console.Error
-            for e in errs do
-                stdErr.WriteLine(e)
+            if not output.isValid then
+                printfn "Validation errors:"
+
+                for e in errs do
+                    eprintfn "- %s" e
+                printfn ""
+            
+            printfn "Content:"
+            printfn "%s" (output.content)
     
     

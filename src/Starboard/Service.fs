@@ -10,7 +10,7 @@ type IntOrString with
         // TODO: Create a serializer for this.
         match this with
         | I i -> JsonValue.Create(i).ToJsonString()
-        | S s -> JsonValue.Create(s).ToJsonString()
+        | S s -> s
 
 type ServicePort = {
     port: int option
@@ -77,7 +77,7 @@ type ServiceType with
 
 type Service = { 
     metadata: Metadata
-    selector: LabelSelector
+    selector: Map<string,string>
     ports: ServicePort list
     serviceType: ServiceType
 }
@@ -86,7 +86,7 @@ type Service with
     static member empty =
         { 
             metadata = Metadata.empty
-            selector = LabelSelector.empty
+            selector = Map.empty
             ports = List.empty
             serviceType = ClusterIP
         }
@@ -100,7 +100,7 @@ type Service with
         // TODO: flesh out all missing props for ServiceSpec
         // https://kubernetes.io/docs/reference/kubernetes-api/service-resources/service-v1/#ServiceSpec
         {|
-            selector = this.selector.Spec()
+            selector = this.selector |> Helpers.mapToIDictionary |> Helpers.emptyAsNone
             ports = this.ports |> Helpers.mapEach (fun p -> p.Spec())
             ``type`` = this.serviceType.ToString()
         |}
@@ -127,7 +127,7 @@ type ServiceBuilder() =
             | _ -> x1
         { currentValueFromYield with 
             metadata = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
-            selector = LabelSelector.combine currentValueFromYield.selector accumulatorFromDelay.selector
+            selector = Helpers.mergeMap currentValueFromYield.selector accumulatorFromDelay.selector
             ports = List.append (currentValueFromYield.ports) (accumulatorFromDelay.ports)
             serviceType = mergeServiceType currentValueFromYield.serviceType accumulatorFromDelay.serviceType
         }
@@ -175,23 +175,24 @@ type ServiceBuilder() =
     member _.SetMetadata(state: Service, metadata: Metadata) =
         { state with metadata = metadata }
     
-    // LabelSelector
-    member this.Yield(labelSelector: LabelSelector) = this.LabelSelector(Service.empty, labelSelector)
-    member this.Yield(labelSelector: LabelSelector seq) = labelSelector |> Seq.fold (fun state x -> this.LabelSelector(state, x)) Service.empty
-    member this.YieldFrom(labelSelector: LabelSelector seq) = this.Yield(labelSelector)
-    /// Selector for the Service. Used for complex selections. Use `matchLabel(s)` for simple label matching.
-    [<CustomOperation "selector">]
-    member _.LabelSelector(state: Service, selectors: LabelSelector) = { state with selector = selectors }
+    //// LabelSelector
+    //member this.Yield(labelSelector: LabelSelector) = this.LabelSelector(Service.empty, labelSelector)
+    //member this.Yield(labelSelector: LabelSelector seq) = labelSelector |> Seq.fold (fun state x -> this.LabelSelector(state, x)) Service.empty
+    //member this.YieldFrom(labelSelector: LabelSelector seq) = this.Yield(labelSelector)
+    ///// Selector for the Service. Used for complex selections. Use `matchLabel(s)` for simple label matching.
+    //[<CustomOperation "selector">]
+    //member _.LabelSelector(state: Service, selectors: LabelSelector) = { state with selector = selectors }
 
     /// Add a single label selector to the Service.
     [<CustomOperation "matchLabel">]
     member _.MatchLabel(state: Service, (key,value)) =
-        { state with selector = { state.selector with matchLabels = List.append state.selector.matchLabels [(key,value)] } }
+        { state with selector = state.selector |> Map.add key value }
 
     /// Add multiple label selectors to the Service.
     [<CustomOperation "matchLabels">]
     member _.MatchLabels(state: Service, labels) =
-        { state with selector = { state.selector with matchLabels = List.append state.selector.matchLabels labels } }
+        let newSelector = Helpers.mergeMap (labels |> Map.ofList) state.selector
+        { state with selector = newSelector } 
     
     // ServicePort
     member this.Yield(servicePort: ServicePort) = this.ServicePort(Service.empty, servicePort)

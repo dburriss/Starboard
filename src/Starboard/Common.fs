@@ -156,7 +156,7 @@ module Common =
 
     /// A label selector is a label query over a set of resources.
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/label-selector/#LabelSelector
-    let selector = new LabelSelectorBuilder()
+    let labelSelector = new LabelSelectorBuilder()
 
     //-------------------------
     // Container
@@ -169,7 +169,12 @@ module Common =
             | TCP -> "TCP"
             | UDP -> "UDP"
             | SCTP -> "SCTP"
-
+        static member combine p1 p2 =
+            match (p1,p2) with
+            | p1, TCP -> p1
+            | TCP, p2 -> p2
+            | _ -> p1
+ 
     type ContainerPort = {
         containerPort: int option
         hostIP: string option
@@ -243,7 +248,25 @@ module Common =
     type ContainerPortBuilder() =
         member _.Yield _ = ContainerPort.empty
 
-        [<CustomOperation "containerPort">]
+        member __.Zero () = ContainerPort.empty
+        
+        member __.Combine (currentValueFromYield: ContainerPort, accumulatorFromDelay: ContainerPort) = 
+            { currentValueFromYield with 
+                containerPort = Helpers.mergeOption (currentValueFromYield.containerPort) (accumulatorFromDelay.containerPort)
+                hostIP = Helpers.mergeOption (currentValueFromYield.hostIP) (accumulatorFromDelay.hostIP)
+                hostPort = Helpers.mergeOption (currentValueFromYield.hostPort) (accumulatorFromDelay.hostPort)
+                name = Helpers.mergeOption (currentValueFromYield.name) (accumulatorFromDelay.name)
+                protocol = Protocol.combine currentValueFromYield.protocol accumulatorFromDelay.protocol
+            }
+        
+        member __.Delay f = f()
+        
+        member this.For(state: ContainerPort , f: unit -> ContainerPort) =
+            let delayed = f()
+            this.Combine(state, delayed)
+        
+
+        [<CustomOperation "port">]
         member _.ContainerPort(state: ContainerPort, containerPort: int) = { state with containerPort = Some containerPort }
         
         [<CustomOperation "hostIP">]
@@ -252,6 +275,8 @@ module Common =
         [<CustomOperation "hostPort">]
         member _.HostPort(state: ContainerPort, hostPort: int) = { state with hostPort = Some hostPort }
         
+        // Name
+        member this.Yield(name: string) = this.Name(ContainerPort.empty, name)
         [<CustomOperation "name">]
         member _.Name(state: ContainerPort, name: string) = { state with name = Some name }
         

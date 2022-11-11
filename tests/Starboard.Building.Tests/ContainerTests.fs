@@ -34,7 +34,7 @@ module ContainerTests =
     [<Fact>]
     let ``ContainerBuilder sets port`` () =
         let port1 = containerPort {
-            containerPort 5000
+            port 5000
             hostIP "127.0.0.1"
             hostPort 80
             name "test"
@@ -42,7 +42,7 @@ module ContainerTests =
         }
         let container1 = container {
             containerPort {
-                containerPort 5000
+                port 5000
                 hostIP "127.0.0.1"
                 hostPort 80
                 name "test"

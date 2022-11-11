@@ -5,6 +5,7 @@
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ServiceTests.fs" />
     <Compile Include="ServiceAccountTests.fs" />
     <Compile Include="ClusterRoleBindingTests.fs" />
     <Compile Include="DeploymentTests.fs" />

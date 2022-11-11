@@ -89,7 +89,7 @@ module DeploymentTests =
     [<Fact>]
     let ``DeploymentBuilder sets matchExpressions with selectors`` () =
         let expected  = [{ key = "key"; operator = In; values = ["value"] }]
-        let labelsToMatch = selector {
+        let labelsToMatch = labelSelector {
             matchIn ("key",["value"])   
         }
         let deployment1 = deployment {
@@ -102,7 +102,7 @@ module DeploymentTests =
     [<Fact>]
     let ``DeploymentBuilder sets matchLabels with selectors`` () =
         let expected = [("key","value")]
-        let labelsToMatch = selector {
+        let labelsToMatch = labelSelector {
             matchLabel ("key","value")   
         }
         let deployment1 = deployment {
@@ -130,7 +130,7 @@ module DeploymentTests =
         let deployment1 = deployment {
             "my-deployment"
             aPod
-            selector {
+            labelSelector {
                 matchLabel ("k", "v")
             }
         }
