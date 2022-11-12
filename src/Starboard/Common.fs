@@ -137,6 +137,10 @@ module Common =
         [<CustomOperation "matchLabel">]
         member _.MatchLabel(state: LabelSelector, (key,value): (string*string)) = 
             { state with matchLabels = List.append state.matchLabels [(key,value)] }
+
+        [<CustomOperation "matchLabels">]
+        member _.MatchLabel(state: LabelSelector, labels: (string*string) list) = 
+            { state with matchLabels = List.append state.matchLabels labels }
  
         [<CustomOperation "matchDoesNotExist">]
         member _.MatchDoesNotExistExpression(state: LabelSelector, (key,values)) = 
@@ -327,14 +331,41 @@ module Common =
 
     let volumeMount = new VolumeMountBuilder()
 
+    type EnvVar = {
+        name: string
+        value: string
+    }
+    type EnvVar with
+        static member empty =
+            {
+                name = ""
+                value = ""
+            }
+        member this.Spec() =
+            {|
+                name = this.name
+                value = this.value
+            |}
 
+    type EnvVarBuilder() =
+        member _.Yield _ = EnvVar.empty
+    
+        [<CustomOperation "name">]
+        member _.Name(state: EnvVar, name: string) = { state with name = name }
+        
+        [<CustomOperation "value">]
+        member _.Value(state: EnvVar, value: string) = { state with value = value }
+        
+        
+    
+    let envVar = new EnvVarBuilder()
 
     type Container = { 
         name: string option
         image: string
         command: string list
         args: string list 
-        env: (string*string) list
+        env: EnvVar list
         workingDir: string option
         ports: ContainerPort list
         resources: Resources
@@ -369,6 +400,7 @@ module Common =
                 ports = this.ports |> Helpers.mapEach (fun p -> p.Spec())
                 resources = this.resources.Spec()
                 volumeMounts = this.volumeMounts |> Helpers.mapEach ((fun v -> v.Spec()))
+                env = this.env |> Helpers.mapEach ((fun env -> env.Spec()))
             |}
         member this.Validate() =
             let kind = "Container"
@@ -391,6 +423,8 @@ module Common =
                 resources = Resources.combine (currentValueFromYield.resources) (accumulatorFromDelay.resources)
                 ports = List.append (currentValueFromYield.ports) (accumulatorFromDelay.ports)
                 volumeMounts = List.append (currentValueFromYield.volumeMounts) (accumulatorFromDelay.volumeMounts)
+                env = List.append (currentValueFromYield.env) (accumulatorFromDelay.env)
+                
             } 
                 
         
@@ -450,6 +484,14 @@ module Common =
         member this.YieldFrom(volumeMount: VolumeMount seq) = this.Yield(volumeMount)
         [<CustomOperation "add_volumeMount">]
         member _.VolumeMount(state: Container, volumeMount: VolumeMount) = { state with volumeMounts = List.append state.volumeMounts [volumeMount] }
+        
+        // EnvVar
+        member this.Yield(envVar: EnvVar) = this.AddEnvVar(Container.empty, envVar)
+        member this.Yield(envVars: EnvVar seq) = envVars |> Seq.fold (fun state x -> this.AddEnvVar(state, x)) Container.empty
+        member this.YieldFrom(envVars: EnvVar seq) = this.Yield(envVars)
+        [<CustomOperation "add_envVar">]
+        member _.AddEnvVar(state: Container, envVar: EnvVar) = { state with env = List.append state.env [envVar] }
+        
         
 
     type LocalObjectReference = {
