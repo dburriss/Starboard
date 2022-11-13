@@ -94,21 +94,20 @@ type EmptyDirVolumeSource with
             sizeLimit = sprintf "%iMi" this.sizeLimit
         |}
     
-type HostPathType = | Default | DirectoryOrCreate | Directory | FileOrCreate | File | Socket | CharDevice | BlockDevice
-
 /// hostPath represents a directory on the host
 /// See: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/#local
-type HostPathType with
-    member this.ToString() =
-        match this with
-        | Default -> ""
-        | DirectoryOrCreate -> "DirectoryOrCreate"
-        | Directory -> "Directory"
-        | FileOrCreate -> "FileOrCreate"
-        | File -> "File"
-        | Socket -> "Socket"
-        | CharDevice -> "CharDevice"
-        | BlockDevice -> "BlockDevice"
+type HostPathType = 
+    | Default | DirectoryOrCreate | Directory | FileOrCreate | File | Socket | CharDevice | BlockDevice
+    with override this.ToString() =
+            match this with
+            | Default -> ""
+            | DirectoryOrCreate -> "DirectoryOrCreate"
+            | Directory -> "Directory"
+            | FileOrCreate -> "FileOrCreate"
+            | File -> "File"
+            | Socket -> "Socket"
+            | CharDevice -> "CharDevice"
+            | BlockDevice -> "BlockDevice"
         
 type HostPathVolumeSource = {
     hostPathType: HostPathType

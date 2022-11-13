@@ -3,13 +3,12 @@
 open Starboard
 open Starboard.Common
 
-type ReclaimPolicy = | Delete | Retain
-
-type ReclaimPolicy with
-    member this.ToString() =
-        match this with
-        | Delete -> "Delete"
-        | Retain -> "Retain"
+type ReclaimPolicy = 
+    | Delete | Retain
+    with override this.ToString() =
+            match this with
+            | Delete -> "Delete"
+            | Retain -> "Retain"
 
 type SecretReference = {
     /// Name is unique within a namespace to reference a secret resource.
@@ -164,23 +163,21 @@ type StorageClassBuilder() =
 // PersistentVolumeClaim
 // https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/
 
-type VolumeMode = | Filesystem | Block
+type VolumeMode = 
+    | Filesystem | Block
+    with override this.ToString() =
+            match this with
+            | Filesystem -> "Filesystem"
+            | Block -> "Block"
 
-type VolumeMode with
-    member this.ToString() =
-        match this with
-        | Filesystem -> "Filesystem"
-        | Block -> "Block"
-
-type AccessMode = | ReadWriteOnce | ReadOnlyMany | ReadWriteMany | ReadWriteOncePod
-
-type AccessMode with
-    member this.ToString() =
-        match this with
-        | ReadWriteOnce -> "ReadWriteOnce"
-        | ReadOnlyMany -> "ReadOnlyMany"
-        | ReadWriteMany -> "ReadWriteMany"
-        | ReadWriteOncePod -> "ReadWriteOncePod"
+type AccessMode = 
+    | ReadWriteOnce | ReadOnlyMany | ReadWriteMany | ReadWriteOncePod
+    with override this.ToString() =
+            match this with
+            | ReadWriteOnce -> "ReadWriteOnce"
+            | ReadOnlyMany -> "ReadOnlyMany"
+            | ReadWriteMany -> "ReadWriteMany"
+            | ReadWriteOncePod -> "ReadWriteOncePod"
 
 type PersistentVolumeClaim = {
     metadata: Metadata

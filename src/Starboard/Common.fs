@@ -166,13 +166,14 @@ module Common =
     // Container
     //-------------------------
     
-    type Protocol = TCP | UDP | SCTP
-    type Protocol with
-        member this.ToString() =
+    type Protocol = 
+    | TCP | UDP | SCTP
+    with override this.ToString() =
             match this with
             | TCP -> "TCP"
             | UDP -> "UDP"
             | SCTP -> "SCTP"
+    type Protocol with
         static member combine p1 p2 =
             match (p1,p2) with
             | p1, TCP -> p1

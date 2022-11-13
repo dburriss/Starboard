@@ -1,5 +1,8 @@
 # Starboard
 
+[![Tests](https://github.com/dburriss/starboard/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/dburriss/starboard/actions/workflows/build-and-test.yml)
+![Nuget](https://img.shields.io/nuget/v/Starboard)
+
 Starboard is a library providing strongly typed builders over kubernetes configuration. It allows you to retain a declarative style to your configuration while putting the full power of the F# programming language in your hands.
 
 Starboard outputs plain Kubernetes YAML or JSON resource config files, so no need to change what you already have.

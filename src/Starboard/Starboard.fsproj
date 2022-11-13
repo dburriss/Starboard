@@ -11,7 +11,9 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Devon Burriss</Copyright>
 		<Version>0.0.1</Version>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>kubernetes;configuration</PackageTags>
+		<Title>Starboard</Title>
 	</PropertyGroup>
 
 	<ItemGroup>

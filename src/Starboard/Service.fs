@@ -66,14 +66,14 @@ type ServicePortBuilder() =
     [<CustomOperation "appProtocol">]
     member _.AppProtocol(state: ServicePort, appProtocol: string) = { state with appProtocol = Some appProtocol }       
 
-type ServiceType = | ClusterIP | ExternalName | NodePort | LoadBalancer
-type ServiceType with
-    member this.ToString() =
-        match this with
-        | ClusterIP -> "ClusterIP"
-        | ExternalName -> "ExternalName"
-        | NodePort -> "NodePort"
-        | LoadBalancer -> "LoadBalancer"
+type ServiceType = 
+    | ClusterIP | ExternalName | NodePort | LoadBalancer
+    with override this.ToString() =
+            match this with
+            | ClusterIP -> "ClusterIP"
+            | ExternalName -> "ExternalName"
+            | NodePort -> "NodePort"
+            | LoadBalancer -> "LoadBalancer"
 
 type Service = { 
     metadata: Metadata

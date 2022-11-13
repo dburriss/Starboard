@@ -8,11 +8,10 @@ open Starboard.Common
 //====================================
 
 type IngressClassParametersScope = | Cluster | Namespace
-type IngressClassParametersScope with
-    member this.ToString() =
-        match this with
-        | Cluster -> "Cluster"
-        | Namespace -> "Namespace"
+    with override this.ToString() =
+            match this with
+            | Cluster -> "Cluster"
+            | Namespace -> "Namespace"
 
 type IngressClassParameters = {
     kind: string option
