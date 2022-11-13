@@ -14,10 +14,10 @@
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-    <link type="text/css" rel="stylesheet" href="/Starboard/content/navbar-fixed-left.css" />
-    <link type="text/css" rel="stylesheet" href="/Starboard/content/fsdocs-default.css" />
-    <link type="text/css" rel="stylesheet" href="/Starboard/content/fsdocs-custom.css" />
-    <script type="text/javascript" src="/Starboard/content/fsdocs-tips.js"></script>
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/navbar-fixed-left.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/Overboard/content/fsdocs-tips.js"></script>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -34,7 +34,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarsExampleDefault">
-            <a href="/Starboard/"><img id="fsdocs-logo" src="/Starboard/img/logo.png" /></a>
+            <a href="/Overboard/"><img id="fsdocs-logo" src="/Overboard/img/logo.png" /></a>
             <!-- BEGIN SEARCH BOX: this adds support for the search box -->
             <div id="header">
                 <div class="searchbox" id="fsdocs-searchbox">
@@ -51,29 +51,29 @@
             <!-- END SEARCH BOX: this adds support for the search box -->
             <ul class="navbar-nav">
                 <li class="nav-header">Links</li>
-                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/License">License</a></li>
-                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
-                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/">Source Repository</a></li>
+                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/overboard/License">License</a></li>
+                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/overboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/overboard/">Source Repository</a></li>
                 <li class="nav-header">
   How-to
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/1_setup-environment.html">
+  <a class="nav-link" href="/Overboard/1_setup-environment.html">
     Setup your environment
   </a>
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/2_generating-kubernetes-config.html">
+  <a class="nav-link" href="/Overboard/2_generating-kubernetes-config.html">
     Generating Kubernetes config
   </a>
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/3_working-with-metadata.html">
+  <a class="nav-link" href="/Overboard/3_working-with-metadata.html">
     Working with metadata
   </a>
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/4_generate-dynamic-config.html">
+  <a class="nav-link" href="/Overboard/4_generate-dynamic-config.html">
     Generate dynamic config
   </a>
 </li>             
@@ -81,12 +81,12 @@
   Tutorials
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/tutorials/hello-world.html">
+  <a class="nav-link" href="/Overboard/tutorials/hello-world.html">
     Hello world
   </a>
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/tutorials/guestbook.html">
+  <a class="nav-link" href="/Overboard/tutorials/guestbook.html">
     Guestbook
   </a>
 </li>
@@ -94,7 +94,7 @@
   API Reference
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/reference/index.html">
+  <a class="nav-link" href="/Overboard/reference/index.html">
     All Namespaces
   </a>
 </li>
@@ -103,13 +103,13 @@
     </nav>
     <div class="container">
         <div class="masthead">
-            <h3 class="muted"><a href="/Starboard/">Starboard</a></h3>
+            <h3 class="muted"><a href="/Overboard/">Overboard</a></h3>
         </div>
         <hr />
         <div class="container" id="fsdocs-content">
             
-<h1><a name="Starboard-Hello-world" class="anchor" href="#Starboard-Hello-world">Starboard: Hello world</a></h1>
-<p>In this tutorial we will create your first Starboard script and generate the Kubernetes YAML config to a file.</p>
+<h1><a name="Overboard-Hello-world" class="anchor" href="#Overboard-Hello-world">Overboard: Hello world</a></h1>
+<p>In this tutorial we will create your first Overboard script and generate the Kubernetes YAML config to a file.</p>
 <h2><a name="Requirements" class="anchor" href="#Requirements">Requirements</a></h2>
 <ol>
 <li>A <a href="https://kubernetes.io/docs/tasks/tools/">Kubernetes cluster to learn on</a> such as Kubernetes on Docker or minikube.</li>
@@ -126,12 +126,12 @@
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// TODO: import from Nuget</span>
 <span class="pp">#r</span> <span class="s">&quot;nuget:YamlDotNet&quot;</span>
 <span class="pp">#r</span> <span class="s">&quot;nuget:Newtonsoft.Json&quot;</span>
-<span class="pp">#r</span> <span class="s">&quot;../../src/Starboard/bin/debug/net6.0/Starboard.dll&quot;</span>
+<span class="pp">#r</span> <span class="s">&quot;../../src/Overboard/bin/debug/net6.0/Overboard.dll&quot;</span>
 
 <span class="c">// open the required namespaces</span>
-<span class="k">open</span> <span class="id">Starboard</span>
-<span class="k">open</span> <span class="id">Starboard</span><span class="pn">.</span><span class="id">Common</span>
-<span class="k">open</span> <span class="id">Starboard</span><span class="pn">.</span><span class="id">Workload</span>
+<span class="k">open</span> <span class="id">Overboard</span>
+<span class="k">open</span> <span class="id">Overboard</span><span class="pn">.</span><span class="id">Common</span>
+<span class="k">open</span> <span class="id">Overboard</span><span class="pn">.</span><span class="id">Workload</span>
 
 <span class="c">// define your k8s config</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">theInvalidDeployment</span> <span class="o">=</span> <span class="id">k8s</span> <span class="pn">{</span>
@@ -161,7 +161,7 @@
 <table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl apply -f hello-world.yaml
 </code></pre></td></tr></table>
 <h2><a name="Fixed-config" class="anchor" href="#Fixed-config">Fixed config</a></h2>
-<p>Let's address the validation errors that Starboard found.</p>
+<p>Let's address the validation errors that Overboard found.</p>
 <ol>
 <li>Call the <code>add_matchLabel</code> operation with a key/value pair for the label.</li>
 <li>Next, add the label to the pod using the <code>_labels</code> metadata operation, passing in a list of key/value pairs.</li>
@@ -195,7 +195,7 @@ kubectl get deployments
 </code></pre></td></tr></table>
 <p>You should get the message: <em>deployment.apps/test-deployment created</em></p>
 <h2><a name="Summary" class="anchor" href="#Summary">Summary</a></h2>
-<p>In this tutorial you created your first Starboard script and generated the YAML. We saw how to get and print out the validation errors.
+<p>In this tutorial you created your first Overboard script and generated the YAML. We saw how to get and print out the validation errors.
 Finally, we saw how we can successfully deploy our generated script.</p>
 <p>Congratulations! You have taken a turn toward a new way of configuring your infrastructure.</p>
 
@@ -287,10 +287,10 @@ from Microsoft.FSharp.Core<br /><em>&lt;summary&gt;Functional programming operat
 
         <!-- BEGIN SEARCH BOX: this adds support for the search box -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
-        <script type="text/javascript">var fsdocs_search_baseurl = '/Starboard/';</script>
+        <script type="text/javascript">var fsdocs_search_baseurl = '/Overboard/';</script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
-        <script type="text/javascript" src="/Starboard/content/fsdocs-search.js"></script>
+        <script type="text/javascript" src="/Overboard/content/fsdocs-search.js"></script>
         <!-- END SEARCH BOX: this adds support for the search box -->
     </div>
 </body>

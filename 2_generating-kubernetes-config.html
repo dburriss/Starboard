@@ -14,10 +14,10 @@
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-    <link type="text/css" rel="stylesheet" href="/Starboard/content/navbar-fixed-left.css" />
-    <link type="text/css" rel="stylesheet" href="/Starboard/content/fsdocs-default.css" />
-    <link type="text/css" rel="stylesheet" href="/Starboard/content/fsdocs-custom.css" />
-    <script type="text/javascript" src="/Starboard/content/fsdocs-tips.js"></script>
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/navbar-fixed-left.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/Overboard/content/fsdocs-tips.js"></script>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -34,7 +34,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarsExampleDefault">
-            <a href="/Starboard/"><img id="fsdocs-logo" src="/Starboard/img/logo.png" /></a>
+            <a href="/Overboard/"><img id="fsdocs-logo" src="/Overboard/img/logo.png" /></a>
             <!-- BEGIN SEARCH BOX: this adds support for the search box -->
             <div id="header">
                 <div class="searchbox" id="fsdocs-searchbox">
@@ -51,29 +51,29 @@
             <!-- END SEARCH BOX: this adds support for the search box -->
             <ul class="navbar-nav">
                 <li class="nav-header">Links</li>
-                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/License">License</a></li>
-                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
-                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/">Source Repository</a></li>
+                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/overboard/License">License</a></li>
+                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/overboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/overboard/">Source Repository</a></li>
                 <li class="nav-header">
   How-to
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/1_setup-environment.html">
+  <a class="nav-link" href="/Overboard/1_setup-environment.html">
     Setup your environment
   </a>
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/2_generating-kubernetes-config.html">
+  <a class="nav-link" href="/Overboard/2_generating-kubernetes-config.html">
     Generating Kubernetes config
   </a>
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/3_working-with-metadata.html">
+  <a class="nav-link" href="/Overboard/3_working-with-metadata.html">
     Working with metadata
   </a>
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/4_generate-dynamic-config.html">
+  <a class="nav-link" href="/Overboard/4_generate-dynamic-config.html">
     Generate dynamic config
   </a>
 </li>             
@@ -81,12 +81,12 @@
   Tutorials
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/tutorials/hello-world.html">
+  <a class="nav-link" href="/Overboard/tutorials/hello-world.html">
     Hello world
   </a>
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/tutorials/guestbook.html">
+  <a class="nav-link" href="/Overboard/tutorials/guestbook.html">
     Guestbook
   </a>
 </li>
@@ -94,7 +94,7 @@
   API Reference
 </li>             
 <li class="nav-item">
-  <a class="nav-link" href="/Starboard/reference/index.html">
+  <a class="nav-link" href="/Overboard/reference/index.html">
     All Namespaces
   </a>
 </li>
@@ -103,13 +103,13 @@
     </nav>
     <div class="container">
         <div class="masthead">
-            <h3 class="muted"><a href="/Starboard/">Starboard</a></h3>
+            <h3 class="muted"><a href="/Overboard/">Overboard</a></h3>
         </div>
         <hr />
         <div class="container" id="fsdocs-content">
             
 <h1><a name="Generating-Kubernetes-config" class="anchor" href="#Generating-Kubernetes-config">Generating Kubernetes config</a></h1>
-<p>Starboard gives a powerful way to define your Kubernetes config but for that to be useful, we need to generate the kubernetes config. Starboard provides some helpers for doing just this in <a href="/Starboard/reference/starboard-k8s-kubectlwriter.html">KubeCtlWriter</a>.</p>
+<p>Overboard gives a powerful way to define your Kubernetes config but for that to be useful, we need to generate the kubernetes config. Overboard provides some helpers for doing just this in <a href="/Overboard/reference/overboard-k8s-kubectlwriter.html">KubeCtlWriter</a>.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">kubeConfig</span> <span class="o">=</span> <span class="id">k8s</span> <span class="pn">{</span>
     <span class="id">deployment</span> <span class="pn">{</span>
         <span class="s">&quot;my-name&quot;</span> <span class="c">// &lt;- No operation specified</span>
@@ -118,7 +118,7 @@
 <span class="pn">}</span>
 </code></pre>
 <h2><a name="Printing-to-screen" class="anchor" href="#Printing-to-screen">Printing to screen</a></h2>
-<p>If you would like to see what is generated on your screen you can use the <a href="https://docs.microsoft.com/dotnet/api/starboard.k8s.kubectlwriter.print">print</a> function.</p>
+<p>If you would like to see what is generated on your screen you can use the <a href="https://docs.microsoft.com/dotnet/api/overboard.k8s.kubectlwriter.print">print</a> function.</p>
 <blockquote>
 <p>Note that the print also prints any validation errors.</p>
 </blockquote>
@@ -126,21 +126,21 @@
 </code></pre>
 <table class="pre"><tr><td><pre><code>No value returned by any evaluator</code></pre></td></tr></table>
 <h2><a name="Writing-to-file" class="anchor" href="#Writing-to-file">Writing to file</a></h2>
-<p>If you would like to save your <a href="/Starboard/reference/starboard-k8s.html">K8s</a> config to file, you can use either the <a href="/Starboard/reference/starboard-k8s-kubectlwriter.html">KubeCtlWriter</a><code>.toJsonFile</code> or <a href="/Starboard/reference/starboard-k8s-kubectlwriter.html">KubeCtlWriter</a><code>.toYamlFile</code> function.
+<p>If you would like to save your <a href="/Overboard/reference/overboard-k8s.html">K8s</a> config to file, you can use either the <a href="/Overboard/reference/overboard-k8s-kubectlwriter.html">KubeCtlWriter</a><code>.toJsonFile</code> or <a href="/Overboard/reference/overboard-k8s-kubectlwriter.html">KubeCtlWriter</a><code>.toYamlFile</code> function.
 As the names imply, these will save your config as JSON or YAML respectively.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="id">KubeCtlWriter</span><span class="pn">.</span><span class="id">toYamlFile</span> <span class="id">kubeConfig</span> <span class="s">&quot;deployment.yaml&quot;</span>
 </code></pre>
 <h2><a name="Getting-the-content" class="anchor" href="#Getting-the-content">Getting the content</a></h2>
-<p>You can also get the <a href="/Starboard/reference/starboard-k8s-k8soutput.html">K8sOutput</a>, which gives you access to not only the JSON or YAML <a href="/Starboard/reference/starboard-k8s-k8soutput.html">K8sOutput</a><code>.content</code>, but also to the <a href="/Starboard/reference/starboard-k8s-k8soutput.html">K8sOutput</a><code>.errors</code>.
-This is an array of validation errors that Starboard has found in the schema. Starboard prevents many schema issues by being strongly typed but it also runs validation on values that should not be empty or should follow certain formatting.
+<p>You can also get the <a href="/Overboard/reference/overboard-k8s-k8soutput.html">K8sOutput</a>, which gives you access to not only the JSON or YAML <a href="/Overboard/reference/overboard-k8s-k8soutput.html">K8sOutput</a><code>.content</code>, but also to the <a href="/Overboard/reference/overboard-k8s-k8soutput.html">K8sOutput</a><code>.errors</code>.
+This is an array of validation errors that Overboard has found in the schema. Overboard prevents many schema issues by being strongly typed but it also runs validation on values that should not be empty or should follow certain formatting.
 It will still generate the config you specify but gives you errors that you can check before submitting the config to a Kubernetes cluster.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 6)" onmouseover="showTip(event, 'fs3', 6)" class="id">k8sOutput</span> <span class="o">=</span> <span class="id">KubeCtlWriter</span><span class="pn">.</span><span class="id">toYaml</span> <span onmouseout="hideTip(event, 'fs1', 7)" onmouseover="showTip(event, 'fs1', 7)" class="id">kubeConfig</span>
 <span onmouseout="hideTip(event, 'fs3', 8)" onmouseover="showTip(event, 'fs3', 8)" class="id">k8sOutput</span><span class="pn">.</span><span class="id">content</span>
 </code></pre>
 <table class="pre"><tr><td><pre><code>No value returned by any evaluator</code></pre></td></tr></table>
 <h2><a name="Validation-errors" class="anchor" href="#Validation-errors">Validation errors</a></h2>
-<p>As mentioned, <a href="/Starboard/reference/starboard-k8s-k8soutput.html">K8sOutput</a> contains an <code>errors</code> field that contains a list of validation errors.</p>
-<p>Each <a href="/Starboard/reference/starboard-validationproblem.html">ValidationProblem</a> has a <code>Message</code> field on it that gives back a <code>string</code>. You can print these errors out:</p>
+<p>As mentioned, <a href="/Overboard/reference/overboard-k8s-k8soutput.html">K8sOutput</a> contains an <code>errors</code> field that contains a list of validation errors.</p>
+<p>Each <a href="/Overboard/reference/overboard-validationproblem.html">ValidationProblem</a> has a <code>Message</code> field on it that gives back a <code>string</code>. You can print these errors out:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs3', 9)" onmouseover="showTip(event, 'fs3', 9)" class="id">k8sOutput</span><span class="pn">.</span><span class="id">errors</span> 
 <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs4', 10)" onmouseover="showTip(event, 'fs4', 10)" class="m">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 11)" onmouseover="showTip(event, 'fs5', 11)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs6', 12)" onmouseover="showTip(event, 'fs6', 12)" class="fn">err</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs6', 13)" onmouseover="showTip(event, 'fs6', 13)" class="fn">err</span><span class="pn">.</span><span class="id">Message</span><span class="pn">)</span>
 <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs4', 14)" onmouseover="showTip(event, 'fs4', 14)" class="m">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs7', 15)" onmouseover="showTip(event, 'fs7', 15)" class="id">iter</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs8', 16)" onmouseover="showTip(event, 'fs8', 16)" class="fn">eprintfn</span> <span class="s">&quot;</span><span class="pf">%s</span><span class="s">&quot;</span><span class="pn">)</span>
@@ -197,10 +197,10 @@ from Microsoft.FSharp.Collections<br /><em>&lt;summary&gt;Contains operations fo
 
         <!-- BEGIN SEARCH BOX: this adds support for the search box -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
-        <script type="text/javascript">var fsdocs_search_baseurl = '/Starboard/';</script>
+        <script type="text/javascript">var fsdocs_search_baseurl = '/Overboard/';</script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
-        <script type="text/javascript" src="/Starboard/content/fsdocs-search.js"></script>
+        <script type="text/javascript" src="/Overboard/content/fsdocs-search.js"></script>
         <!-- END SEARCH BOX: this adds support for the search box -->
     </div>
 </body>
