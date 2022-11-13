@@ -1,5 +1,7 @@
 namespace Starboard.Building.Tests
 
+open Swensen.Unquote
+
 module DeploymentTests =
 
     open Xunit
@@ -41,7 +43,7 @@ module DeploymentTests =
             podTemplate aPod
         }
 
-        Assert.Equal("my-name", deployment1.metadata.name)
+        Assert.Equal(Some "my-name", deployment1.metadata.name)
 
     [<Fact>]
     let ``DeploymentBuilder sets replicas`` () =
@@ -62,7 +64,7 @@ module DeploymentTests =
             podTemplate aPod
         }
 
-        Assert.Equal("test", deployment1.metadata.ns)
+        Assert.Equal(Some "test", deployment1.metadata.ns)
 
     [<Fact>]
     let ``DeploymentBuilder sets labels`` () =
@@ -87,11 +89,11 @@ module DeploymentTests =
     [<Fact>]
     let ``DeploymentBuilder sets matchExpressions with selectors`` () =
         let expected  = [{ key = "key"; operator = In; values = ["value"] }]
-        let labelsToMatch = selector {
+        let labelsToMatch = labelSelector {
             matchIn ("key",["value"])   
         }
         let deployment1 = deployment {
-            selector labelsToMatch
+            set_selector labelsToMatch
             podTemplate aPod
         }
 
@@ -100,11 +102,11 @@ module DeploymentTests =
     [<Fact>]
     let ``DeploymentBuilder sets matchLabels with selectors`` () =
         let expected = [("key","value")]
-        let labelsToMatch = selector {
+        let labelsToMatch = labelSelector {
             matchLabel ("key","value")   
         }
         let deployment1 = deployment {
-            selector labelsToMatch
+            set_selector labelsToMatch
             podTemplate aPod
         }
 
@@ -116,11 +118,25 @@ module DeploymentTests =
         let expected = [("key","value")]
 
         let deployment1 = deployment {
-            matchLabel ("key","value")
+            add_matchLabel ("key","value")
             podTemplate aPod
         }
 
         listsEqual expected deployment1.selector.matchLabels
 
+    [<Fact>]
+    let ``DeploymentBuilder sets pod from yield`` () =
 
+        let deployment1 = deployment {
+            "my-deployment"
+            aPod
+            labelSelector {
+                matchLabel ("k", "v")
+            }
+        }
+
+        test <@ deployment1.pod.IsSome @>
+        test <@ deployment1.metadata.name = Some "my-deployment" @>
+        test <@ deployment1.pod.Value = aPod @>
+        test <@ deployment1.selector.matchLabels = [("k", "v")] @>
 

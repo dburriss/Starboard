@@ -100,7 +100,7 @@ module K8s_Deployment =
         let deployment1 = deployment {
             "my-name"
             podTemplate pod1
-            matchLabel ("key","value")
+            add_matchLabel ("key","value")
         }
 
         let deploymentResource = deployment1.ToResource()

@@ -76,7 +76,7 @@ type ConfigMapBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_name">]
     member _.Name(state: ConfigMap, name: string) = 
-        let newMetadata = { state.metadata with name = name }
+        let newMetadata = { state.metadata with name = Some name }
         { state with metadata = newMetadata}
     
     /// Namespace of the ConfigMap.
@@ -84,7 +84,7 @@ type ConfigMapBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_namespace">]
     member _.Namespace(state: ConfigMap, ns: string) = 
-        let newMetadata = { state.metadata with ns = ns }
+        let newMetadata = { state.metadata with ns = Some ns }
         { state with metadata = newMetadata }
     
     /// Labels for the ConfigMap

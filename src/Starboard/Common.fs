@@ -7,28 +7,30 @@ module Common =
 
     type Metadata = 
         {
-            name: string
+            name: string option
             generateName : string option
-            ns: string
+            ns: string option
             labels: (string*string) list
             annotations: (string*string) list }
 
     type Metadata with
         static member empty = {
-            name = ""
+            name = None
             generateName = None
-            ns = "default"
+            ns = Some "default"
             labels = List.empty
             annotations = List.empty 
         }
         static member combine metadata1 metadata2 =
             let mergeNamespace ns1 ns2 =
                 match(ns1,ns2) with
-                | ns1, "default" -> ns1
-                | "default", ns2 -> ns2
+                | ns1, Some "default" -> ns1
+                | ns1, None -> ns1
+                | Some "default", ns2 -> ns2
+                | None, ns2 -> ns2
                 | _ -> ns1
             {
-                name = Helpers.mergeString metadata1.name metadata2.name
+                name = Helpers.mergeOption metadata1.name metadata2.name
                 generateName = Helpers.mergeOption metadata1.generateName metadata2.generateName
                 ns = mergeNamespace metadata1.ns metadata2.ns
                 labels = List.append (metadata1.labels) (metadata2.labels)
@@ -59,13 +61,13 @@ module Common =
         member _.Yield _ = Metadata.empty
     
         [<CustomOperation "name">]
-        member _.Name(state: Metadata, name: string) = { state with name = name }
+        member _.Name(state: Metadata, name: string) = { state with name = Some name }
         
         [<CustomOperation "generateName">]
         member _.GenerateName(state: Metadata, generateName: string) = { state with generateName = Some generateName }
         
         [<CustomOperation "ns">]
-        member _.Namespace(state: Metadata, ns: string) = { state with ns = ns }      
+        member _.Namespace(state: Metadata, ns: string) = { state with ns = Some ns }      
         
         [<CustomOperation "labels">]
         member _.Labels(state: Metadata, labels: (string*string) list) = { state with labels = labels }      
@@ -135,6 +137,10 @@ module Common =
         [<CustomOperation "matchLabel">]
         member _.MatchLabel(state: LabelSelector, (key,value): (string*string)) = 
             { state with matchLabels = List.append state.matchLabels [(key,value)] }
+
+        [<CustomOperation "matchLabels">]
+        member _.MatchLabel(state: LabelSelector, labels: (string*string) list) = 
+            { state with matchLabels = List.append state.matchLabels labels }
  
         [<CustomOperation "matchDoesNotExist">]
         member _.MatchDoesNotExistExpression(state: LabelSelector, (key,values)) = 
@@ -154,7 +160,7 @@ module Common =
 
     /// A label selector is a label query over a set of resources.
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/label-selector/#LabelSelector
-    let selector = new LabelSelectorBuilder()
+    let labelSelector = new LabelSelectorBuilder()
 
     //-------------------------
     // Container
@@ -167,7 +173,12 @@ module Common =
             | TCP -> "TCP"
             | UDP -> "UDP"
             | SCTP -> "SCTP"
-
+        static member combine p1 p2 =
+            match (p1,p2) with
+            | p1, TCP -> p1
+            | TCP, p2 -> p2
+            | _ -> p1
+ 
     type ContainerPort = {
         containerPort: int option
         hostIP: string option
@@ -241,7 +252,25 @@ module Common =
     type ContainerPortBuilder() =
         member _.Yield _ = ContainerPort.empty
 
-        [<CustomOperation "containerPort">]
+        member __.Zero () = ContainerPort.empty
+        
+        member __.Combine (currentValueFromYield: ContainerPort, accumulatorFromDelay: ContainerPort) = 
+            { currentValueFromYield with 
+                containerPort = Helpers.mergeOption (currentValueFromYield.containerPort) (accumulatorFromDelay.containerPort)
+                hostIP = Helpers.mergeOption (currentValueFromYield.hostIP) (accumulatorFromDelay.hostIP)
+                hostPort = Helpers.mergeOption (currentValueFromYield.hostPort) (accumulatorFromDelay.hostPort)
+                name = Helpers.mergeOption (currentValueFromYield.name) (accumulatorFromDelay.name)
+                protocol = Protocol.combine currentValueFromYield.protocol accumulatorFromDelay.protocol
+            }
+        
+        member __.Delay f = f()
+        
+        member this.For(state: ContainerPort , f: unit -> ContainerPort) =
+            let delayed = f()
+            this.Combine(state, delayed)
+        
+
+        [<CustomOperation "port">]
         member _.ContainerPort(state: ContainerPort, containerPort: int) = { state with containerPort = Some containerPort }
         
         [<CustomOperation "hostIP">]
@@ -250,6 +279,8 @@ module Common =
         [<CustomOperation "hostPort">]
         member _.HostPort(state: ContainerPort, hostPort: int) = { state with hostPort = Some hostPort }
         
+        // Name
+        member this.Yield(name: string) = this.Name(ContainerPort.empty, name)
         [<CustomOperation "name">]
         member _.Name(state: ContainerPort, name: string) = { state with name = Some name }
         
@@ -300,14 +331,41 @@ module Common =
 
     let volumeMount = new VolumeMountBuilder()
 
+    type EnvVar = {
+        name: string
+        value: string
+    }
+    type EnvVar with
+        static member empty =
+            {
+                name = ""
+                value = ""
+            }
+        member this.Spec() =
+            {|
+                name = this.name
+                value = this.value
+            |}
 
+    type EnvVarBuilder() =
+        member _.Yield _ = EnvVar.empty
+    
+        [<CustomOperation "name">]
+        member _.Name(state: EnvVar, name: string) = { state with name = name }
+        
+        [<CustomOperation "value">]
+        member _.Value(state: EnvVar, value: string) = { state with value = value }
+        
+        
+    
+    let envVar = new EnvVarBuilder()
 
     type Container = { 
         name: string option
         image: string
         command: string list
         args: string list 
-        env: (string*string) list
+        env: EnvVar list
         workingDir: string option
         ports: ContainerPort list
         resources: Resources
@@ -342,6 +400,7 @@ module Common =
                 ports = this.ports |> Helpers.mapEach (fun p -> p.Spec())
                 resources = this.resources.Spec()
                 volumeMounts = this.volumeMounts |> Helpers.mapEach ((fun v -> v.Spec()))
+                env = this.env |> Helpers.mapEach ((fun env -> env.Spec()))
             |}
         member this.Validate() =
             let kind = "Container"
@@ -364,6 +423,8 @@ module Common =
                 resources = Resources.combine (currentValueFromYield.resources) (accumulatorFromDelay.resources)
                 ports = List.append (currentValueFromYield.ports) (accumulatorFromDelay.ports)
                 volumeMounts = List.append (currentValueFromYield.volumeMounts) (accumulatorFromDelay.volumeMounts)
+                env = List.append (currentValueFromYield.env) (accumulatorFromDelay.env)
+                
             } 
                 
         
@@ -423,6 +484,14 @@ module Common =
         member this.YieldFrom(volumeMount: VolumeMount seq) = this.Yield(volumeMount)
         [<CustomOperation "add_volumeMount">]
         member _.VolumeMount(state: Container, volumeMount: VolumeMount) = { state with volumeMounts = List.append state.volumeMounts [volumeMount] }
+        
+        // EnvVar
+        member this.Yield(envVar: EnvVar) = this.AddEnvVar(Container.empty, envVar)
+        member this.Yield(envVars: EnvVar seq) = envVars |> Seq.fold (fun state x -> this.AddEnvVar(state, x)) Container.empty
+        member this.YieldFrom(envVars: EnvVar seq) = this.Yield(envVars)
+        [<CustomOperation "add_envVar">]
+        member _.AddEnvVar(state: Container, envVar: EnvVar) = { state with env = List.append state.env [envVar] }
+        
         
 
     type LocalObjectReference = {

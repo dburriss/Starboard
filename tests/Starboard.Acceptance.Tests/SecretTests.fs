@@ -40,7 +40,7 @@ module K8s_Secret =
         }
         let result = sut.ToResource()
 
-        test <@ result.metadata.name = "my-secret" @>
+        test <@ result.metadata.name = Some "my-secret" @>
                   
     [<Fact>]
     let ``immutable is false by default`` () =

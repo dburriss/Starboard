@@ -1,30 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<PackageId>Starboard</PackageId>
+		<TargetFramework>net6.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RepositoryUrl>https://github.com/dburriss/Starboard</RepositoryUrl>
+		<Description>Starboard is a declaritive library over Kubernetes resources that allows you to use the power of F# to define your configuration.</Description>
+		<Authors>Devon Burriss</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Copyright>Devon Burriss</Copyright>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="Helpers.fs" />
-    <Compile Include="Validation.fs" />
-    <Compile Include="Serializer.fs" />
-    <Compile Include="Common.fs" />
-    <Compile Include="ConfigMap.fs" />
-    <Compile Include="Secret.fs" />
-    <Compile Include="Authentication.fs" />
-    <Compile Include="Authorization.fs" />
-    <Compile Include="Volumes.fs" />
-    <Compile Include="PersistentVolume.fs" />
-    <Compile Include="Pods.fs" />
-    <Compile Include="Deployments.fs" />
-    <Compile Include="Service.fs" />
-    <Compile Include="Ingress.fs" />
-    <Compile Include="K8s.fs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Include="Helpers.fs" />
+		<Compile Include="Validation.fs" />
+		<Compile Include="Serializer.fs" />
+		<Compile Include="Common.fs" />
+		<Compile Include="ConfigMap.fs" />
+		<Compile Include="Secret.fs" />
+		<Compile Include="Authentication.fs" />
+		<Compile Include="Authorization.fs" />
+		<Compile Include="Volumes.fs" />
+		<Compile Include="PersistentVolume.fs" />
+		<Compile Include="Pods.fs" />
+		<Compile Include="Deployments.fs" />
+		<Compile Include="Service.fs" />
+		<Compile Include="Ingress.fs" />
+		<Compile Include="K8s.fs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="YamlDotNet" Version="12.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="YamlDotNet" Version="12.0.0" />
+	</ItemGroup>
 
 </Project>

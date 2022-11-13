@@ -150,7 +150,7 @@ type ClusterRoleBindingBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_name">]
     member _.Name(state: ClusterRoleBinding, name: string) = 
-        let newMetadata = { state.metadata with name = name }
+        let newMetadata = { state.metadata with name = Some name }
         { state with metadata = newMetadata}
     
     /// Namespace of the ClusterRoleBinding.
@@ -158,7 +158,7 @@ type ClusterRoleBindingBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_namespace">]
     member _.Namespace(state: ClusterRoleBinding, ns: string) = 
-        let newMetadata = { state.metadata with ns = ns }
+        let newMetadata = { state.metadata with ns = Some ns }
         { state with metadata = newMetadata }
     
     /// Labels for the ClusterRoleBinding
@@ -181,7 +181,6 @@ type ClusterRoleBindingBuilder() =
 
     // RoleRef
     member this.Yield(roleRef: RoleRef) = this.RoleRef(ClusterRoleBinding.empty, roleRef)
-
     [<CustomOperation "set_roleRef">]
     member this.RoleRef(state: ClusterRoleBinding, roleRef: RoleRef) = 
         { state with roleRef = roleRef }

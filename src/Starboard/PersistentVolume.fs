@@ -95,7 +95,7 @@ type StorageClassBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_name">]
     member _.Name(state: StorageClass, name: string) = 
-        let newMetadata = { state.metadata with name = name }
+        let newMetadata = { state.metadata with name = Some name }
         { state with metadata = newMetadata}
     
     /// Namespace of the StorageClass.
@@ -103,7 +103,7 @@ type StorageClassBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_namespace">]
     member _.Namespace(state: StorageClass, ns: string) = 
-        let newMetadata = { state.metadata with ns = ns }
+        let newMetadata = { state.metadata with ns = Some ns }
         { state with metadata = newMetadata }
     
     /// Labels for the StorageClass
@@ -235,7 +235,7 @@ type PersistentVolumeClaimBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_name">]
     member _.Name(state: PersistentVolumeClaim, name: string) = 
-        let newMetadata = { state.metadata with name = name }
+        let newMetadata = { state.metadata with name = Some name }
         { state with metadata = newMetadata}
     
     /// Namespace of the PersistentVolumeClaim.
@@ -243,7 +243,7 @@ type PersistentVolumeClaimBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_namespace">]
     member _.Namespace(state: PersistentVolumeClaim, ns: string) = 
-        let newMetadata = { state.metadata with ns = ns }
+        let newMetadata = { state.metadata with ns = Some ns }
         { state with metadata = newMetadata }
     
     /// Labels for the PersistentVolumeClaim
@@ -403,7 +403,7 @@ type CsiPersistentVolumeBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_name">]
     member _.Name(state: PersistentVolume<CSIPersistentVolumeSource>, name: string) = 
-        let newMetadata = { state.metadata with name = name }
+        let newMetadata = { state.metadata with name = Some name }
         { state with metadata = newMetadata}
     
     /// Namespace of the PersistentVolume<CSIPersistentVolumeSource>.
@@ -411,7 +411,7 @@ type CsiPersistentVolumeBuilder() =
     /// https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
     [<CustomOperation "_namespace">]
     member _.Namespace(state: PersistentVolume<CSIPersistentVolumeSource>, ns: string) = 
-        let newMetadata = { state.metadata with ns = ns }
+        let newMetadata = { state.metadata with ns = Some ns }
         { state with metadata = newMetadata }
     
     /// Labels for the PersistentVolume<CSIPersistentVolumeSource>

@@ -1,3 +1,6 @@
+---
+title: Starboard Docs Home
+---
 # Starboard
 
 Starboard is a library providing strongly typed builders over kubernetes configuration. It allows you to retain a declarative style to your configuration while putting the full power of the F# programming language in your hands.
@@ -69,11 +72,11 @@ dotnet fsi infra.fsx
 kubectl apply -f deployment.yaml
 ```
 
-Ready to try it yourself? Try the hello-world tutorial. To explore more examples, check out the *How-to* or *Tutorials* section.
+Ready to try it yourself? Try the [hello-world](tutorials/hello-world.fsx) tutorial. To explore more examples, check out the *How-to* or *Tutorials* section.
 
 ## Example use-cases
 
-1. Template out repeat config as a function.
+1. Template out repeat config as a function. See the [Generate dynamic config](4_generate-dynamic-config.fsx) how-to.
 2. Fetch data from databases, APIs, environment variables, git, or wherever else to generate Kubernetes config.
 3. Package up common infrastructure patterns and ship them to teams as Nuget packages.
 4. Easily build CLI tools to output collections of Kubernetes config for development teams.
@@ -86,5 +89,3 @@ The docs follow the guidance from [The documentation system](https://documentati
 ## About the logo
 
 Ship by Aleksandr Vector from <a href="https://thenounproject.com/browse/icons/term/ship/" target="_blank" title="Ship Icons">Noun Project</a>
-
-https://thenounproject.com/icon/ship-1016334/
