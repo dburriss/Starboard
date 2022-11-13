@@ -17,9 +17,8 @@ In the example below we define a function that defines a **deployment** and a **
 The function nomalizes the name by lowercasing it and stripping any special characters from it. This is a great way to standardize on naming conventions without always requiring that everyone always remembers the standards.
 *)
 (*** hide ***)
-#r "nuget:YamlDotNet"
-#r "nuget:Newtonsoft.Json"
-#r "../src/Overboard/bin/debug/net6.0/Overboard.dll"
+#r "nuget:Overboard"
+
 (*** show ***)
 open System
 open Overboard

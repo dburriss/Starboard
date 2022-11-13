@@ -14,9 +14,7 @@ Overboard gives a powerful way to define your Kubernetes config but for that to 
 *)
 (*** hide ***)
 // import from Nuget
-#r "nuget:YamlDotNet"
-#r "nuget:Newtonsoft.Json"
-#r "../src/Overboard/bin/debug/net6.0/Overboard.dll"
+#r "nuget:Overboard"
 
 // open the required namespaces
 

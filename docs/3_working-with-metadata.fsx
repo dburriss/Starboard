@@ -15,9 +15,7 @@ Setting metadata like `name`, `namespace`, `labels`, and `annotations` are a com
 
 (*** hide ***)
 // import from Nuget
-#r "nuget:YamlDotNet"
-#r "nuget:Newtonsoft.Json"
-#r "../src/Overboard/bin/debug/net6.0/Overboard.dll"
+#r "nuget:Overboard"
 
 // open the required namespaces
 

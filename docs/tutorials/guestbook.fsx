@@ -45,9 +45,7 @@ First off, import the Overboard package and import the namespaces we need.
 2. Use the `#r` directive to import the Overboard package and open up the namespaces
 *)
 // TODO: import from Nuget
-#r "nuget:YamlDotNet"
-#r "nuget:Newtonsoft.Json"
-#r "../../src/Overboard/bin/debug/net6.0/Overboard.dll"
+#r "nuget:Overboard"
 
 // open the required namespaces
 open System
