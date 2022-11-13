@@ -7,11 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E59F055-A1B
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Overboard", "src\Overboard\Overboard.fsproj", "{8D9A80CE-9668-40E0-9F60-96C31611D2EE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{7E5B09A7-8D05-48DB-B34F-4EEFCBE9ED89}"
-	ProjectSection(SolutionItems) = preProject
-		examples\basic-infra.fsx = examples\basic-infra.fsx
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{416FDA7E-80B9-4516-8CAF-26F5DC9B1C52}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Overboard.Building.Tests", "tests\Overboard.Building.Tests\Overboard.Building.Tests.fsproj", "{4A59EBF7-7815-4A40-922A-8DAA808CF2FC}"
