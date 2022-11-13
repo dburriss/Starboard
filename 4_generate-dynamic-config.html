@@ -113,68 +113,173 @@
 <p>In the example below we define a function that defines a <strong>deployment</strong> and a <strong>service</strong> based on the application <em>name</em> and <em>port</em> number passed to the function.</p>
 <p>The function nomalizes the name by lowercasing it and stripping any special characters from it. This is a great way to standardize on naming conventions without always requiring that everyone always remembers the standards.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">System</span>
-<span class="k">open</span> <span class="id">Overboard</span>
-<span class="k">open</span> <span class="id">Overboard</span><span class="pn">.</span><span class="id">Common</span>
-<span class="k">open</span> <span class="id">Overboard</span><span class="pn">.</span><span class="id">Workload</span>
-<span class="k">open</span> <span class="id">Overboard</span><span class="pn">.</span><span class="id">Service</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="id">Overboard</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 4)" onmouseover="showTip(event, 'fs3', 4)" class="id">Common</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 5)" onmouseover="showTip(event, 'fs2', 5)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs4', 6)" onmouseover="showTip(event, 'fs4', 6)" class="id">Workload</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 7)" onmouseover="showTip(event, 'fs2', 7)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 8)" onmouseover="showTip(event, 'fs5', 8)" class="id">Service</span>
 
 <span class="c">/// Returns a deployment and service for `appName`</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="fn">publicApi</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="fn">appName</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="fn">portNumber</span> <span class="o">=</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 9)" onmouseover="showTip(event, 'fs6', 9)" class="fn">publicApi</span> <span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="fn">appName</span> <span onmouseout="hideTip(event, 'fs8', 11)" onmouseover="showTip(event, 'fs8', 11)" class="fn">portNumber</span> <span class="o">=</span>
     <span class="c">/// Lowercase the name and allow only letters and digits</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="fn">normalize</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="fn">name</span><span class="pn">:</span> <span onmouseout="hideTip(event, 'fs7', 7)" onmouseover="showTip(event, 'fs7', 7)" class="rt">string</span><span class="pn">)</span> <span class="o">=</span>
-        <span onmouseout="hideTip(event, 'fs6', 8)" onmouseover="showTip(event, 'fs6', 8)" class="fn">name</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs8', 9)" onmouseover="showTip(event, 'fs8', 9)" class="id">ToLowerInvariant</span><span class="pn">(</span><span class="pn">)</span><span class="pn">.</span><span class="id">ToCharArray</span><span class="pn">(</span><span class="pn">)</span> 
-        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs9', 10)" onmouseover="showTip(event, 'fs9', 10)" class="m">Array</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs10', 11)" onmouseover="showTip(event, 'fs10', 11)" class="id">filter</span> <span onmouseout="hideTip(event, 'fs11', 12)" onmouseover="showTip(event, 'fs11', 12)" class="vt">Char</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs12', 13)" onmouseover="showTip(event, 'fs12', 13)" class="id">IsLetterOrDigit</span>
-        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs13', 14)" onmouseover="showTip(event, 'fs13', 14)" class="fn">String</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 15)" onmouseover="showTip(event, 'fs14', 15)" class="fn">normalizedName</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 16)" onmouseover="showTip(event, 'fs5', 16)" class="fn">normalize</span> <span onmouseout="hideTip(event, 'fs3', 17)" onmouseover="showTip(event, 'fs3', 17)" class="fn">appName</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 18)" onmouseover="showTip(event, 'fs15', 18)" class="fn">matchOn</span> <span class="o">=</span> <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs14', 19)" onmouseover="showTip(event, 'fs14', 19)" class="fn">normalizedName</span><span class="pn">)</span>
-    <span class="id">k8s</span> <span class="pn">{</span>
-        <span class="id">deployment</span> <span class="pn">{</span>
-            <span class="s">$&quot;{</span><span onmouseout="hideTip(event, 'fs14', 20)" onmouseover="showTip(event, 'fs14', 20)" class="id">normalizedName</span><span class="s">}-deploy&quot;</span>
-            <span class="id">_labels</span> <span class="pn">[</span><span onmouseout="hideTip(event, 'fs15', 21)" onmouseover="showTip(event, 'fs15', 21)" class="id">matchOn</span><span class="pn">]</span>
-            <span class="id">replicas</span> <span class="n">2</span>
-            <span class="id">add_matchLabel</span> <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs14', 22)" onmouseover="showTip(event, 'fs14', 22)" class="id">normalizedName</span><span class="pn">)</span>
-            <span class="id">pod</span> <span class="pn">{</span>
-                <span class="s">$&quot;{</span><span onmouseout="hideTip(event, 'fs14', 23)" onmouseover="showTip(event, 'fs14', 23)" class="id">normalizedName</span><span class="s">}-pod&quot;</span>
-                <span class="id">_labels</span> <span class="pn">[</span><span onmouseout="hideTip(event, 'fs15', 24)" onmouseover="showTip(event, 'fs15', 24)" class="id">matchOn</span><span class="pn">]</span>
-                <span class="id">container</span> <span class="pn">{</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 12)" onmouseover="showTip(event, 'fs9', 12)" class="fn">normalize</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs10', 13)" onmouseover="showTip(event, 'fs10', 13)" class="fn">name</span><span class="pn">:</span> <span onmouseout="hideTip(event, 'fs11', 14)" onmouseover="showTip(event, 'fs11', 14)" class="rt">string</span><span class="pn">)</span> <span class="o">=</span>
+        <span onmouseout="hideTip(event, 'fs10', 15)" onmouseover="showTip(event, 'fs10', 15)" class="fn">name</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs12', 16)" onmouseover="showTip(event, 'fs12', 16)" class="id">ToLowerInvariant</span><span class="pn">(</span><span class="pn">)</span><span class="pn">.</span><span class="id">ToCharArray</span><span class="pn">(</span><span class="pn">)</span> 
+        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs13', 17)" onmouseover="showTip(event, 'fs13', 17)" class="m">Array</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs14', 18)" onmouseover="showTip(event, 'fs14', 18)" class="id">filter</span> <span onmouseout="hideTip(event, 'fs15', 19)" onmouseover="showTip(event, 'fs15', 19)" class="vt">Char</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs16', 20)" onmouseover="showTip(event, 'fs16', 20)" class="id">IsLetterOrDigit</span>
+        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs17', 21)" onmouseover="showTip(event, 'fs17', 21)" class="fn">String</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs18', 22)" onmouseover="showTip(event, 'fs18', 22)" class="fn">normalizedName</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 23)" onmouseover="showTip(event, 'fs9', 23)" class="fn">normalize</span> <span onmouseout="hideTip(event, 'fs7', 24)" onmouseover="showTip(event, 'fs7', 24)" class="fn">appName</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs19', 25)" onmouseover="showTip(event, 'fs19', 25)" class="fn">matchOn</span> <span class="o">=</span> <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs18', 26)" onmouseover="showTip(event, 'fs18', 26)" class="fn">normalizedName</span><span class="pn">)</span>
+    <span onmouseout="hideTip(event, 'fs20', 27)" onmouseover="showTip(event, 'fs20', 27)" class="k">k8s</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs21', 28)" onmouseover="showTip(event, 'fs21', 28)" class="id">deployment</span> <span class="pn">{</span>
+            <span class="s">$&quot;{</span><span onmouseout="hideTip(event, 'fs18', 29)" onmouseover="showTip(event, 'fs18', 29)" class="fn">normalizedName</span><span class="s">}-deploy&quot;</span>
+            <span onmouseout="hideTip(event, 'fs22', 30)" onmouseover="showTip(event, 'fs22', 30)" class="k">_labels</span> <span class="pn">[</span><span onmouseout="hideTip(event, 'fs19', 31)" onmouseover="showTip(event, 'fs19', 31)" class="fn">matchOn</span><span class="pn">]</span>
+            <span onmouseout="hideTip(event, 'fs23', 32)" onmouseover="showTip(event, 'fs23', 32)" class="k">replicas</span> <span class="n">2</span>
+            <span onmouseout="hideTip(event, 'fs24', 33)" onmouseover="showTip(event, 'fs24', 33)" class="k">add_matchLabel</span> <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs18', 34)" onmouseover="showTip(event, 'fs18', 34)" class="fn">normalizedName</span><span class="pn">)</span>
+            <span onmouseout="hideTip(event, 'fs25', 35)" onmouseover="showTip(event, 'fs25', 35)" class="id">pod</span> <span class="pn">{</span>
+                <span class="s">$&quot;{</span><span onmouseout="hideTip(event, 'fs18', 36)" onmouseover="showTip(event, 'fs18', 36)" class="fn">normalizedName</span><span class="s">}-pod&quot;</span>
+                <span onmouseout="hideTip(event, 'fs26', 37)" onmouseover="showTip(event, 'fs26', 37)" class="k">_labels</span> <span class="pn">[</span><span onmouseout="hideTip(event, 'fs19', 38)" onmouseover="showTip(event, 'fs19', 38)" class="fn">matchOn</span><span class="pn">]</span>
+                <span onmouseout="hideTip(event, 'fs27', 39)" onmouseover="showTip(event, 'fs27', 39)" class="id">container</span> <span class="pn">{</span>
                     <span class="s">&quot;nginx&quot;</span>
-                    <span class="id">image</span> <span class="s">&quot;nginx&quot;</span>
+                    <span onmouseout="hideTip(event, 'fs28', 40)" onmouseover="showTip(event, 'fs28', 40)" class="k">image</span> <span class="s">&quot;nginx&quot;</span>
                 <span class="pn">}</span>
             <span class="pn">}</span>
         <span class="pn">}</span>
-        <span class="id">service</span> <span class="pn">{</span>
-            <span class="s">$&quot;{</span><span onmouseout="hideTip(event, 'fs14', 25)" onmouseover="showTip(event, 'fs14', 25)" class="id">normalizedName</span><span class="s">}-service&quot;</span>
-            <span class="id">_labels</span> <span class="pn">[</span><span onmouseout="hideTip(event, 'fs15', 26)" onmouseover="showTip(event, 'fs15', 26)" class="id">matchOn</span><span class="pn">]</span>
-            <span class="id">typeOf</span> <span class="id">ServiceType</span><span class="pn">.</span><span class="id">NodePort</span>
-            <span class="id">matchLabel</span> <span onmouseout="hideTip(event, 'fs15', 27)" onmouseover="showTip(event, 'fs15', 27)" class="id">matchOn</span>
-            <span class="id">servicePort</span> <span class="pn">{</span>
-                <span class="id">port</span> <span onmouseout="hideTip(event, 'fs4', 28)" onmouseover="showTip(event, 'fs4', 28)" class="id">portNumber</span>
-                <span class="id">protocol</span> <span class="id">Protocol</span><span class="pn">.</span><span class="id">TCP</span>
+        <span onmouseout="hideTip(event, 'fs29', 41)" onmouseover="showTip(event, 'fs29', 41)" class="id">service</span> <span class="pn">{</span>
+            <span class="s">$&quot;{</span><span onmouseout="hideTip(event, 'fs18', 42)" onmouseover="showTip(event, 'fs18', 42)" class="fn">normalizedName</span><span class="s">}-service&quot;</span>
+            <span onmouseout="hideTip(event, 'fs30', 43)" onmouseover="showTip(event, 'fs30', 43)" class="k">_labels</span> <span class="pn">[</span><span onmouseout="hideTip(event, 'fs19', 44)" onmouseover="showTip(event, 'fs19', 44)" class="fn">matchOn</span><span class="pn">]</span>
+            <span onmouseout="hideTip(event, 'fs31', 45)" onmouseover="showTip(event, 'fs31', 45)" class="k">typeOf</span> <span onmouseout="hideTip(event, 'fs32', 46)" onmouseover="showTip(event, 'fs32', 46)" class="rt">ServiceType</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs33', 47)" onmouseover="showTip(event, 'fs33', 47)" class="id">NodePort</span>
+            <span onmouseout="hideTip(event, 'fs34', 48)" onmouseover="showTip(event, 'fs34', 48)" class="k">matchLabel</span> <span onmouseout="hideTip(event, 'fs19', 49)" onmouseover="showTip(event, 'fs19', 49)" class="fn">matchOn</span>
+            <span onmouseout="hideTip(event, 'fs35', 50)" onmouseover="showTip(event, 'fs35', 50)" class="id">servicePort</span> <span class="pn">{</span>
+                <span onmouseout="hideTip(event, 'fs36', 51)" onmouseover="showTip(event, 'fs36', 51)" class="k">port</span> <span onmouseout="hideTip(event, 'fs8', 52)" onmouseover="showTip(event, 'fs8', 52)" class="fn">portNumber</span>
+                <span onmouseout="hideTip(event, 'fs37', 53)" onmouseover="showTip(event, 'fs37', 53)" class="k">protocol</span> <span onmouseout="hideTip(event, 'fs38', 54)" onmouseover="showTip(event, 'fs38', 54)" class="rt">Protocol</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs39', 55)" onmouseover="showTip(event, 'fs39', 55)" class="id">TCP</span>
             <span class="pn">}</span>
         <span class="pn">}</span>
     <span class="pn">}</span>
 
 <span class="c">// Use the `publicApi` function to create 2 lists or resources and combine them into a new `K8s` instance. </span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 29)" onmouseover="showTip(event, 'fs16', 29)" class="id">k8sConfig</span> <span class="o">=</span> <span class="id">k8s</span> <span class="pn">{</span>
-    <span onmouseout="hideTip(event, 'fs2', 30)" onmouseover="showTip(event, 'fs2', 30)" class="id">publicApi</span> <span class="s">&quot;Checkout&quot;</span> <span class="n">80</span>
-    <span onmouseout="hideTip(event, 'fs2', 31)" onmouseover="showTip(event, 'fs2', 31)" class="id">publicApi</span> <span class="s">&quot;Payments&quot;</span> <span class="n">81</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs40', 56)" onmouseover="showTip(event, 'fs40', 56)" class="id">k8sConfig</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs20', 57)" onmouseover="showTip(event, 'fs20', 57)" class="k">k8s</span> <span class="pn">{</span>
+    <span onmouseout="hideTip(event, 'fs6', 58)" onmouseover="showTip(event, 'fs6', 58)" class="fn">publicApi</span> <span class="s">&quot;Checkout&quot;</span> <span class="n">80</span>
+    <span onmouseout="hideTip(event, 'fs6', 59)" onmouseover="showTip(event, 'fs6', 59)" class="fn">publicApi</span> <span class="s">&quot;Payments&quot;</span> <span class="n">81</span>
  <span class="pn">}</span>
 
 <span class="c">// Get the output content and validation errors</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs17', 32)" onmouseover="showTip(event, 'fs17', 32)" class="id">k8sOutput</span> <span class="o">=</span> <span class="id">KubeCtlWriter</span><span class="pn">.</span><span class="id">toYaml</span> <span onmouseout="hideTip(event, 'fs16', 33)" onmouseover="showTip(event, 'fs16', 33)" class="id">k8sConfig</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs41', 60)" onmouseover="showTip(event, 'fs41', 60)" class="id">k8sOutput</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs42', 61)" onmouseover="showTip(event, 'fs42', 61)" class="m">KubeCtlWriter</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs43', 62)" onmouseover="showTip(event, 'fs43', 62)" class="id">toYaml</span> <span onmouseout="hideTip(event, 'fs40', 63)" onmouseover="showTip(event, 'fs40', 63)" class="id">k8sConfig</span>
 </code></pre>
 <h3><a name="Output" class="anchor" href="#Output">Output</a></h3>
-<table class="pre"><tr><td><pre><code>No value returned by any evaluator</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: checkout
+  name: checkout-deploy
+  namespace: default
+spec:
+  minReadySeconds: 0
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: checkout
+  template:
+    metadata:
+      labels:
+        app: checkout
+      name: checkout-pod
+      namespace: default
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+          requests:
+            cpu: 500m
+            memory: 256Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: checkout
+  name: checkout-service
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    app: checkout
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: payments
+  name: payments-deploy
+  namespace: default
+spec:
+  minReadySeconds: 0
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: payments
+  template:
+    metadata:
+      labels:
+        app: payments
+      name: payments-pod
+      namespace: default
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+          requests:
+            cpu: 500m
+            memory: 256Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: payments
+  name: payments-service
+  namespace: default
+spec:
+  ports:
+  - port: 81
+    protocol: TCP
+  selector:
+    app: payments
+  type: NodePort
+
+
+"</code></pre></td></tr></table>
 
             <div class="fsdocs-tip" id="fs1">namespace System</div>
-<div class="fsdocs-tip" id="fs2">val publicApi: appName: string -&gt; portNumber: &#39;a -&gt; &#39;b<br /><em>&#160;Returns a deployment and service for `appName`</em></div>
-<div class="fsdocs-tip" id="fs3">val appName: string</div>
-<div class="fsdocs-tip" id="fs4">val portNumber: &#39;a</div>
-<div class="fsdocs-tip" id="fs5">val normalize: (string -&gt; String)<br /><em>&#160;Lowercase the name and allow only letters and digits</em></div>
-<div class="fsdocs-tip" id="fs6">val name: string</div>
-<div class="fsdocs-tip" id="fs7">Multiple items<br />val string: value: &#39;T -&gt; string<br /><em>&lt;summary&gt;Converts the argument to a string using &lt;c&gt;ToString&lt;/c&gt;.&lt;/summary&gt;<br />&lt;remarks&gt;For standard integer and floating point values the and any type that implements &lt;c&gt;IFormattable&lt;/c&gt;&lt;c&gt;ToString&lt;/c&gt; conversion uses &lt;c&gt;CultureInfo.InvariantCulture&lt;/c&gt;. &lt;/remarks&gt;<br />&lt;param name=&quot;value&quot;&gt;The input value.&lt;/param&gt;<br />&lt;returns&gt;The converted string.&lt;/returns&gt;<br />&lt;example id=&quot;string-example&quot;&gt;&lt;code lang=&quot;fsharp&quot;&gt;&lt;/code&gt;&lt;/example&gt;</em><br /><br />--------------------<br />type string = String<br /><em>&lt;summary&gt;An abbreviation for the CLI type &lt;see cref=&quot;T:System.String&quot; /&gt;.&lt;/summary&gt;<br />&lt;category&gt;Basic Types&lt;/category&gt;</em></div>
-<div class="fsdocs-tip" id="fs8">String.ToLowerInvariant() : string</div>
-<div class="fsdocs-tip" id="fs9">type Array =
+<div class="fsdocs-tip" id="fs2">namespace Overboard</div>
+<div class="fsdocs-tip" id="fs3">namespace Overboard.Common</div>
+<div class="fsdocs-tip" id="fs4">namespace Overboard.Workload</div>
+<div class="fsdocs-tip" id="fs5">namespace Overboard.Service</div>
+<div class="fsdocs-tip" id="fs6">val publicApi: appName: string -&gt; portNumber: int -&gt; K8s<br /><em>&#160;Returns a deployment and service for `appName`</em></div>
+<div class="fsdocs-tip" id="fs7">val appName: string</div>
+<div class="fsdocs-tip" id="fs8">val portNumber: int</div>
+<div class="fsdocs-tip" id="fs9">val normalize: (string -&gt; String)<br /><em>&#160;Lowercase the name and allow only letters and digits</em></div>
+<div class="fsdocs-tip" id="fs10">val name: string</div>
+<div class="fsdocs-tip" id="fs11">Multiple items<br />val string: value: &#39;T -&gt; string<br /><em>&lt;summary&gt;Converts the argument to a string using &lt;c&gt;ToString&lt;/c&gt;.&lt;/summary&gt;<br />&lt;remarks&gt;For standard integer and floating point values the and any type that implements &lt;c&gt;IFormattable&lt;/c&gt;&lt;c&gt;ToString&lt;/c&gt; conversion uses &lt;c&gt;CultureInfo.InvariantCulture&lt;/c&gt;. &lt;/remarks&gt;<br />&lt;param name=&quot;value&quot;&gt;The input value.&lt;/param&gt;<br />&lt;returns&gt;The converted string.&lt;/returns&gt;<br />&lt;example id=&quot;string-example&quot;&gt;&lt;code lang=&quot;fsharp&quot;&gt;&lt;/code&gt;&lt;/example&gt;</em><br /><br />--------------------<br />type string = String<br /><em>&lt;summary&gt;An abbreviation for the CLI type &lt;see cref=&quot;T:System.String&quot; /&gt;.&lt;/summary&gt;<br />&lt;category&gt;Basic Types&lt;/category&gt;</em></div>
+<div class="fsdocs-tip" id="fs12">String.ToLowerInvariant() : string</div>
+<div class="fsdocs-tip" id="fs13">type Array =
   interface ICollection
   interface IEnumerable
   interface IList
@@ -186,14 +291,14 @@
   member GetEnumerator: unit -&gt; IEnumerator
   member GetLength: dimension: int -&gt; int
   ...<br /><em>&lt;summary&gt;Provides methods for creating, manipulating, searching, and sorting arrays, thereby serving as the base class for all arrays in the common language runtime.&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs10">val filter: predicate: (&#39;T -&gt; bool) -&gt; array: &#39;T[] -&gt; &#39;T[]<br /><em>&lt;summary&gt;Returns a new collection containing only the elements of the collection
+<div class="fsdocs-tip" id="fs14">val filter: predicate: (&#39;T -&gt; bool) -&gt; array: &#39;T[] -&gt; &#39;T[]<br /><em>&lt;summary&gt;Returns a new collection containing only the elements of the collection
  for which the given predicate returns &quot;true&quot;.&lt;/summary&gt;<br />&lt;param name=&quot;predicate&quot;&gt;The function to test the input elements.&lt;/param&gt;<br />&lt;param name=&quot;array&quot;&gt;The input array.&lt;/param&gt;<br />&lt;returns&gt;An array containing the elements for which the given predicate returns true.&lt;/returns&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input array is null.&lt;/exception&gt;<br />&lt;example id=&quot;filter-1&quot;&gt;&lt;code lang=&quot;fsharp&quot;&gt;
  let inputs = [| 1; 2; 3; 4 |]
 
  inputs |&amp;gt; Array.filter (fun elm -&amp;gt; elm % 2 = 0)
  &lt;/code&gt;
  Evaluates to &lt;c&gt;[| 2; 4 |]&lt;/c&gt;&lt;/example&gt;</em></div>
-<div class="fsdocs-tip" id="fs11">[&lt;Struct&gt;]
+<div class="fsdocs-tip" id="fs15">[&lt;Struct&gt;]
 type Char =
   member CompareTo: value: char -&gt; int + 1 overload
   member Equals: obj: char -&gt; bool + 1 overload
@@ -206,8 +311,8 @@ type Char =
   static member GetUnicodeCategory: c: char -&gt; UnicodeCategory + 1 overload
   static member IsAscii: c: char -&gt; bool
   ...<br /><em>&lt;summary&gt;Represents a character as a UTF-16 code unit.&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs12">Char.IsLetterOrDigit(c: char) : bool<br />Char.IsLetterOrDigit(s: string, index: int) : bool</div>
-<div class="fsdocs-tip" id="fs13">Multiple items<br />type String =
+<div class="fsdocs-tip" id="fs16">Char.IsLetterOrDigit(c: char) : bool<br />Char.IsLetterOrDigit(s: string, index: int) : bool</div>
+<div class="fsdocs-tip" id="fs17">Multiple items<br />type String =
   interface IEnumerable&lt;char&gt;
   interface IEnumerable
   interface ICloneable
@@ -219,11 +324,81 @@ type Char =
   member Clone: unit -&gt; obj
   member CompareTo: value: obj -&gt; int + 1 overload
   ...<br /><em>&lt;summary&gt;Represents text as a sequence of UTF-16 code units.&lt;/summary&gt;</em><br /><br />--------------------<br />String(value: nativeptr&lt;char&gt;) : String<br />String(value: char[]) : String<br />String(value: ReadOnlySpan&lt;char&gt;) : String<br />String(value: nativeptr&lt;sbyte&gt;) : String<br />String(c: char, count: int) : String<br />String(value: nativeptr&lt;char&gt;, startIndex: int, length: int) : String<br />String(value: char[], startIndex: int, length: int) : String<br />String(value: nativeptr&lt;sbyte&gt;, startIndex: int, length: int) : String<br />String(value: nativeptr&lt;sbyte&gt;, startIndex: int, length: int, enc: Text.Encoding) : String</div>
-<div class="fsdocs-tip" id="fs14">val normalizedName: String</div>
-<div class="fsdocs-tip" id="fs15">val matchOn: string * String</div>
-<div class="fsdocs-tip" id="fs16">val k8sConfig: obj</div>
-<div class="fsdocs-tip" id="fs17">val k8sOutput: obj</div>
-<div class="fsdocs-tip" id="fs18">val md: string</div>
+<div class="fsdocs-tip" id="fs18">val normalizedName: String</div>
+<div class="fsdocs-tip" id="fs19">val matchOn: string * String</div>
+<div class="fsdocs-tip" id="fs20">val k8s: K8sBuilder</div>
+<div class="fsdocs-tip" id="fs21">val deployment: DeploymentBuilder</div>
+<div class="fsdocs-tip" id="fs22">custom operation: _labels ((string * string) list)
+
+Calls DeploymentBuilder.Labels<br /><em>&lt;summary&gt;
+ Labels for the Deployment
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs23">custom operation: replicas (int)
+
+Calls DeploymentBuilder.Replicas</div>
+<div class="fsdocs-tip" id="fs24">custom operation: add_matchLabel (string * string)
+
+Calls DeploymentBuilder.MatchLabel<br /><em>&lt;summary&gt;
+ Add a single label selector to the Deployment.
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs25">val pod: PodBuilder</div>
+<div class="fsdocs-tip" id="fs26">custom operation: _labels ((string * string) list)
+
+Calls PodBuilder.Labels<br /><em>&lt;summary&gt;
+ Labels for the Pod
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs27">val container: ContainerBuilder<br /><em>&lt;summary&gt;
+ A single application container that you want to run within a pod.
+ https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs28">custom operation: image (string)
+
+Calls ContainerBuilder.Image</div>
+<div class="fsdocs-tip" id="fs29">val service: ServiceBuilder</div>
+<div class="fsdocs-tip" id="fs30">custom operation: _labels ((string * string) list)
+
+Calls ServiceBuilder.Labels<br /><em>&lt;summary&gt;
+ Labels for the Service
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs31">custom operation: typeOf (ServiceType)
+
+Calls ServiceBuilder.Type<br /><em>&lt;summary&gt;
+ Type of the Service.
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs32">type ServiceType =
+  | ClusterIP
+  | ExternalName
+  | NodePort
+  | LoadBalancer
+  override ToString: unit -&gt; string</div>
+<div class="fsdocs-tip" id="fs33">union case ServiceType.NodePort: ServiceType</div>
+<div class="fsdocs-tip" id="fs34">custom operation: matchLabel (string * string)
+
+Calls ServiceBuilder.MatchLabel<br /><em>&lt;summary&gt;
+ Add a single label selector to the Service.
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs35">val servicePort: ServicePortBuilder</div>
+<div class="fsdocs-tip" id="fs36">custom operation: port (int)
+
+Calls ServicePortBuilder.Port</div>
+<div class="fsdocs-tip" id="fs37">custom operation: protocol (Protocol)
+
+Calls ServicePortBuilder.Protocol</div>
+<div class="fsdocs-tip" id="fs38">type Protocol =
+  | TCP
+  | UDP
+  | SCTP
+  override ToString: unit -&gt; string
+  static member combine: p1: Protocol -&gt; p2: Protocol -&gt; Protocol</div>
+<div class="fsdocs-tip" id="fs39">union case Protocol.TCP: Protocol</div>
+<div class="fsdocs-tip" id="fs40">val k8sConfig: K8s</div>
+<div class="fsdocs-tip" id="fs41">val k8sOutput: K8sOutput</div>
+<div class="fsdocs-tip" id="fs42">module KubeCtlWriter
+
+from Overboard.K8s</div>
+<div class="fsdocs-tip" id="fs43">val toYaml: k8s: K8s -&gt; K8sOutput</div>
+<div class="fsdocs-tip" id="fs44">val md: string</div>
+<div class="fsdocs-tip" id="fs45">K8sOutput.content: string</div>
 
         </div>
 

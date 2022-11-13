@@ -141,16 +141,14 @@ We then build up our Deployment using the variables rather than in-lining the co
 <li>Use the <code>#r</code> directive to import the Overboard package and open up the namespaces</li>
 </ol>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// TODO: import from Nuget</span>
-<span class="pp">#r</span> <span class="s">&quot;nuget:YamlDotNet&quot;</span>
-<span class="pp">#r</span> <span class="s">&quot;nuget:Newtonsoft.Json&quot;</span>
-<span class="pp">#r</span> <span class="s">&quot;../../src/Overboard/bin/debug/net6.0/Overboard.dll&quot;</span>
+<span class="pp">#r</span> <span class="s">&quot;nuget:Overboard&quot;</span>
 
 <span class="c">// open the required namespaces</span>
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">System</span>
-<span class="k">open</span> <span class="id">Overboard</span>
-<span class="k">open</span> <span class="id">Overboard</span><span class="pn">.</span><span class="id">Common</span>
-<span class="k">open</span> <span class="id">Overboard</span><span class="pn">.</span><span class="id">Workload</span>
-<span class="k">open</span> <span class="id">Overboard</span><span class="pn">.</span><span class="id">Service</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="id">Overboard</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 4)" onmouseover="showTip(event, 'fs3', 4)" class="id">Common</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 5)" onmouseover="showTip(event, 'fs2', 5)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs4', 6)" onmouseover="showTip(event, 'fs4', 6)" class="id">Workload</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 7)" onmouseover="showTip(event, 'fs2', 7)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 8)" onmouseover="showTip(event, 'fs5', 8)" class="id">Service</span>
 </code></pre>
 <p>The we are going to create our first function. This function, <code>redisDeployment</code> will return the Deployment resource configuration.
 A <a href="https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/functions/">F# function</a> is just a value, so we use the <code>let</code> keyword to assign the value.</p>
@@ -158,73 +156,73 @@ A <a href="https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/fu
 <p>Tip: Start with defining your configuration with hard-coded values, then pull our parameters to pass in as arguments as needed.</p>
 </blockquote>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">/// Return a Redis Kubernetes Deployment Resource Config</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="fn">redisDeployment</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="fn">redisName</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="fn">role</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="fn">replicaCount</span> <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="fn">portNumber</span>  <span class="o">=</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 9)" onmouseover="showTip(event, 'fs6', 9)" class="fn">redisDeployment</span> <span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="fn">redisName</span> <span onmouseout="hideTip(event, 'fs8', 11)" onmouseover="showTip(event, 'fs8', 11)" class="fn">role</span> <span onmouseout="hideTip(event, 'fs9', 12)" onmouseover="showTip(event, 'fs9', 12)" class="fn">replicaCount</span> <span onmouseout="hideTip(event, 'fs10', 13)" onmouseover="showTip(event, 'fs10', 13)" class="fn">portNumber</span>  <span class="o">=</span>
     
     <span class="c">// which image depends on the role</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 7)" onmouseover="showTip(event, 'fs7', 7)" class="fn">redisImage</span> <span class="o">=</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs4', 8)" onmouseover="showTip(event, 'fs4', 8)" class="fn">role</span> <span class="o">=</span> <span class="s">&quot;leader&quot;</span> <span class="k">then</span> <span class="s">&quot;docker.io/redis:6.0.5&quot;</span> <span class="k">else</span> <span class="s">&quot;gcr.io/google_samples/gb-redis-follower:v2&quot;</span><span class="c">//&quot;k8s.gcr.io/redis:e2e&quot; &quot;k8s.gcr.io/redis-slave:v2&quot;</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 14)" onmouseover="showTip(event, 'fs11', 14)" class="fn">redisImage</span> <span class="o">=</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs8', 15)" onmouseover="showTip(event, 'fs8', 15)" class="fn">role</span> <span class="o">=</span> <span class="s">&quot;leader&quot;</span> <span class="k">then</span> <span class="s">&quot;docker.io/redis:6.0.5&quot;</span> <span class="k">else</span> <span class="s">&quot;gcr.io/google_samples/gb-redis-follower:v2&quot;</span><span class="c">//&quot;k8s.gcr.io/redis:e2e&quot; &quot;k8s.gcr.io/redis-slave:v2&quot;</span>
 
     <span class="c">// define the container</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 9)" onmouseover="showTip(event, 'fs8', 9)" class="fn">redisContainer</span> <span class="o">=</span> <span class="id">container</span> <span class="pn">{</span>
-        <span class="id">name</span> <span onmouseout="hideTip(event, 'fs3', 10)" onmouseover="showTip(event, 'fs3', 10)" class="id">redisName</span>
-        <span class="id">image</span> <span onmouseout="hideTip(event, 'fs7', 11)" onmouseover="showTip(event, 'fs7', 11)" class="id">redisImage</span>
-        <span class="id">containerPort</span> <span class="pn">{</span>
-            <span class="id">port</span> <span onmouseout="hideTip(event, 'fs6', 12)" onmouseover="showTip(event, 'fs6', 12)" class="id">portNumber</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 16)" onmouseover="showTip(event, 'fs12', 16)" class="fn">redisContainer</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs13', 17)" onmouseover="showTip(event, 'fs13', 17)" class="k">container</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs14', 18)" onmouseover="showTip(event, 'fs14', 18)" class="k">name</span> <span onmouseout="hideTip(event, 'fs7', 19)" onmouseover="showTip(event, 'fs7', 19)" class="fn">redisName</span>
+        <span onmouseout="hideTip(event, 'fs15', 20)" onmouseover="showTip(event, 'fs15', 20)" class="k">image</span> <span onmouseout="hideTip(event, 'fs11', 21)" onmouseover="showTip(event, 'fs11', 21)" class="fn">redisImage</span>
+        <span onmouseout="hideTip(event, 'fs16', 22)" onmouseover="showTip(event, 'fs16', 22)" class="id">containerPort</span> <span class="pn">{</span>
+            <span onmouseout="hideTip(event, 'fs17', 23)" onmouseover="showTip(event, 'fs17', 23)" class="k">port</span> <span onmouseout="hideTip(event, 'fs10', 24)" onmouseover="showTip(event, 'fs10', 24)" class="fn">portNumber</span>
         <span class="pn">}</span>
     <span class="pn">}</span>
 
     <span class="c">// build up the list of labels</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 13)" onmouseover="showTip(event, 'fs9', 13)" class="fn">labels</span> <span class="o">=</span> <span class="pn">[</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs18', 25)" onmouseover="showTip(event, 'fs18', 25)" class="fn">labels</span> <span class="o">=</span> <span class="pn">[</span>
         <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span class="s">&quot;redis&quot;</span><span class="pn">)</span>
-        <span class="pn">(</span><span class="s">&quot;role&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs4', 14)" onmouseover="showTip(event, 'fs4', 14)" class="fn">role</span><span class="pn">)</span>
+        <span class="pn">(</span><span class="s">&quot;role&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs8', 26)" onmouseover="showTip(event, 'fs8', 26)" class="fn">role</span><span class="pn">)</span>
         <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;backend&quot;</span><span class="pn">)</span>
     <span class="pn">]</span>
 
     <span class="c">// the pod to use for podTemplate</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 15)" onmouseover="showTip(event, 'fs10', 15)" class="fn">redisPod</span> <span class="o">=</span> <span class="id">pod</span> <span class="pn">{</span>
-        <span class="id">_labels</span> <span onmouseout="hideTip(event, 'fs9', 16)" onmouseover="showTip(event, 'fs9', 16)" class="id">labels</span>
-        <span class="id">add_container</span> <span onmouseout="hideTip(event, 'fs8', 17)" onmouseover="showTip(event, 'fs8', 17)" class="id">redisContainer</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs19', 27)" onmouseover="showTip(event, 'fs19', 27)" class="fn">redisPod</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs20', 28)" onmouseover="showTip(event, 'fs20', 28)" class="k">pod</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs21', 29)" onmouseover="showTip(event, 'fs21', 29)" class="k">_labels</span> <span onmouseout="hideTip(event, 'fs18', 30)" onmouseover="showTip(event, 'fs18', 30)" class="fn">labels</span>
+        <span onmouseout="hideTip(event, 'fs22', 31)" onmouseover="showTip(event, 'fs22', 31)" class="k">add_container</span> <span onmouseout="hideTip(event, 'fs12', 32)" onmouseover="showTip(event, 'fs12', 32)" class="fn">redisContainer</span>
     <span class="pn">}</span>
 
     <span class="c">// define the deployment using the same labels used for the pod in the matchLabels</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 18)" onmouseover="showTip(event, 'fs11', 18)" class="fn">redisDeployment</span> <span class="o">=</span> <span class="id">deployment</span> <span class="pn">{</span>
-        <span class="id">_name</span> <span onmouseout="hideTip(event, 'fs3', 19)" onmouseover="showTip(event, 'fs3', 19)" class="id">redisName</span>
-        <span class="id">replicas</span> <span onmouseout="hideTip(event, 'fs5', 20)" onmouseover="showTip(event, 'fs5', 20)" class="id">replicaCount</span>
-        <span class="id">add_matchLabels</span> <span onmouseout="hideTip(event, 'fs9', 21)" onmouseover="showTip(event, 'fs9', 21)" class="id">labels</span>
-        <span class="id">podTemplate</span> <span onmouseout="hideTip(event, 'fs10', 22)" onmouseover="showTip(event, 'fs10', 22)" class="id">redisPod</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 33)" onmouseover="showTip(event, 'fs23', 33)" class="fn">redisDeployment</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs24', 34)" onmouseover="showTip(event, 'fs24', 34)" class="k">deployment</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs25', 35)" onmouseover="showTip(event, 'fs25', 35)" class="k">_name</span> <span onmouseout="hideTip(event, 'fs7', 36)" onmouseover="showTip(event, 'fs7', 36)" class="fn">redisName</span>
+        <span onmouseout="hideTip(event, 'fs26', 37)" onmouseover="showTip(event, 'fs26', 37)" class="k">replicas</span> <span onmouseout="hideTip(event, 'fs9', 38)" onmouseover="showTip(event, 'fs9', 38)" class="fn">replicaCount</span>
+        <span onmouseout="hideTip(event, 'fs27', 39)" onmouseover="showTip(event, 'fs27', 39)" class="k">add_matchLabels</span> <span onmouseout="hideTip(event, 'fs18', 40)" onmouseover="showTip(event, 'fs18', 40)" class="fn">labels</span>
+        <span onmouseout="hideTip(event, 'fs28', 41)" onmouseover="showTip(event, 'fs28', 41)" class="k">podTemplate</span> <span onmouseout="hideTip(event, 'fs19', 42)" onmouseover="showTip(event, 'fs19', 42)" class="fn">redisPod</span>
     <span class="pn">}</span>
 
     <span class="c">// return the deployment config</span>
-    <span onmouseout="hideTip(event, 'fs11', 23)" onmouseover="showTip(event, 'fs11', 23)" class="fn">redisDeployment</span>
+    <span onmouseout="hideTip(event, 'fs23', 43)" onmouseover="showTip(event, 'fs23', 43)" class="fn">redisDeployment</span>
 </code></pre>
 <p>So now we have a function that can return the config for both our master and replica Redis deployments.</p>
 <h2><a name="Configuring-a-Redis-Service" class="anchor" href="#Configuring-a-Redis-Service">Configuring a Redis Service</a></h2>
 <p>Next we need to have a Service to match up to a Deployment. This Service will proxy the traffic to the Redis pods provisioned through the Deployment.empty</p>
 <p>We do this the same way as with the Deployment. With a function called <code>redisService</code>.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">/// Return a Redis Kubernetes Service Resource Config</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 24)" onmouseover="showTip(event, 'fs12', 24)" class="fn">redisService</span> <span onmouseout="hideTip(event, 'fs13', 25)" onmouseover="showTip(event, 'fs13', 25)" class="fn">serviceName</span> <span onmouseout="hideTip(event, 'fs4', 26)" onmouseover="showTip(event, 'fs4', 26)" class="fn">role</span> <span onmouseout="hideTip(event, 'fs14', 27)" onmouseover="showTip(event, 'fs14', 27)" class="fn">portNumber</span> <span class="o">=</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs29', 44)" onmouseover="showTip(event, 'fs29', 44)" class="fn">redisService</span> <span onmouseout="hideTip(event, 'fs30', 45)" onmouseover="showTip(event, 'fs30', 45)" class="fn">serviceName</span> <span onmouseout="hideTip(event, 'fs8', 46)" onmouseover="showTip(event, 'fs8', 46)" class="fn">role</span> <span onmouseout="hideTip(event, 'fs10', 47)" onmouseover="showTip(event, 'fs10', 47)" class="fn">portNumber</span> <span class="o">=</span>
     <span class="c">// list the labels</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 28)" onmouseover="showTip(event, 'fs9', 28)" class="fn">labels</span> <span class="o">=</span> <span class="pn">[</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs18', 48)" onmouseover="showTip(event, 'fs18', 48)" class="fn">labels</span> <span class="o">=</span> <span class="pn">[</span>
         <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span class="s">&quot;redis&quot;</span><span class="pn">)</span>
-        <span class="pn">(</span><span class="s">&quot;role&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs4', 29)" onmouseover="showTip(event, 'fs4', 29)" class="fn">role</span><span class="pn">)</span>
+        <span class="pn">(</span><span class="s">&quot;role&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs8', 49)" onmouseover="showTip(event, 'fs8', 49)" class="fn">role</span><span class="pn">)</span>
         <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;backend&quot;</span><span class="pn">)</span>
     <span class="pn">]</span>
 
     <span class="c">// configure the port</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 30)" onmouseover="showTip(event, 'fs15', 30)" class="fn">port</span> <span class="o">=</span> <span class="id">servicePort</span> <span class="pn">{</span>
-        <span onmouseout="hideTip(event, 'fs15', 31)" onmouseover="showTip(event, 'fs15', 31)" class="id">port</span> <span onmouseout="hideTip(event, 'fs14', 32)" onmouseover="showTip(event, 'fs14', 32)" class="id">portNumber</span>
-        <span class="id">targetPortInt</span> <span onmouseout="hideTip(event, 'fs14', 33)" onmouseover="showTip(event, 'fs14', 33)" class="id">portNumber</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs31', 50)" onmouseover="showTip(event, 'fs31', 50)" class="fn">port</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs32', 51)" onmouseover="showTip(event, 'fs32', 51)" class="k">servicePort</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs33', 52)" onmouseover="showTip(event, 'fs33', 52)" class="k">port</span> <span onmouseout="hideTip(event, 'fs10', 53)" onmouseover="showTip(event, 'fs10', 53)" class="fn">portNumber</span>
+        <span onmouseout="hideTip(event, 'fs34', 54)" onmouseover="showTip(event, 'fs34', 54)" class="k">targetPortInt</span> <span onmouseout="hideTip(event, 'fs10', 55)" onmouseover="showTip(event, 'fs10', 55)" class="fn">portNumber</span>
     <span class="pn">}</span>
 
     <span class="c">// put it together in a Service config</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 34)" onmouseover="showTip(event, 'fs16', 34)" class="fn">redisService</span> <span class="o">=</span> <span class="id">service</span> <span class="pn">{</span>
-        <span class="id">_name</span> <span onmouseout="hideTip(event, 'fs13', 35)" onmouseover="showTip(event, 'fs13', 35)" class="id">serviceName</span>
-        <span class="id">_labels</span> <span onmouseout="hideTip(event, 'fs9', 36)" onmouseover="showTip(event, 'fs9', 36)" class="id">labels</span>
-        <span class="id">add_port</span> <span onmouseout="hideTip(event, 'fs15', 37)" onmouseover="showTip(event, 'fs15', 37)" class="id">port</span>
-        <span class="id">matchLabels</span> <span onmouseout="hideTip(event, 'fs9', 38)" onmouseover="showTip(event, 'fs9', 38)" class="id">labels</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs35', 56)" onmouseover="showTip(event, 'fs35', 56)" class="fn">redisService</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs36', 57)" onmouseover="showTip(event, 'fs36', 57)" class="k">service</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs37', 58)" onmouseover="showTip(event, 'fs37', 58)" class="k">_name</span> <span onmouseout="hideTip(event, 'fs30', 59)" onmouseover="showTip(event, 'fs30', 59)" class="fn">serviceName</span>
+        <span onmouseout="hideTip(event, 'fs38', 60)" onmouseover="showTip(event, 'fs38', 60)" class="k">_labels</span> <span onmouseout="hideTip(event, 'fs18', 61)" onmouseover="showTip(event, 'fs18', 61)" class="fn">labels</span>
+        <span onmouseout="hideTip(event, 'fs39', 62)" onmouseover="showTip(event, 'fs39', 62)" class="k">add_port</span> <span onmouseout="hideTip(event, 'fs31', 63)" onmouseover="showTip(event, 'fs31', 63)" class="fn">port</span>
+        <span onmouseout="hideTip(event, 'fs40', 64)" onmouseover="showTip(event, 'fs40', 64)" class="k">matchLabels</span> <span onmouseout="hideTip(event, 'fs18', 65)" onmouseover="showTip(event, 'fs18', 65)" class="fn">labels</span>
     <span class="pn">}</span>
 
     <span class="c">// return the config</span>
-    <span onmouseout="hideTip(event, 'fs16', 39)" onmouseover="showTip(event, 'fs16', 39)" class="fn">redisService</span>
+    <span onmouseout="hideTip(event, 'fs35', 66)" onmouseover="showTip(event, 'fs35', 66)" class="fn">redisService</span>
 </code></pre>
 <p>This function will provide the Service config when passed the parameters for the service. We can use this for defining a Service for both the master and replica Redis Deployments.</p>
 <h2><a name="Configuring-the-Guestbook" class="anchor" href="#Configuring-the-Guestbook">Configuring the Guestbook</a></h2>
@@ -233,58 +231,58 @@ The image we are pulling in is of a PHP application but Kubernetes doesn't reall
 We just define the image used by the container in the Pod.</p>
 <p>So we define a general function for returning the config for a Deployment of an application and the Service to make it available.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">/// Return a Deployment and Service for a frontend application connected to Redis</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs17', 40)" onmouseover="showTip(event, 'fs17', 40)" class="fn">frontendApp</span> <span onmouseout="hideTip(event, 'fs18', 41)" onmouseover="showTip(event, 'fs18', 41)" class="fn">appName</span> <span onmouseout="hideTip(event, 'fs19', 42)" onmouseover="showTip(event, 'fs19', 42)" class="fn">imageName</span> <span onmouseout="hideTip(event, 'fs20', 43)" onmouseover="showTip(event, 'fs20', 43)" class="fn">replicaCount</span> <span onmouseout="hideTip(event, 'fs21', 44)" onmouseover="showTip(event, 'fs21', 44)" class="fn">portName</span> <span onmouseout="hideTip(event, 'fs22', 45)" onmouseover="showTip(event, 'fs22', 45)" class="fn">portNumber</span><span class="o">=</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs41', 67)" onmouseover="showTip(event, 'fs41', 67)" class="fn">frontendApp</span> <span onmouseout="hideTip(event, 'fs42', 68)" onmouseover="showTip(event, 'fs42', 68)" class="fn">appName</span> <span onmouseout="hideTip(event, 'fs43', 69)" onmouseover="showTip(event, 'fs43', 69)" class="fn">imageName</span> <span onmouseout="hideTip(event, 'fs9', 70)" onmouseover="showTip(event, 'fs9', 70)" class="fn">replicaCount</span> <span onmouseout="hideTip(event, 'fs44', 71)" onmouseover="showTip(event, 'fs44', 71)" class="fn">portName</span> <span onmouseout="hideTip(event, 'fs10', 72)" onmouseover="showTip(event, 'fs10', 72)" class="fn">portNumber</span><span class="o">=</span>
     <span class="c">// pass back a K8s config type (contains both Deployment and Service)</span>
-    <span class="id">k8s</span> <span class="pn">{</span>
+    <span onmouseout="hideTip(event, 'fs45', 73)" onmouseover="showTip(event, 'fs45', 73)" class="k">k8s</span> <span class="pn">{</span>
         <span class="c">// add deployment to K8s config</span>
-        <span class="id">deployment</span> <span class="pn">{</span>
-            <span class="id">_name</span> <span onmouseout="hideTip(event, 'fs18', 46)" onmouseover="showTip(event, 'fs18', 46)" class="id">appName</span>
-            <span class="id">replicas</span> <span onmouseout="hideTip(event, 'fs20', 47)" onmouseover="showTip(event, 'fs20', 47)" class="id">replicaCount</span>
-            <span class="id">labelSelector</span> <span class="pn">{</span>
-                <span class="id">matchLabels</span> <span class="pn">[</span>
-                    <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs18', 48)" onmouseover="showTip(event, 'fs18', 48)" class="id">appName</span><span class="pn">)</span>
+        <span onmouseout="hideTip(event, 'fs24', 74)" onmouseover="showTip(event, 'fs24', 74)" class="id">deployment</span> <span class="pn">{</span>
+            <span onmouseout="hideTip(event, 'fs25', 75)" onmouseover="showTip(event, 'fs25', 75)" class="k">_name</span> <span onmouseout="hideTip(event, 'fs42', 76)" onmouseover="showTip(event, 'fs42', 76)" class="fn">appName</span>
+            <span onmouseout="hideTip(event, 'fs26', 77)" onmouseover="showTip(event, 'fs26', 77)" class="k">replicas</span> <span onmouseout="hideTip(event, 'fs9', 78)" onmouseover="showTip(event, 'fs9', 78)" class="fn">replicaCount</span>
+            <span onmouseout="hideTip(event, 'fs46', 79)" onmouseover="showTip(event, 'fs46', 79)" class="id">labelSelector</span> <span class="pn">{</span>
+                <span onmouseout="hideTip(event, 'fs47', 80)" onmouseover="showTip(event, 'fs47', 80)" class="k">matchLabels</span> <span class="pn">[</span>
+                    <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs42', 81)" onmouseover="showTip(event, 'fs42', 81)" class="fn">appName</span><span class="pn">)</span>
                     <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;frontend&quot;</span><span class="pn">)</span>
                 <span class="pn">]</span>
             <span class="pn">}</span>
-            <span class="id">pod</span> <span class="pn">{</span>
-                <span class="id">_labels</span> <span class="pn">[</span>
-                    <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs18', 49)" onmouseover="showTip(event, 'fs18', 49)" class="id">appName</span><span class="pn">)</span>
+            <span onmouseout="hideTip(event, 'fs20', 82)" onmouseover="showTip(event, 'fs20', 82)" class="id">pod</span> <span class="pn">{</span>
+                <span onmouseout="hideTip(event, 'fs21', 83)" onmouseover="showTip(event, 'fs21', 83)" class="k">_labels</span> <span class="pn">[</span>
+                    <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs42', 84)" onmouseover="showTip(event, 'fs42', 84)" class="fn">appName</span><span class="pn">)</span>
                     <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;frontend&quot;</span><span class="pn">)</span>
                 <span class="pn">]</span>
-                <span class="id">container</span> <span class="pn">{</span>
-                    <span onmouseout="hideTip(event, 'fs18', 50)" onmouseover="showTip(event, 'fs18', 50)" class="id">appName</span>
-                    <span class="id">image</span> <span onmouseout="hideTip(event, 'fs19', 51)" onmouseover="showTip(event, 'fs19', 51)" class="id">imageName</span>
-                    <span class="id">add_port</span> <span class="pn">(</span><span class="id">containerPort</span> <span class="pn">{</span>
-                        <span class="id">name</span> <span onmouseout="hideTip(event, 'fs21', 52)" onmouseover="showTip(event, 'fs21', 52)" class="id">portName</span>
-                        <span class="id">port</span> <span onmouseout="hideTip(event, 'fs22', 53)" onmouseover="showTip(event, 'fs22', 53)" class="id">portNumber</span>
+                <span onmouseout="hideTip(event, 'fs13', 85)" onmouseover="showTip(event, 'fs13', 85)" class="id">container</span> <span class="pn">{</span>
+                    <span onmouseout="hideTip(event, 'fs42', 86)" onmouseover="showTip(event, 'fs42', 86)" class="fn">appName</span>
+                    <span onmouseout="hideTip(event, 'fs15', 87)" onmouseover="showTip(event, 'fs15', 87)" class="k">image</span> <span onmouseout="hideTip(event, 'fs43', 88)" onmouseover="showTip(event, 'fs43', 88)" class="fn">imageName</span>
+                    <span onmouseout="hideTip(event, 'fs48', 89)" onmouseover="showTip(event, 'fs48', 89)" class="k">add_port</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs16', 90)" onmouseover="showTip(event, 'fs16', 90)" class="id">containerPort</span> <span class="pn">{</span>
+                        <span onmouseout="hideTip(event, 'fs49', 91)" onmouseover="showTip(event, 'fs49', 91)" class="k">name</span> <span onmouseout="hideTip(event, 'fs44', 92)" onmouseover="showTip(event, 'fs44', 92)" class="fn">portName</span>
+                        <span onmouseout="hideTip(event, 'fs17', 93)" onmouseover="showTip(event, 'fs17', 93)" class="k">port</span> <span onmouseout="hideTip(event, 'fs10', 94)" onmouseover="showTip(event, 'fs10', 94)" class="fn">portNumber</span>
                     <span class="pn">}</span><span class="pn">)</span>
-                    <span class="id">cpuRequest</span> <span class="n">100</span><span class="pn">&lt;</span><span class="id">m</span><span class="pn">&gt;</span>
-                    <span class="id">memoryRequest</span> <span class="n">100</span><span class="pn">&lt;</span><span class="id">Mi</span><span class="pn">&gt;</span>
+                    <span onmouseout="hideTip(event, 'fs50', 95)" onmouseover="showTip(event, 'fs50', 95)" class="k">cpuRequest</span> <span class="n">100</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs51', 96)" onmouseover="showTip(event, 'fs51', 96)" class="rt">m</span><span class="pn">&gt;</span>
+                    <span onmouseout="hideTip(event, 'fs52', 97)" onmouseover="showTip(event, 'fs52', 97)" class="k">memoryRequest</span> <span class="n">100</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs53', 98)" onmouseover="showTip(event, 'fs53', 98)" class="rt">Mi</span><span class="pn">&gt;</span>
                     <span class="c">// environment variables instructing how to find Redis cluster</span>
-                    <span class="id">envVar</span> <span class="pn">{</span>
-                        <span class="id">name</span> <span class="s">&quot;GET_HOSTS_FROM&quot;</span>
-                        <span class="id">value</span> <span class="s">&quot;dns&quot;</span>
+                    <span onmouseout="hideTip(event, 'fs54', 99)" onmouseover="showTip(event, 'fs54', 99)" class="id">envVar</span> <span class="pn">{</span>
+                        <span onmouseout="hideTip(event, 'fs55', 100)" onmouseover="showTip(event, 'fs55', 100)" class="k">name</span> <span class="s">&quot;GET_HOSTS_FROM&quot;</span>
+                        <span onmouseout="hideTip(event, 'fs56', 101)" onmouseover="showTip(event, 'fs56', 101)" class="k">value</span> <span class="s">&quot;dns&quot;</span>
                     <span class="pn">}</span>
                 <span class="pn">}</span>
             <span class="pn">}</span>
         <span class="pn">}</span> 
 
         <span class="c">// add service to K8s config</span>
-        <span class="id">service</span> <span class="pn">{</span>
-            <span class="id">_name</span> <span onmouseout="hideTip(event, 'fs18', 54)" onmouseover="showTip(event, 'fs18', 54)" class="id">appName</span>
-            <span class="id">_labels</span> <span class="pn">[</span>
-                <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs18', 55)" onmouseover="showTip(event, 'fs18', 55)" class="id">appName</span><span class="pn">)</span>
+        <span onmouseout="hideTip(event, 'fs36', 102)" onmouseover="showTip(event, 'fs36', 102)" class="id">service</span> <span class="pn">{</span>
+            <span onmouseout="hideTip(event, 'fs37', 103)" onmouseover="showTip(event, 'fs37', 103)" class="k">_name</span> <span onmouseout="hideTip(event, 'fs42', 104)" onmouseover="showTip(event, 'fs42', 104)" class="fn">appName</span>
+            <span onmouseout="hideTip(event, 'fs38', 105)" onmouseover="showTip(event, 'fs38', 105)" class="k">_labels</span> <span class="pn">[</span>
+                <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs42', 106)" onmouseover="showTip(event, 'fs42', 106)" class="fn">appName</span><span class="pn">)</span>
                 <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;frontend&quot;</span><span class="pn">)</span>
             <span class="pn">]</span>
-            <span class="id">add_port</span> <span class="pn">(</span><span class="id">servicePort</span> <span class="pn">{</span>
-                        <span class="id">port</span> <span onmouseout="hideTip(event, 'fs22', 56)" onmouseover="showTip(event, 'fs22', 56)" class="id">portNumber</span>
-                        <span class="id">targetPortString</span> <span onmouseout="hideTip(event, 'fs21', 57)" onmouseover="showTip(event, 'fs21', 57)" class="id">portName</span>
+            <span onmouseout="hideTip(event, 'fs39', 107)" onmouseover="showTip(event, 'fs39', 107)" class="k">add_port</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs32', 108)" onmouseover="showTip(event, 'fs32', 108)" class="id">servicePort</span> <span class="pn">{</span>
+                        <span onmouseout="hideTip(event, 'fs33', 109)" onmouseover="showTip(event, 'fs33', 109)" class="k">port</span> <span onmouseout="hideTip(event, 'fs10', 110)" onmouseover="showTip(event, 'fs10', 110)" class="fn">portNumber</span>
+                        <span onmouseout="hideTip(event, 'fs57', 111)" onmouseover="showTip(event, 'fs57', 111)" class="k">targetPortString</span> <span onmouseout="hideTip(event, 'fs44', 112)" onmouseover="showTip(event, 'fs44', 112)" class="fn">portName</span>
                     <span class="pn">}</span><span class="pn">)</span>
-            <span class="id">matchLabels</span> <span class="pn">[</span>
-                <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs18', 58)" onmouseover="showTip(event, 'fs18', 58)" class="id">appName</span><span class="pn">)</span>
+            <span onmouseout="hideTip(event, 'fs40', 113)" onmouseover="showTip(event, 'fs40', 113)" class="k">matchLabels</span> <span class="pn">[</span>
+                <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs42', 114)" onmouseover="showTip(event, 'fs42', 114)" class="fn">appName</span><span class="pn">)</span>
                 <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;frontend&quot;</span><span class="pn">)</span>
             <span class="pn">]</span>
-            <span class="id">typeOf</span> <span class="id">NodePort</span>
+            <span onmouseout="hideTip(event, 'fs58', 115)" onmouseover="showTip(event, 'fs58', 115)" class="k">typeOf</span> <span onmouseout="hideTip(event, 'fs59', 116)" onmouseover="showTip(event, 'fs59', 116)" class="uc">NodePort</span>
         <span class="pn">}</span>
     <span class="pn">}</span> <span class="c">// F# returns the last expression of a function. Since the k8s definition is a single expression, it is returned.</span>
 </code></pre>
@@ -294,31 +292,31 @@ Which style you use is up to you and might depend on the complexity of the confi
 <p>Now that we have our functions, we need the values we will be passing into them.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// Capture our values for the Redis and App config</span>
 <span class="c">// Redis settings</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 59)" onmouseover="showTip(event, 'fs23', 59)" class="id">leaderName</span> <span class="o">=</span> <span class="s">&quot;redis-leader&quot;</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs24', 60)" onmouseover="showTip(event, 'fs24', 60)" class="id">leaderRole</span> <span class="o">=</span> <span class="s">&quot;leader&quot;</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs25', 61)" onmouseover="showTip(event, 'fs25', 61)" class="id">leaderReplicaCount</span> <span class="o">=</span> <span class="n">1</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs26', 62)" onmouseover="showTip(event, 'fs26', 62)" class="id">followerName</span> <span class="o">=</span> <span class="s">&quot;redis-follower&quot;</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs27', 63)" onmouseover="showTip(event, 'fs27', 63)" class="id">followerRole</span> <span class="o">=</span> <span class="s">&quot;follower&quot;</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs28', 64)" onmouseover="showTip(event, 'fs28', 64)" class="id">followerReplicaCount</span> <span class="o">=</span> <span class="n">2</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs29', 65)" onmouseover="showTip(event, 'fs29', 65)" class="id">redisPortNumber</span> <span class="o">=</span> <span class="n">6379</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs60', 117)" onmouseover="showTip(event, 'fs60', 117)" class="id">leaderName</span> <span class="o">=</span> <span class="s">&quot;redis-leader&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs61', 118)" onmouseover="showTip(event, 'fs61', 118)" class="id">leaderRole</span> <span class="o">=</span> <span class="s">&quot;leader&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs62', 119)" onmouseover="showTip(event, 'fs62', 119)" class="id">leaderReplicaCount</span> <span class="o">=</span> <span class="n">1</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs63', 120)" onmouseover="showTip(event, 'fs63', 120)" class="id">followerName</span> <span class="o">=</span> <span class="s">&quot;redis-follower&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs64', 121)" onmouseover="showTip(event, 'fs64', 121)" class="id">followerRole</span> <span class="o">=</span> <span class="s">&quot;follower&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs65', 122)" onmouseover="showTip(event, 'fs65', 122)" class="id">followerReplicaCount</span> <span class="o">=</span> <span class="n">2</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs66', 123)" onmouseover="showTip(event, 'fs66', 123)" class="id">redisPortNumber</span> <span class="o">=</span> <span class="n">6379</span>
 <span class="c">// Guestbook settings</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs30', 66)" onmouseover="showTip(event, 'fs30', 66)" class="id">guestbookAppName</span> <span class="o">=</span> <span class="s">&quot;guestbook&quot;</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs31', 67)" onmouseover="showTip(event, 'fs31', 67)" class="id">guestbookAppImage</span> <span class="o">=</span> <span class="s">&quot;gcr.io/google-samples/gb-frontend:v5&quot;</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs32', 68)" onmouseover="showTip(event, 'fs32', 68)" class="id">guestbookReplicas</span> <span class="o">=</span> <span class="n">3</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs33', 69)" onmouseover="showTip(event, 'fs33', 69)" class="id">guestBookPortName</span> <span class="o">=</span> <span class="s">&quot;http-server&quot;</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs34', 70)" onmouseover="showTip(event, 'fs34', 70)" class="id">guestBookPortNumber</span> <span class="o">=</span> <span class="n">80</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs67', 124)" onmouseover="showTip(event, 'fs67', 124)" class="id">guestbookAppName</span> <span class="o">=</span> <span class="s">&quot;guestbook&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs68', 125)" onmouseover="showTip(event, 'fs68', 125)" class="id">guestbookAppImage</span> <span class="o">=</span> <span class="s">&quot;gcr.io/google-samples/gb-frontend:v5&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs69', 126)" onmouseover="showTip(event, 'fs69', 126)" class="id">guestbookReplicas</span> <span class="o">=</span> <span class="n">3</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs70', 127)" onmouseover="showTip(event, 'fs70', 127)" class="id">guestBookPortName</span> <span class="o">=</span> <span class="s">&quot;http-server&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs71', 128)" onmouseover="showTip(event, 'fs71', 128)" class="id">guestBookPortNumber</span> <span class="o">=</span> <span class="n">80</span>
 </code></pre>
 <p>Now we put together our final Kubernetes configuration by generating the config by calling the functions we created above. We compose them in a <code>k8s</code> builder to build up our final configuration.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// build up the config by calling the functions</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs35', 71)" onmouseover="showTip(event, 'fs35', 71)" class="id">k8sConfig</span> <span class="o">=</span> <span class="id">k8s</span> <span class="pn">{</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs72', 129)" onmouseover="showTip(event, 'fs72', 129)" class="id">k8sConfig</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs45', 130)" onmouseover="showTip(event, 'fs45', 130)" class="k">k8s</span> <span class="pn">{</span>
     <span class="c">// Redis master deployments and service</span>
-    <span onmouseout="hideTip(event, 'fs2', 72)" onmouseover="showTip(event, 'fs2', 72)" class="id">redisDeployment</span> <span onmouseout="hideTip(event, 'fs23', 73)" onmouseover="showTip(event, 'fs23', 73)" class="id">leaderName</span> <span onmouseout="hideTip(event, 'fs24', 74)" onmouseover="showTip(event, 'fs24', 74)" class="id">leaderRole</span> <span onmouseout="hideTip(event, 'fs25', 75)" onmouseover="showTip(event, 'fs25', 75)" class="id">leaderReplicaCount</span> <span onmouseout="hideTip(event, 'fs29', 76)" onmouseover="showTip(event, 'fs29', 76)" class="id">redisPortNumber</span>
-    <span onmouseout="hideTip(event, 'fs12', 77)" onmouseover="showTip(event, 'fs12', 77)" class="id">redisService</span> <span onmouseout="hideTip(event, 'fs23', 78)" onmouseover="showTip(event, 'fs23', 78)" class="id">leaderName</span> <span onmouseout="hideTip(event, 'fs24', 79)" onmouseover="showTip(event, 'fs24', 79)" class="id">leaderRole</span> <span onmouseout="hideTip(event, 'fs29', 80)" onmouseover="showTip(event, 'fs29', 80)" class="id">redisPortNumber</span>
+    <span onmouseout="hideTip(event, 'fs6', 131)" onmouseover="showTip(event, 'fs6', 131)" class="fn">redisDeployment</span> <span onmouseout="hideTip(event, 'fs60', 132)" onmouseover="showTip(event, 'fs60', 132)" class="id">leaderName</span> <span onmouseout="hideTip(event, 'fs61', 133)" onmouseover="showTip(event, 'fs61', 133)" class="id">leaderRole</span> <span onmouseout="hideTip(event, 'fs62', 134)" onmouseover="showTip(event, 'fs62', 134)" class="id">leaderReplicaCount</span> <span onmouseout="hideTip(event, 'fs66', 135)" onmouseover="showTip(event, 'fs66', 135)" class="id">redisPortNumber</span>
+    <span onmouseout="hideTip(event, 'fs29', 136)" onmouseover="showTip(event, 'fs29', 136)" class="fn">redisService</span> <span onmouseout="hideTip(event, 'fs60', 137)" onmouseover="showTip(event, 'fs60', 137)" class="id">leaderName</span> <span onmouseout="hideTip(event, 'fs61', 138)" onmouseover="showTip(event, 'fs61', 138)" class="id">leaderRole</span> <span onmouseout="hideTip(event, 'fs66', 139)" onmouseover="showTip(event, 'fs66', 139)" class="id">redisPortNumber</span>
     <span class="c">// Redis replica deployment and service</span>
-    <span onmouseout="hideTip(event, 'fs2', 81)" onmouseover="showTip(event, 'fs2', 81)" class="id">redisDeployment</span> <span onmouseout="hideTip(event, 'fs26', 82)" onmouseover="showTip(event, 'fs26', 82)" class="id">followerName</span> <span onmouseout="hideTip(event, 'fs27', 83)" onmouseover="showTip(event, 'fs27', 83)" class="id">followerRole</span> <span onmouseout="hideTip(event, 'fs28', 84)" onmouseover="showTip(event, 'fs28', 84)" class="id">followerReplicaCount</span> <span onmouseout="hideTip(event, 'fs29', 85)" onmouseover="showTip(event, 'fs29', 85)" class="id">redisPortNumber</span>
-    <span onmouseout="hideTip(event, 'fs12', 86)" onmouseover="showTip(event, 'fs12', 86)" class="id">redisService</span> <span onmouseout="hideTip(event, 'fs26', 87)" onmouseover="showTip(event, 'fs26', 87)" class="id">followerName</span> <span onmouseout="hideTip(event, 'fs27', 88)" onmouseover="showTip(event, 'fs27', 88)" class="id">followerRole</span> <span onmouseout="hideTip(event, 'fs29', 89)" onmouseover="showTip(event, 'fs29', 89)" class="id">redisPortNumber</span>
+    <span onmouseout="hideTip(event, 'fs6', 140)" onmouseover="showTip(event, 'fs6', 140)" class="fn">redisDeployment</span> <span onmouseout="hideTip(event, 'fs63', 141)" onmouseover="showTip(event, 'fs63', 141)" class="id">followerName</span> <span onmouseout="hideTip(event, 'fs64', 142)" onmouseover="showTip(event, 'fs64', 142)" class="id">followerRole</span> <span onmouseout="hideTip(event, 'fs65', 143)" onmouseover="showTip(event, 'fs65', 143)" class="id">followerReplicaCount</span> <span onmouseout="hideTip(event, 'fs66', 144)" onmouseover="showTip(event, 'fs66', 144)" class="id">redisPortNumber</span>
+    <span onmouseout="hideTip(event, 'fs29', 145)" onmouseover="showTip(event, 'fs29', 145)" class="fn">redisService</span> <span onmouseout="hideTip(event, 'fs63', 146)" onmouseover="showTip(event, 'fs63', 146)" class="id">followerName</span> <span onmouseout="hideTip(event, 'fs64', 147)" onmouseover="showTip(event, 'fs64', 147)" class="id">followerRole</span> <span onmouseout="hideTip(event, 'fs66', 148)" onmouseover="showTip(event, 'fs66', 148)" class="id">redisPortNumber</span>
     <span class="c">// Guestbook app (combines that K8s instance with the current one)</span>
-    <span onmouseout="hideTip(event, 'fs17', 90)" onmouseover="showTip(event, 'fs17', 90)" class="id">frontendApp</span> <span onmouseout="hideTip(event, 'fs30', 91)" onmouseover="showTip(event, 'fs30', 91)" class="id">guestbookAppName</span> <span onmouseout="hideTip(event, 'fs31', 92)" onmouseover="showTip(event, 'fs31', 92)" class="id">guestbookAppImage</span> <span onmouseout="hideTip(event, 'fs32', 93)" onmouseover="showTip(event, 'fs32', 93)" class="id">guestbookReplicas</span> <span onmouseout="hideTip(event, 'fs33', 94)" onmouseover="showTip(event, 'fs33', 94)" class="id">guestBookPortName</span> <span onmouseout="hideTip(event, 'fs34', 95)" onmouseover="showTip(event, 'fs34', 95)" class="id">guestBookPortNumber</span>
+    <span onmouseout="hideTip(event, 'fs41', 149)" onmouseover="showTip(event, 'fs41', 149)" class="fn">frontendApp</span> <span onmouseout="hideTip(event, 'fs67', 150)" onmouseover="showTip(event, 'fs67', 150)" class="id">guestbookAppName</span> <span onmouseout="hideTip(event, 'fs68', 151)" onmouseover="showTip(event, 'fs68', 151)" class="id">guestbookAppImage</span> <span onmouseout="hideTip(event, 'fs69', 152)" onmouseover="showTip(event, 'fs69', 152)" class="id">guestbookReplicas</span> <span onmouseout="hideTip(event, 'fs70', 153)" onmouseover="showTip(event, 'fs70', 153)" class="id">guestBookPortName</span> <span onmouseout="hideTip(event, 'fs71', 154)" onmouseover="showTip(event, 'fs71', 154)" class="id">guestBookPortNumber</span>
 <span class="pn">}</span>
 </code></pre>
 <p>We use <a href="/Overboard/reference/overboard-k8s-kubectlwriter.html">KubeCtlWriter</a> to write a YAML (or JSON if you prefer) file that we can use to deploy our configuration to Kubernetes.</p>
@@ -326,7 +324,7 @@ Which style you use is up to you and might depend on the complexity of the confi
 <p>Tip: <code>__SOURCE_DIRECTORY__</code> contains a string to the directory the that the script file is running in.</p>
 </blockquote>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// write the file</span>
-<span class="id">KubeCtlWriter</span><span class="pn">.</span><span class="id">toYamlFile</span> <span onmouseout="hideTip(event, 'fs35', 96)" onmouseover="showTip(event, 'fs35', 96)" class="id">k8sConfig</span> <span class="s">$&quot;{</span> <span class="k">__SOURCE_DIRECTORY__</span><span class="s">}{</span><span onmouseout="hideTip(event, 'fs36', 97)" onmouseover="showTip(event, 'fs36', 97)" class="id">IO</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs37', 98)" onmouseover="showTip(event, 'fs37', 98)" class="id">Path</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs38', 99)" onmouseover="showTip(event, 'fs38', 99)" class="id">DirectorySeparatorChar</span><span class="s">}guestbook.yaml&quot;</span>
+<span onmouseout="hideTip(event, 'fs73', 155)" onmouseover="showTip(event, 'fs73', 155)" class="m">KubeCtlWriter</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs74', 156)" onmouseover="showTip(event, 'fs74', 156)" class="id">toYamlFile</span> <span onmouseout="hideTip(event, 'fs72', 157)" onmouseover="showTip(event, 'fs72', 157)" class="id">k8sConfig</span> <span class="s">$&quot;{</span> <span class="k">__SOURCE_DIRECTORY__</span><span class="s">}{</span><span onmouseout="hideTip(event, 'fs75', 158)" onmouseover="showTip(event, 'fs75', 158)" class="id">IO</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs76', 159)" onmouseover="showTip(event, 'fs76', 159)" class="rt">Path</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs77', 160)" onmouseover="showTip(event, 'fs77', 160)" class="id">DirectorySeparatorChar</span><span class="s">}guestbook.yaml&quot;</span>
 </code></pre>
 <p>Test out the configuration you have created by applying it to your Kubernetes cluster.</p>
 <table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl apply -f guestbook.yaml
@@ -375,42 +373,161 @@ replicaset.apps/redis-leader-5f6f4b8bb7     1         1         1       29s
 </ol>
 
             <div class="fsdocs-tip" id="fs1">namespace System</div>
-<div class="fsdocs-tip" id="fs2">val redisDeployment: redisName: &#39;a -&gt; role: string -&gt; replicaCount: &#39;b -&gt; portNumber: &#39;c -&gt; &#39;d<br /><em>&#160;Return a Redis Kubernetes Deployment Resource Config</em></div>
-<div class="fsdocs-tip" id="fs3">val redisName: &#39;a</div>
-<div class="fsdocs-tip" id="fs4">val role: string</div>
-<div class="fsdocs-tip" id="fs5">val replicaCount: &#39;b</div>
-<div class="fsdocs-tip" id="fs6">val portNumber: &#39;c</div>
-<div class="fsdocs-tip" id="fs7">val redisImage: string</div>
-<div class="fsdocs-tip" id="fs8">val redisContainer: obj</div>
-<div class="fsdocs-tip" id="fs9">val labels: (string * string) list</div>
-<div class="fsdocs-tip" id="fs10">val redisPod: obj</div>
-<div class="fsdocs-tip" id="fs11">val redisDeployment: &#39;d</div>
-<div class="fsdocs-tip" id="fs12">val redisService: serviceName: &#39;a -&gt; role: string -&gt; portNumber: &#39;b -&gt; &#39;c<br /><em>&#160;Return a Redis Kubernetes Service Resource Config</em></div>
-<div class="fsdocs-tip" id="fs13">val serviceName: &#39;a</div>
-<div class="fsdocs-tip" id="fs14">val portNumber: &#39;b</div>
-<div class="fsdocs-tip" id="fs15">val port: obj</div>
-<div class="fsdocs-tip" id="fs16">val redisService: &#39;c</div>
-<div class="fsdocs-tip" id="fs17">val frontendApp: appName: &#39;a -&gt; imageName: &#39;b -&gt; replicaCount: &#39;c -&gt; portName: &#39;d -&gt; portNumber: &#39;e -&gt; &#39;f<br /><em>&#160;Return a Deployment and Service for a frontend application connected to Redis</em></div>
-<div class="fsdocs-tip" id="fs18">val appName: &#39;a</div>
-<div class="fsdocs-tip" id="fs19">val imageName: &#39;b</div>
-<div class="fsdocs-tip" id="fs20">val replicaCount: &#39;c</div>
-<div class="fsdocs-tip" id="fs21">val portName: &#39;d</div>
-<div class="fsdocs-tip" id="fs22">val portNumber: &#39;e</div>
-<div class="fsdocs-tip" id="fs23">val leaderName: string</div>
-<div class="fsdocs-tip" id="fs24">val leaderRole: string</div>
-<div class="fsdocs-tip" id="fs25">val leaderReplicaCount: int</div>
-<div class="fsdocs-tip" id="fs26">val followerName: string</div>
-<div class="fsdocs-tip" id="fs27">val followerRole: string</div>
-<div class="fsdocs-tip" id="fs28">val followerReplicaCount: int</div>
-<div class="fsdocs-tip" id="fs29">val redisPortNumber: int</div>
-<div class="fsdocs-tip" id="fs30">val guestbookAppName: string</div>
-<div class="fsdocs-tip" id="fs31">val guestbookAppImage: string</div>
-<div class="fsdocs-tip" id="fs32">val guestbookReplicas: int</div>
-<div class="fsdocs-tip" id="fs33">val guestBookPortName: string</div>
-<div class="fsdocs-tip" id="fs34">val guestBookPortNumber: int</div>
-<div class="fsdocs-tip" id="fs35">val k8sConfig: obj</div>
-<div class="fsdocs-tip" id="fs36">namespace System.IO</div>
-<div class="fsdocs-tip" id="fs37">type Path =
+<div class="fsdocs-tip" id="fs2">namespace Overboard</div>
+<div class="fsdocs-tip" id="fs3">namespace Overboard.Common</div>
+<div class="fsdocs-tip" id="fs4">namespace Overboard.Workload</div>
+<div class="fsdocs-tip" id="fs5">namespace Overboard.Service</div>
+<div class="fsdocs-tip" id="fs6">val redisDeployment: redisName: string -&gt; role: string -&gt; replicaCount: int -&gt; portNumber: int -&gt; Deployment<br /><em>&#160;Return a Redis Kubernetes Deployment Resource Config</em></div>
+<div class="fsdocs-tip" id="fs7">val redisName: string</div>
+<div class="fsdocs-tip" id="fs8">val role: string</div>
+<div class="fsdocs-tip" id="fs9">val replicaCount: int</div>
+<div class="fsdocs-tip" id="fs10">val portNumber: int</div>
+<div class="fsdocs-tip" id="fs11">val redisImage: string</div>
+<div class="fsdocs-tip" id="fs12">val redisContainer: Container</div>
+<div class="fsdocs-tip" id="fs13">val container: ContainerBuilder<br /><em>&lt;summary&gt;
+ A single application container that you want to run within a pod.
+ https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs14">custom operation: name (string)
+
+Calls ContainerBuilder.Name</div>
+<div class="fsdocs-tip" id="fs15">custom operation: image (string)
+
+Calls ContainerBuilder.Image</div>
+<div class="fsdocs-tip" id="fs16">val containerPort: ContainerPortBuilder</div>
+<div class="fsdocs-tip" id="fs17">custom operation: port (int)
+
+Calls ContainerPortBuilder.ContainerPort</div>
+<div class="fsdocs-tip" id="fs18">val labels: (string * string) list</div>
+<div class="fsdocs-tip" id="fs19">val redisPod: Pod</div>
+<div class="fsdocs-tip" id="fs20">val pod: PodBuilder</div>
+<div class="fsdocs-tip" id="fs21">custom operation: _labels ((string * string) list)
+
+Calls PodBuilder.Labels<br /><em>&lt;summary&gt;
+ Labels for the Pod
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs22">custom operation: add_container (Container)
+
+Calls PodBuilder.Container</div>
+<div class="fsdocs-tip" id="fs23">val redisDeployment: Deployment</div>
+<div class="fsdocs-tip" id="fs24">val deployment: DeploymentBuilder</div>
+<div class="fsdocs-tip" id="fs25">custom operation: _name (string)
+
+Calls DeploymentBuilder.Name<br /><em>&lt;summary&gt;
+ Name of the Deployment. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs26">custom operation: replicas (int)
+
+Calls DeploymentBuilder.Replicas</div>
+<div class="fsdocs-tip" id="fs27">custom operation: add_matchLabels ((string * string) list)
+
+Calls DeploymentBuilder.MatchLabels<br /><em>&lt;summary&gt;
+ Add multiple label selectors to the Deployment.
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs28">custom operation: podTemplate (Pod)
+
+Calls DeploymentBuilder.Pod</div>
+<div class="fsdocs-tip" id="fs29">val redisService: serviceName: string -&gt; role: string -&gt; portNumber: int -&gt; Service<br /><em>&#160;Return a Redis Kubernetes Service Resource Config</em></div>
+<div class="fsdocs-tip" id="fs30">val serviceName: string</div>
+<div class="fsdocs-tip" id="fs31">val port: ServicePort</div>
+<div class="fsdocs-tip" id="fs32">val servicePort: ServicePortBuilder</div>
+<div class="fsdocs-tip" id="fs33">custom operation: port (int)
+
+Calls ServicePortBuilder.Port</div>
+<div class="fsdocs-tip" id="fs34">custom operation: targetPortInt (int)
+
+Calls ServicePortBuilder.TargetPortI</div>
+<div class="fsdocs-tip" id="fs35">val redisService: Service</div>
+<div class="fsdocs-tip" id="fs36">val service: ServiceBuilder</div>
+<div class="fsdocs-tip" id="fs37">custom operation: _name (string)
+
+Calls ServiceBuilder.Name<br /><em>&lt;summary&gt;
+ Name of the Service. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs38">custom operation: _labels ((string * string) list)
+
+Calls ServiceBuilder.Labels<br /><em>&lt;summary&gt;
+ Labels for the Service
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs39">custom operation: add_port (ServicePort)
+
+Calls ServiceBuilder.ServicePort</div>
+<div class="fsdocs-tip" id="fs40">custom operation: matchLabels ((string * string) list)
+
+Calls ServiceBuilder.MatchLabels<br /><em>&lt;summary&gt;
+ Add multiple label selectors to the Service.
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs41">val frontendApp: appName: string -&gt; imageName: string -&gt; replicaCount: int -&gt; portName: string -&gt; portNumber: int -&gt; K8s<br /><em>&#160;Return a Deployment and Service for a frontend application connected to Redis</em></div>
+<div class="fsdocs-tip" id="fs42">val appName: string</div>
+<div class="fsdocs-tip" id="fs43">val imageName: string</div>
+<div class="fsdocs-tip" id="fs44">val portName: string</div>
+<div class="fsdocs-tip" id="fs45">val k8s: K8sBuilder</div>
+<div class="fsdocs-tip" id="fs46">val labelSelector: LabelSelectorBuilder<br /><em>&lt;summary&gt;
+ A label selector is a label query over a set of resources.
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/label-selector/#LabelSelector
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs47">custom operation: matchLabels ((string * string) list)
+
+Calls LabelSelectorBuilder.MatchLabel</div>
+<div class="fsdocs-tip" id="fs48">custom operation: add_port (ContainerPort)
+
+Calls ContainerBuilder.ContainerPort</div>
+<div class="fsdocs-tip" id="fs49">custom operation: name (string)
+
+Calls ContainerPortBuilder.Name</div>
+<div class="fsdocs-tip" id="fs50">custom operation: cpuRequest (int&lt;m&gt;)
+
+Calls ContainerBuilder.CpuRequest</div>
+<div class="fsdocs-tip" id="fs51">[&lt;Measure&gt;]
+type m<br /><em>&lt;summary&gt;
+ Millicpus: 1000m = 1cpu
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs52">custom operation: memoryRequest (int&lt;Mi&gt;)
+
+Calls ContainerBuilder.MemoryRequest</div>
+<div class="fsdocs-tip" id="fs53">[&lt;Measure&gt;]
+type Mi<br /><em>&lt;summary&gt;
+ Mebibytes 
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs54">val envVar: EnvVarBuilder</div>
+<div class="fsdocs-tip" id="fs55">custom operation: name (string)
+
+Calls EnvVarBuilder.Name</div>
+<div class="fsdocs-tip" id="fs56">custom operation: value (string)
+
+Calls EnvVarBuilder.Value</div>
+<div class="fsdocs-tip" id="fs57">custom operation: targetPortString (string)
+
+Calls ServicePortBuilder.TargetPortS</div>
+<div class="fsdocs-tip" id="fs58">custom operation: typeOf (ServiceType)
+
+Calls ServiceBuilder.Type<br /><em>&lt;summary&gt;
+ Type of the Service.
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs59">union case ServiceType.NodePort: ServiceType</div>
+<div class="fsdocs-tip" id="fs60">val leaderName: string</div>
+<div class="fsdocs-tip" id="fs61">val leaderRole: string</div>
+<div class="fsdocs-tip" id="fs62">val leaderReplicaCount: int</div>
+<div class="fsdocs-tip" id="fs63">val followerName: string</div>
+<div class="fsdocs-tip" id="fs64">val followerRole: string</div>
+<div class="fsdocs-tip" id="fs65">val followerReplicaCount: int</div>
+<div class="fsdocs-tip" id="fs66">val redisPortNumber: int</div>
+<div class="fsdocs-tip" id="fs67">val guestbookAppName: string</div>
+<div class="fsdocs-tip" id="fs68">val guestbookAppImage: string</div>
+<div class="fsdocs-tip" id="fs69">val guestbookReplicas: int</div>
+<div class="fsdocs-tip" id="fs70">val guestBookPortName: string</div>
+<div class="fsdocs-tip" id="fs71">val guestBookPortNumber: int</div>
+<div class="fsdocs-tip" id="fs72">val k8sConfig: K8s</div>
+<div class="fsdocs-tip" id="fs73">module KubeCtlWriter
+
+from Overboard.K8s</div>
+<div class="fsdocs-tip" id="fs74">val toYamlFile: k8s: K8s -&gt; filePath: string -&gt; ValidationProblem list</div>
+<div class="fsdocs-tip" id="fs75">namespace System.IO</div>
+<div class="fsdocs-tip" id="fs76">type Path =
   static member ChangeExtension: path: string * extension: string -&gt; string
   static member Combine: path1: string * path2: string -&gt; string + 3 overloads
   static member EndsInDirectorySeparator: path: ReadOnlySpan&lt;char&gt; -&gt; bool + 1 overload
@@ -422,7 +539,7 @@ replicaset.apps/redis-leader-5f6f4b8bb7     1         1         1       29s
   static member GetInvalidFileNameChars: unit -&gt; char[]
   static member GetInvalidPathChars: unit -&gt; char[]
   ...<br /><em>&lt;summary&gt;Performs operations on &lt;see cref=&quot;T:System.String&quot; /&gt; instances that contain file or directory path information. These operations are performed in a cross-platform manner.&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs38">field IO.Path.DirectorySeparatorChar: char</div>
+<div class="fsdocs-tip" id="fs77">field IO.Path.DirectorySeparatorChar: char</div>
 
         </div>
 

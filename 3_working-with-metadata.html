@@ -111,71 +111,118 @@
 <h1><a name="Working-with-metadata" class="anchor" href="#Working-with-metadata">Working with metadata</a></h1>
 <p>Setting metadata like <code>name</code>, <code>namespace</code>, <code>labels</code>, and <code>annotations</code> are a common part of defining a Kubernetes resource.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// Using an inline metadata builder</span>
-<span class="id">k8s</span> <span class="pn">{</span>
-    <span class="id">deployment</span> <span class="pn">{</span>
-        <span class="id">metadata</span> <span class="pn">{</span>
-            <span class="id">name</span> <span class="s">&quot;my-name&quot;</span>
-            <span class="id">ns</span> <span class="s">&quot;my-namespace&quot;</span> <span class="c">// `ns` used since namespace is a keyword in F#</span>
-            <span class="id">labels</span> <span class="pn">[</span><span class="s">&quot;label1&quot;</span><span class="pn">,</span> <span class="s">&quot;value1&quot;</span><span class="pn">]</span>
-            <span class="id">annotations</span> <span class="pn">[</span><span class="s">&quot;annotation-key&quot;</span><span class="pn">,</span> <span class="s">&quot;annotation-value&quot;</span><span class="pn">]</span>
+<span onmouseout="hideTip(event, 'fs4', 6)" onmouseover="showTip(event, 'fs4', 6)" class="k">k8s</span> <span class="pn">{</span>
+    <span onmouseout="hideTip(event, 'fs5', 7)" onmouseover="showTip(event, 'fs5', 7)" class="id">deployment</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs6', 8)" onmouseover="showTip(event, 'fs6', 8)" class="id">metadata</span> <span class="pn">{</span>
+            <span onmouseout="hideTip(event, 'fs7', 9)" onmouseover="showTip(event, 'fs7', 9)" class="k">name</span> <span class="s">&quot;my-name&quot;</span>
+            <span onmouseout="hideTip(event, 'fs8', 10)" onmouseover="showTip(event, 'fs8', 10)" class="k">ns</span> <span class="s">&quot;my-namespace&quot;</span> <span class="c">// `ns` used since namespace is a keyword in F#</span>
+            <span onmouseout="hideTip(event, 'fs9', 11)" onmouseover="showTip(event, 'fs9', 11)" class="k">labels</span> <span class="pn">[</span><span class="s">&quot;label1&quot;</span><span class="pn">,</span> <span class="s">&quot;value1&quot;</span><span class="pn">]</span>
+            <span onmouseout="hideTip(event, 'fs10', 12)" onmouseover="showTip(event, 'fs10', 12)" class="k">annotations</span> <span class="pn">[</span><span class="s">&quot;annotation-key&quot;</span><span class="pn">,</span> <span class="s">&quot;annotation-value&quot;</span><span class="pn">]</span>
         <span class="pn">}</span>
     <span class="pn">}</span>
 <span class="pn">}</span>
 </code></pre>
 <p>It is of course always possible to pass in a variable instead.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// Assign the builder result to a variable first</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">meta</span> <span class="o">=</span> <span class="id">metadata</span> <span class="pn">{</span>
-            <span class="id">name</span> <span class="s">&quot;my-name&quot;</span>
-            <span class="id">ns</span> <span class="s">&quot;my-namespace&quot;</span>
-            <span class="id">labels</span> <span class="pn">[</span><span class="s">&quot;label1&quot;</span><span class="pn">,</span> <span class="s">&quot;value1&quot;</span><span class="pn">]</span>
-            <span class="id">annotations</span> <span class="pn">[</span><span class="s">&quot;annotation-key&quot;</span><span class="pn">,</span> <span class="s">&quot;annotation-value&quot;</span><span class="pn">]</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 13)" onmouseover="showTip(event, 'fs11', 13)" class="id">meta</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs6', 14)" onmouseover="showTip(event, 'fs6', 14)" class="k">metadata</span> <span class="pn">{</span>
+            <span onmouseout="hideTip(event, 'fs7', 15)" onmouseover="showTip(event, 'fs7', 15)" class="k">name</span> <span class="s">&quot;my-name&quot;</span>
+            <span onmouseout="hideTip(event, 'fs8', 16)" onmouseover="showTip(event, 'fs8', 16)" class="k">ns</span> <span class="s">&quot;my-namespace&quot;</span>
+            <span onmouseout="hideTip(event, 'fs9', 17)" onmouseover="showTip(event, 'fs9', 17)" class="k">labels</span> <span class="pn">[</span><span class="s">&quot;label1&quot;</span><span class="pn">,</span> <span class="s">&quot;value1&quot;</span><span class="pn">]</span>
+            <span onmouseout="hideTip(event, 'fs10', 18)" onmouseover="showTip(event, 'fs10', 18)" class="k">annotations</span> <span class="pn">[</span><span class="s">&quot;annotation-key&quot;</span><span class="pn">,</span> <span class="s">&quot;annotation-value&quot;</span><span class="pn">]</span>
         <span class="pn">}</span>
-<span class="id">k8s</span> <span class="pn">{</span>
-    <span class="id">deployment</span> <span class="pn">{</span>
-        <span class="id">set_metadata</span> <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="id">meta</span>
+<span onmouseout="hideTip(event, 'fs4', 19)" onmouseover="showTip(event, 'fs4', 19)" class="k">k8s</span> <span class="pn">{</span>
+    <span onmouseout="hideTip(event, 'fs5', 20)" onmouseover="showTip(event, 'fs5', 20)" class="id">deployment</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs12', 21)" onmouseover="showTip(event, 'fs12', 21)" class="k">set_metadata</span> <span onmouseout="hideTip(event, 'fs11', 22)" onmouseover="showTip(event, 'fs11', 22)" class="id">meta</span>
     <span class="pn">}</span>
 <span class="pn">}</span>
 </code></pre>
 <p>A <strong>convention</strong> that is enabled is that you can set the metadata on a resource using any of the following operations <code>_name</code>, <code>_namespace</code>, <code>_labels</code>, and <code>_annotations</code></p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// use the _ convention</span>
-<span class="id">k8s</span> <span class="pn">{</span>
-    <span class="id">deployment</span> <span class="pn">{</span>
-        <span class="id">_name</span> <span class="s">&quot;my-name&quot;</span>
-        <span class="id">_namespace</span> <span class="s">&quot;my-namespace&quot;</span>
-        <span class="id">_labels</span> <span class="pn">[</span><span class="s">&quot;label1&quot;</span><span class="pn">,</span> <span class="s">&quot;value1&quot;</span><span class="pn">]</span>
-        <span class="id">_annotations</span> <span class="pn">[</span><span class="s">&quot;annotation-key&quot;</span><span class="pn">,</span> <span class="s">&quot;annotation-value&quot;</span><span class="pn">]</span>
+<span onmouseout="hideTip(event, 'fs4', 23)" onmouseover="showTip(event, 'fs4', 23)" class="k">k8s</span> <span class="pn">{</span>
+    <span onmouseout="hideTip(event, 'fs5', 24)" onmouseover="showTip(event, 'fs5', 24)" class="id">deployment</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs13', 25)" onmouseover="showTip(event, 'fs13', 25)" class="k">_name</span> <span class="s">&quot;my-name&quot;</span>
+        <span onmouseout="hideTip(event, 'fs14', 26)" onmouseover="showTip(event, 'fs14', 26)" class="k">_namespace</span> <span class="s">&quot;my-namespace&quot;</span>
+        <span onmouseout="hideTip(event, 'fs15', 27)" onmouseover="showTip(event, 'fs15', 27)" class="k">_labels</span> <span class="pn">[</span><span class="s">&quot;label1&quot;</span><span class="pn">,</span> <span class="s">&quot;value1&quot;</span><span class="pn">]</span>
+        <span onmouseout="hideTip(event, 'fs16', 28)" onmouseover="showTip(event, 'fs16', 28)" class="k">_annotations</span> <span class="pn">[</span><span class="s">&quot;annotation-key&quot;</span><span class="pn">,</span> <span class="s">&quot;annotation-value&quot;</span><span class="pn">]</span>
     <span class="pn">}</span>
 <span class="pn">}</span>
 </code></pre>
 <p>Another <strong>convention</strong> is that instead of using <code>_name</code> you can drop a string into the body of most resources and it will be assigned to the <code>metadata.name</code> property. This also works for some data that does not have metadata but has a name property.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// use the _ convention</span>
-<span class="id">k8s</span> <span class="pn">{</span>
-    <span class="id">deployment</span> <span class="pn">{</span>
+<span onmouseout="hideTip(event, 'fs4', 29)" onmouseover="showTip(event, 'fs4', 29)" class="k">k8s</span> <span class="pn">{</span>
+    <span onmouseout="hideTip(event, 'fs5', 30)" onmouseover="showTip(event, 'fs5', 30)" class="id">deployment</span> <span class="pn">{</span>
         <span class="s">&quot;my-name&quot;</span> <span class="c">// &lt;- No operation specified</span>
-        <span class="id">_labels</span> <span class="pn">[</span><span class="s">&quot;label1&quot;</span><span class="pn">,</span> <span class="s">&quot;value1&quot;</span><span class="pn">]</span>
+        <span onmouseout="hideTip(event, 'fs15', 31)" onmouseover="showTip(event, 'fs15', 31)" class="k">_labels</span> <span class="pn">[</span><span class="s">&quot;label1&quot;</span><span class="pn">,</span> <span class="s">&quot;value1&quot;</span><span class="pn">]</span>
     <span class="pn">}</span>
 <span class="pn">}</span>
 </code></pre>
 <p>One last neat trick for metadata and many other resources is that you can just drop the variable into the body of the builder. For this to work, the type of the variable must be unique to a single field on the builder.</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="id">deploymentMetadata</span> <span class="o">=</span> 
-        <span class="id">metadata</span> <span class="pn">{</span>
-            <span class="id">name</span> <span class="s">&quot;my-name&quot;</span>
-            <span class="id">ns</span> <span class="s">&quot;my-namespace&quot;</span>
-            <span class="id">labels</span> <span class="pn">[</span><span class="s">&quot;label1&quot;</span><span class="pn">,</span> <span class="s">&quot;value1&quot;</span><span class="pn">]</span>
-            <span class="id">annotations</span> <span class="pn">[</span><span class="s">&quot;annotation-key&quot;</span><span class="pn">,</span> <span class="s">&quot;annotation-value&quot;</span><span class="pn">]</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs17', 32)" onmouseover="showTip(event, 'fs17', 32)" class="id">deploymentMetadata</span> <span class="o">=</span> 
+        <span onmouseout="hideTip(event, 'fs6', 33)" onmouseover="showTip(event, 'fs6', 33)" class="k">metadata</span> <span class="pn">{</span>
+            <span onmouseout="hideTip(event, 'fs7', 34)" onmouseover="showTip(event, 'fs7', 34)" class="k">name</span> <span class="s">&quot;my-name&quot;</span>
+            <span onmouseout="hideTip(event, 'fs8', 35)" onmouseover="showTip(event, 'fs8', 35)" class="k">ns</span> <span class="s">&quot;my-namespace&quot;</span>
+            <span onmouseout="hideTip(event, 'fs9', 36)" onmouseover="showTip(event, 'fs9', 36)" class="k">labels</span> <span class="pn">[</span><span class="s">&quot;label1&quot;</span><span class="pn">,</span> <span class="s">&quot;value1&quot;</span><span class="pn">]</span>
+            <span onmouseout="hideTip(event, 'fs10', 37)" onmouseover="showTip(event, 'fs10', 37)" class="k">annotations</span> <span class="pn">[</span><span class="s">&quot;annotation-key&quot;</span><span class="pn">,</span> <span class="s">&quot;annotation-value&quot;</span><span class="pn">]</span>
         <span class="pn">}</span>
 
 <span class="c">// use the _ convention</span>
-<span class="id">k8s</span> <span class="pn">{</span>
-    <span class="id">deployment</span> <span class="pn">{</span>
-        <span onmouseout="hideTip(event, 'fs2', 4)" onmouseover="showTip(event, 'fs2', 4)" class="id">deploymentMetadata</span> <span class="c">// &lt;- just drop the variable in the resource expression</span>
+<span onmouseout="hideTip(event, 'fs4', 38)" onmouseover="showTip(event, 'fs4', 38)" class="k">k8s</span> <span class="pn">{</span>
+    <span onmouseout="hideTip(event, 'fs5', 39)" onmouseover="showTip(event, 'fs5', 39)" class="id">deployment</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs17', 40)" onmouseover="showTip(event, 'fs17', 40)" class="id">deploymentMetadata</span> <span class="c">// &lt;- just drop the variable in the resource expression</span>
     <span class="pn">}</span>
 <span class="pn">}</span>
 </code></pre>
 <p>So there are many ways to define your metadata. I suggest you decide for one on your project and use that method throughout.</p>
 
-            <div class="fsdocs-tip" id="fs1">val meta: obj</div>
-<div class="fsdocs-tip" id="fs2">val deploymentMetadata: obj</div>
+            <div class="fsdocs-tip" id="fs1">namespace Overboard</div>
+<div class="fsdocs-tip" id="fs2">namespace Overboard.Common</div>
+<div class="fsdocs-tip" id="fs3">namespace Overboard.Workload</div>
+<div class="fsdocs-tip" id="fs4">val k8s: K8sBuilder</div>
+<div class="fsdocs-tip" id="fs5">val deployment: DeploymentBuilder</div>
+<div class="fsdocs-tip" id="fs6">val metadata: MetadataBuilder</div>
+<div class="fsdocs-tip" id="fs7">custom operation: name (string)
+
+Calls MetadataBuilder.Name</div>
+<div class="fsdocs-tip" id="fs8">custom operation: ns (string)
+
+Calls MetadataBuilder.Namespace</div>
+<div class="fsdocs-tip" id="fs9">custom operation: labels ((string * string) list)
+
+Calls MetadataBuilder.Labels</div>
+<div class="fsdocs-tip" id="fs10">custom operation: annotations ((string * string) list)
+
+Calls MetadataBuilder.Annotations</div>
+<div class="fsdocs-tip" id="fs11">val meta: Metadata</div>
+<div class="fsdocs-tip" id="fs12">custom operation: set_metadata (Metadata)
+
+Calls DeploymentBuilder.SetMetadata<br /><em>&lt;summary&gt;
+ Sets the Deployment metadata
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs13">custom operation: _name (string)
+
+Calls DeploymentBuilder.Name<br /><em>&lt;summary&gt;
+ Name of the Deployment. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs14">custom operation: _namespace (string)
+
+Calls DeploymentBuilder.Namespace<br /><em>&lt;summary&gt;
+ Namespace of the Deployment.
+ Namespace defines the space within which each name must be unique. Default is &quot;default&quot;.
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs15">custom operation: _labels ((string * string) list)
+
+Calls DeploymentBuilder.Labels<br /><em>&lt;summary&gt;
+ Labels for the Deployment
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs16">custom operation: _annotations ((string * string) list)
+
+Calls DeploymentBuilder.Annotations<br /><em>&lt;summary&gt;
+ Annotations for the Deployment
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs17">val deploymentMetadata: Metadata</div>
 
         </div>
 
