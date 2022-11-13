@@ -109,7 +109,7 @@
         <div class="container" id="fsdocs-content">
             
 <h1><a name="Generating-Kubernetes-config" class="anchor" href="#Generating-Kubernetes-config">Generating Kubernetes config</a></h1>
-<p>Starboard gives a powerful way to define your Kubernetes config but for that to be useful, we need to generate the kubernetes config. Starboard provides some helpers for doing just this in <a href="https://docs.microsoft.com/dotnet/api/starboard.k8s.kubectlwriter">KubeCtlWriter</a>.</p>
+<p>Starboard gives a powerful way to define your Kubernetes config but for that to be useful, we need to generate the kubernetes config. Starboard provides some helpers for doing just this in <a href="/Starboard/reference/starboard-k8s-kubectlwriter.html">KubeCtlWriter</a>.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">kubeConfig</span> <span class="o">=</span> <span class="id">k8s</span> <span class="pn">{</span>
     <span class="id">deployment</span> <span class="pn">{</span>
         <span class="s">&quot;my-name&quot;</span> <span class="c">// &lt;- No operation specified</span>
@@ -126,12 +126,12 @@
 </code></pre>
 <table class="pre"><tr><td><pre><code>No value returned by any evaluator</code></pre></td></tr></table>
 <h2><a name="Writing-to-file" class="anchor" href="#Writing-to-file">Writing to file</a></h2>
-<p>If you would like to save your <a href="https://docs.microsoft.com/dotnet/api/starboard.k8s">K8s</a> config to file, you can use either the <a href="https://docs.microsoft.com/dotnet/api/starboard.k8s.kubectlwriter">KubeCtlWriter</a><code>.toJsonFile</code> or <a href="https://docs.microsoft.com/dotnet/api/starboard.k8s.kubectlwriter">KubeCtlWriter</a><code>.toYamlFile</code> function.
+<p>If you would like to save your <a href="/Starboard/reference/starboard-k8s.html">K8s</a> config to file, you can use either the <a href="/Starboard/reference/starboard-k8s-kubectlwriter.html">KubeCtlWriter</a><code>.toJsonFile</code> or <a href="/Starboard/reference/starboard-k8s-kubectlwriter.html">KubeCtlWriter</a><code>.toYamlFile</code> function.
 As the names imply, these will save your config as JSON or YAML respectively.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="id">KubeCtlWriter</span><span class="pn">.</span><span class="id">toYamlFile</span> <span class="id">kubeConfig</span> <span class="s">&quot;deployment.yaml&quot;</span>
 </code></pre>
 <h2><a name="Getting-the-content" class="anchor" href="#Getting-the-content">Getting the content</a></h2>
-<p>You can also get the <a href="https://docs.microsoft.com/dotnet/api/starboard.k8s.k8soutput">K8sOutput</a>, which gives you access to not only the JSON or YAML <a href="https://docs.microsoft.com/dotnet/api/starboard.k8s.k8soutput">K8sOutput</a><code>.content</code>, but also to the <a href="https://docs.microsoft.com/dotnet/api/starboard.k8s.k8soutput">K8sOutput</a><code>.errors</code>.
+<p>You can also get the <a href="/Starboard/reference/starboard-k8s-k8soutput.html">K8sOutput</a>, which gives you access to not only the JSON or YAML <a href="/Starboard/reference/starboard-k8s-k8soutput.html">K8sOutput</a><code>.content</code>, but also to the <a href="/Starboard/reference/starboard-k8s-k8soutput.html">K8sOutput</a><code>.errors</code>.
 This is an array of validation errors that Starboard has found in the schema. Starboard prevents many schema issues by being strongly typed but it also runs validation on values that should not be empty or should follow certain formatting.
 It will still generate the config you specify but gives you errors that you can check before submitting the config to a Kubernetes cluster.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 6)" onmouseover="showTip(event, 'fs3', 6)" class="id">k8sOutput</span> <span class="o">=</span> <span class="id">KubeCtlWriter</span><span class="pn">.</span><span class="id">toYaml</span> <span onmouseout="hideTip(event, 'fs1', 7)" onmouseover="showTip(event, 'fs1', 7)" class="id">kubeConfig</span>
@@ -139,8 +139,8 @@ It will still generate the config you specify but gives you errors that you can 
 </code></pre>
 <table class="pre"><tr><td><pre><code>No value returned by any evaluator</code></pre></td></tr></table>
 <h2><a name="Validation-errors" class="anchor" href="#Validation-errors">Validation errors</a></h2>
-<p>As mentioned, <a href="https://docs.microsoft.com/dotnet/api/starboard.k8s.k8soutput">K8sOutput</a> contains an <code>errors</code> field that contains a list of validation errors.</p>
-<p>Each <a href="https://docs.microsoft.com/dotnet/api/starboard.validationproblem">ValidationProblem</a> has a <code>Message</code> field on it that gives back a <code>string</code>. You can print these errors out:</p>
+<p>As mentioned, <a href="/Starboard/reference/starboard-k8s-k8soutput.html">K8sOutput</a> contains an <code>errors</code> field that contains a list of validation errors.</p>
+<p>Each <a href="/Starboard/reference/starboard-validationproblem.html">ValidationProblem</a> has a <code>Message</code> field on it that gives back a <code>string</code>. You can print these errors out:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs3', 9)" onmouseover="showTip(event, 'fs3', 9)" class="id">k8sOutput</span><span class="pn">.</span><span class="id">errors</span> 
 <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs4', 10)" onmouseover="showTip(event, 'fs4', 10)" class="m">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 11)" onmouseover="showTip(event, 'fs5', 11)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs6', 12)" onmouseover="showTip(event, 'fs6', 12)" class="fn">err</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs6', 13)" onmouseover="showTip(event, 'fs6', 13)" class="fn">err</span><span class="pn">.</span><span class="id">Message</span><span class="pn">)</span>
 <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs4', 14)" onmouseover="showTip(event, 'fs4', 14)" class="m">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs7', 15)" onmouseover="showTip(event, 'fs7', 15)" class="id">iter</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs8', 16)" onmouseover="showTip(event, 'fs8', 16)" class="fn">eprintfn</span> <span class="s">&quot;</span><span class="pf">%s</span><span class="s">&quot;</span><span class="pn">)</span>

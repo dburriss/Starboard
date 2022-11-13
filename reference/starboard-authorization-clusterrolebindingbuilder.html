@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>ClusterRoleBindingBuilder (Starboard)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Devon Burriss">
+
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="/Starboard/content/navbar-fixed-left.css" />
+    <link type="text/css" rel="stylesheet" href="/Starboard/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/Starboard/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/Starboard/content/fsdocs-tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-left" id="fsdocs-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarsExampleDefault">
+            <a href="/Starboard/"><img id="fsdocs-logo" src="/Starboard/img/logo.png" /></a>
+            <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+            <div id="header">
+                <div class="searchbox" id="fsdocs-searchbox">
+                    <label for="search-by">
+                        <i class="fas fa-search"></i>
+                    </label>
+                    <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                    <span data-search-clear="">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- END SEARCH BOX: this adds support for the search box -->
+            <ul class="navbar-nav">
+                <li class="nav-header">Links</li>
+                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/blob/master/LICENSE.md">License</a></li>
+                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/">Source Repository</a></li>
+                <li class="nav-header">
+  How-to
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/1_setup-environment.html">
+    Setup your environment
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/2_generating-kubernetes-config.html">
+    Generating Kubernetes config
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/3_working-with-metadata.html">
+    Working with metadata
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/4_generate-dynamic-config.html">
+    Generate dynamic config
+  </a>
+</li>             
+<li class="nav-header">
+  Tutorials
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/tutorials/hello-world.html">
+    Hello world
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/tutorials/guestbook.html">
+    Guestbook
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="masthead">
+            <h3 class="muted"><a href="/Starboard/">Starboard</a></h3>
+        </div>
+        <hr />
+        <div class="container" id="fsdocs-content">
+            <div>
+  <h2>
+    ClusterRoleBindingBuilder Type
+  </h2>
+  <dl class="fsdocs-metadata">
+    <dt>
+      Namespace: 
+      <a href="/Starboard/reference/starboard-authorization.html">
+        Starboard.Authorization
+      </a>
+    </dt>
+    <dt>
+      Assembly: Starboard.dll
+    </dt>
+    <dt>
+      Base Type: 
+      <code>obj</code>
+    </dt>
+  </dl>
+  <div class="fsdocs-xmldoc">
+    <div>
+      <p class="fsdocs-summary">
+        
+      </p>
+    </div>
+  </div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div>
+    <h3>
+      Constructors
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Constructor
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '188', 188)" onmouseover="showTip(event, '188', 188)">
+                <p>
+                  <a id="``.ctor``">
+                    <a href="#``.ctor``">
+                      <code><span>ClusterRoleBindingBuilder<span>()</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="188">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>ClusterRoleBindingBuilder<span>()</span></span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebindingbuilder.html">ClusterRoleBindingBuilder</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.#ctor`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.#ctor\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L127-127" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebindingbuilder.html">ClusterRoleBindingBuilder</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>
+      Instance members
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Instance member
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '189', 189)" onmouseover="showTip(event, '189', 189)">
+                <p>
+                  <a id="Annotations">
+                    <a href="#Annotations">
+                      <code><span>_annotations&#32;<span>annotations</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="189">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_annotations&#32;<span>annotations</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        annotations
+                      </b>
+                      :
+                      <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Annotations`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Annotations\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L172-172" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Annotations for the ClusterRoleBinding
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  annotations
+                </span>
+                :
+                <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '190', 190)" onmouseover="showTip(event, '190', 190)">
+                <p>
+                  <a id="Combine">
+                    <a href="#Combine">
+                      <code><span>this.Combine</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="190">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Combine</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        currentValueFromYield
+                      </b>
+                      :
+                      <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        accumulatorFromDelay
+                      </b>
+                      :
+                      <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Combine`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Combine\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L132-132" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  currentValueFromYield
+                </span>
+                :
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  accumulatorFromDelay
+                </span>
+                :
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '191', 191)" onmouseover="showTip(event, '191', 191)">
+                <p>
+                  <a id="Delay">
+                    <a href="#Delay">
+                      <code><span>this.Delay</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="191">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Delay</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        f
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;'a</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code>'a</code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Delay``1```')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Delay``1\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L139-139" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  f
+                </span>
+                :
+                <code><span>unit&#32;->&#32;'a</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code>'a</code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '192', 192)" onmouseover="showTip(event, '192', 192)">
+                <p>
+                  <a id="For">
+                    <a href="#For">
+                      <code><span>this.For</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="192">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.For</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        state
+                      </b>
+                      :
+                      <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        f
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;<a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.For`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.For\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L141-141" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  state
+                </span>
+                :
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  f
+                </span>
+                :
+                <code><span>unit&#32;->&#32;<a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '193', 193)" onmouseover="showTip(event, '193', 193)">
+                <p>
+                  <a id="Labels">
+                    <a href="#Labels">
+                      <code><span>_labels&#32;<span>labels</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="193">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_labels&#32;<span>labels</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        labels
+                      </b>
+                      :
+                      <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Labels`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Labels\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L166-166" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Labels for the ClusterRoleBinding
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  labels
+                </span>
+                :
+                <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '194', 194)" onmouseover="showTip(event, '194', 194)">
+                <p>
+                  <a id="Name">
+                    <a href="#Name">
+                      <code><span>_name&#32;<span>name</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="194">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_name&#32;<span>name</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        name
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Name`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Name\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L152-152" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Name of the ClusterRoleBinding. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  name
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '195', 195)" onmouseover="showTip(event, '195', 195)">
+                <p>
+                  <a id="Namespace">
+                    <a href="#Namespace">
+                      <code><span>_namespace&#32;<span>ns</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="195">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_namespace&#32;<span>ns</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        ns
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Namespace`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Namespace\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L160-160" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Namespace of the ClusterRoleBinding.
+ Namespace defines the space within which each name must be unique. Default is "default".
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ns
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '196', 196)" onmouseover="showTip(event, '196', 196)">
+                <p>
+                  <a id="RoleRef">
+                    <a href="#RoleRef">
+                      <code><span>set_roleRef&#32;<span>roleRef</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="196">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>set_roleRef&#32;<span>roleRef</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        roleRef
+                      </b>
+                      :
+                      <code><a href="/Starboard/reference/starboard-authorization-roleref.html">RoleRef</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.RoleRef`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.RoleRef\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L185-185" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  roleRef
+                </span>
+                :
+                <code><a href="/Starboard/reference/starboard-authorization-roleref.html">RoleRef</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '197', 197)" onmouseover="showTip(event, '197', 197)">
+                <p>
+                  <a id="SetMetadata">
+                    <a href="#SetMetadata">
+                      <code><span>set_metadata&#32;<span>metadata</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="197">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>set_metadata&#32;<span>metadata</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        metadata
+                      </b>
+                      :
+                      <code><a href="/Starboard/reference/starboard-common-common-metadata.html">Metadata</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.SetMetadata`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.SetMetadata\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L179-179" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Sets the ClusterRoleBinding metadata
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  metadata
+                </span>
+                :
+                <code><a href="/Starboard/reference/starboard-common-common-metadata.html">Metadata</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '198', 198)" onmouseover="showTip(event, '198', 198)">
+                <p>
+                  <a id="Subjects">
+                    <a href="#Subjects">
+                      <code><span>subjects&#32;<span>subjects</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="198">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>subjects&#32;<span>subjects</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        subjects
+                      </b>
+                      :
+                      <code><span><a href="/Starboard/reference/starboard-authorization-subject.html">Subject</a>&#32;list</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Subjects`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Subjects\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L193-193" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  subjects
+                </span>
+                :
+                <code><span><a href="/Starboard/reference/starboard-authorization-subject.html">Subject</a>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '199', 199)" onmouseover="showTip(event, '199', 199)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="199">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        subjects
+                      </b>
+                      :
+                      <code><span><a href="/Starboard/reference/starboard-authorization-subject.html">Subject</a>&#32;list</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L190-190" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  subjects
+                </span>
+                :
+                <code><span><a href="/Starboard/reference/starboard-authorization-subject.html">Subject</a>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '200', 200)" onmouseover="showTip(event, '200', 200)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="200">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        subject
+                      </b>
+                      :
+                      <code><a href="/Starboard/reference/starboard-authorization-subject.html">Subject</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L189-189" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  subject
+                </span>
+                :
+                <code><a href="/Starboard/reference/starboard-authorization-subject.html">Subject</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '201', 201)" onmouseover="showTip(event, '201', 201)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="201">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        roleRef
+                      </b>
+                      :
+                      <code><a href="/Starboard/reference/starboard-authorization-roleref.html">RoleRef</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L183-183" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  roleRef
+                </span>
+                :
+                <code><a href="/Starboard/reference/starboard-authorization-roleref.html">RoleRef</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '202', 202)" onmouseover="showTip(event, '202', 202)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="202">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        metadata
+                      </b>
+                      :
+                      <code><a href="/Starboard/reference/starboard-common-common-metadata.html">Metadata</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L176-176" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  metadata
+                </span>
+                :
+                <code><a href="/Starboard/reference/starboard-common-common-metadata.html">Metadata</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '203', 203)" onmouseover="showTip(event, '203', 203)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="203">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        name
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L146-146" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  name
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '204', 204)" onmouseover="showTip(event, '204', 204)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="204">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        arg0
+                      </b>
+                      :
+                      <code>'a</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield``1```')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Yield``1\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L128-128" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  arg0
+                </span>
+                :
+                <code>'a</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '205', 205)" onmouseover="showTip(event, '205', 205)">
+                <p>
+                  <a id="YieldFrom">
+                    <a href="#YieldFrom">
+                      <code><span>this.YieldFrom</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="205">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.YieldFrom</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        subjects
+                      </b>
+                      :
+                      <code><span>seq&lt;<a href="/Starboard/reference/starboard-authorization-subject.html">Subject</a>&gt;</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.YieldFrom`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.YieldFrom\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L191-191" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  subjects
+                </span>
+                :
+                <code><span>seq&lt;<a href="/Starboard/reference/starboard-authorization-subject.html">Subject</a>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '206', 206)" onmouseover="showTip(event, '206', 206)">
+                <p>
+                  <a id="Zero">
+                    <a href="#Zero">
+                      <code><span>this.Zero</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="206">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Zero</span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Starboard.Authorization.ClusterRoleBindingBuilder.Zero`')">
+                <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Starboard.Authorization.ClusterRoleBindingBuilder.Zero\'/>')">
+                <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/Starboard/src/Starboard/Authorization.fs#L130-130" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Starboard/content/img/github.png" class="normal"/>
+                <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Starboard/reference/starboard-authorization-clusterrolebinding.html">ClusterRoleBinding</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div></div>
+</div>
+            
+        </div>
+
+        <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+        <script type="text/javascript">var fsdocs_search_baseurl = '/Starboard/';</script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+        <script type="text/javascript" src="/Starboard/content/fsdocs-search.js"></script>
+        <!-- END SEARCH BOX: this adds support for the search box -->
+    </div>
+</body>
+
+</html>

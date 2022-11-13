@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Starboard.Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Devon Burriss">
+
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="/Starboard/content/navbar-fixed-left.css" />
+    <link type="text/css" rel="stylesheet" href="/Starboard/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/Starboard/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/Starboard/content/fsdocs-tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-left" id="fsdocs-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarsExampleDefault">
+            <a href="/Starboard/"><img id="fsdocs-logo" src="/Starboard/img/logo.png" /></a>
+            <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+            <div id="header">
+                <div class="searchbox" id="fsdocs-searchbox">
+                    <label for="search-by">
+                        <i class="fas fa-search"></i>
+                    </label>
+                    <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                    <span data-search-clear="">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- END SEARCH BOX: this adds support for the search box -->
+            <ul class="navbar-nav">
+                <li class="nav-header">Links</li>
+                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/blob/master/LICENSE.md">License</a></li>
+                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/">Source Repository</a></li>
+                <li class="nav-header">
+  How-to
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/1_setup-environment.html">
+    Setup your environment
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/2_generating-kubernetes-config.html">
+    Generating Kubernetes config
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/3_working-with-metadata.html">
+    Working with metadata
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/4_generate-dynamic-config.html">
+    Generate dynamic config
+  </a>
+</li>             
+<li class="nav-header">
+  Tutorials
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/tutorials/hello-world.html">
+    Hello world
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/tutorials/guestbook.html">
+    Guestbook
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="masthead">
+            <h3 class="muted"><a href="/Starboard/">Starboard</a></h3>
+        </div>
+        <hr />
+        <div class="container" id="fsdocs-content">
+            <div>
+  <h2 id="starboard-storage">
+    Starboard.Storage Namespace
+  </h2>
+  <div class="fsdocs-xmldoc"></div>
+  <table class="table outer-list fsdocs-entity-list">
+    <thead>
+      <tr>
+        <td>
+          Type/Module
+        </td>
+        <td>
+          Description
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="AccessMode">
+              <a href="/Starboard/reference/starboard-storage-accessmode.html">
+                AccessMode
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.AccessMode`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.AccessMode\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L175-175" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="ConfigMap">
+              <a href="/Starboard/reference/starboard-storage-configmap.html">
+                ConfigMap
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.ConfigMap`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.ConfigMap\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/ConfigMap.fs#L12-12" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="ConfigMapBuilder">
+              <a href="/Starboard/reference/starboard-storage-configmapbuilder.html">
+                ConfigMapBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.ConfigMapBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.ConfigMapBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/ConfigMap.fs#L51-51" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="ConfigMapBuilders">
+              <a href="/Starboard/reference/starboard-storage-configmapbuilders.html">
+                ConfigMapBuilders
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.ConfigMapBuilders`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.ConfigMapBuilders\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/ConfigMap.fs#L143-143" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="ConfigMapList">
+              <a href="/Starboard/reference/starboard-storage-configmaplist.html">
+                ConfigMapList
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.ConfigMapList`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.ConfigMapList\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/ConfigMap.fs#L136-136" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="ConfigMapVolumeBuilder">
+              <a href="/Starboard/reference/starboard-storage-configmapvolumebuilder.html">
+                ConfigMapVolumeBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.ConfigMapVolumeBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.ConfigMapVolumeBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L295-295" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="ConfigMapVolumeSource">
+              <a href="/Starboard/reference/starboard-storage-configmapvolumesource.html">
+                ConfigMapVolumeSource
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.ConfigMapVolumeSource`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.ConfigMapVolumeSource\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L37-37" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="CsiPersistentVolumeBuilder">
+              <a href="/Starboard/reference/starboard-storage-csipersistentvolumebuilder.html">
+                CsiPersistentVolumeBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.CsiPersistentVolumeBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.CsiPersistentVolumeBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L392-392" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+ csi represents storage that is handled by an external CSI driver.
+ See: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/
+ More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes
+
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="CSIPersistentVolumeSource">
+              <a href="/Starboard/reference/starboard-storage-csipersistentvolumesource.html">
+                CSIPersistentVolumeSource
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.CSIPersistentVolumeSource`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.CSIPersistentVolumeSource\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L363-363" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="CsiVolumeBuilder">
+              <a href="/Starboard/reference/starboard-storage-csivolumebuilder.html">
+                CsiVolumeBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.CsiVolumeBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.CsiVolumeBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L439-439" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="CsiVolumeSource">
+              <a href="/Starboard/reference/starboard-storage-csivolumesource.html">
+                CsiVolumeSource
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.CsiVolumeSource`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.CsiVolumeSource\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L129-129" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="EmptyDirVolumeBuilder">
+              <a href="/Starboard/reference/starboard-storage-emptydirvolumebuilder.html">
+                EmptyDirVolumeBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.EmptyDirVolumeBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.EmptyDirVolumeBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L389-389" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="EmptyDirVolumeSource">
+              <a href="/Starboard/reference/starboard-storage-emptydirvolumesource.html">
+                EmptyDirVolumeSource
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.EmptyDirVolumeSource`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.EmptyDirVolumeSource\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L81-81" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="HostPathType">
+              <a href="/Starboard/reference/starboard-storage-hostpathtype.html">
+                HostPathType
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.HostPathType`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.HostPathType\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L97-97" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="HostPathVolumeBuilder">
+              <a href="/Starboard/reference/starboard-storage-hostpathvolumebuilder.html">
+                HostPathVolumeBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.HostPathVolumeBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.HostPathVolumeBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L412-412" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="HostPathVolumeSource">
+              <a href="/Starboard/reference/starboard-storage-hostpathvolumesource.html">
+                HostPathVolumeSource
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.HostPathVolumeSource`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.HostPathVolumeSource\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L113-113" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="KeyToPath">
+              <a href="/Starboard/reference/starboard-storage-keytopath.html">
+                KeyToPath
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.KeyToPath`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.KeyToPath\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L11-11" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="PersistentVolume<'a>">
+              <a href="/Starboard/reference/starboard-storage-persistentvolume-1.html">
+                PersistentVolume<'a>
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('``cref:T:Starboard.Storage.PersistentVolume`1``')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.PersistentVolume`1\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L301-301" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+ PersistentVolume (PV) is a storage resource provisioned by an administrator. It is analogous to a node. 
+ See: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/
+ More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes
+
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="PersistentVolumeBuilders">
+              <a href="/Starboard/reference/starboard-storage-persistentvolumebuilders.html">
+                PersistentVolumeBuilders
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.PersistentVolumeBuilders`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.PersistentVolumeBuilders\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L504-504" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="PersistentVolumeClaim">
+              <a href="/Starboard/reference/starboard-storage-persistentvolumeclaim.html">
+                PersistentVolumeClaim
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.PersistentVolumeClaim`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.PersistentVolumeClaim\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L185-185" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="PersistentVolumeClaimBuilder">
+              <a href="/Starboard/reference/starboard-storage-persistentvolumeclaimbuilder.html">
+                PersistentVolumeClaimBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.PersistentVolumeClaimBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.PersistentVolumeClaimBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L227-227" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="PersistentVolumeClaimVolumeBuilder">
+              <a href="/Starboard/reference/starboard-storage-persistentvolumeclaimvolumebuilder.html">
+                PersistentVolumeClaimVolumeBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.PersistentVolumeClaimVolumeBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.PersistentVolumeClaimVolumeBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L268-268" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="PersistentVolumeClaimVolumeSource">
+              <a href="/Starboard/reference/starboard-storage-persistentvolumeclaimvolumesource.html">
+                PersistentVolumeClaimVolumeSource
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.PersistentVolumeClaimVolumeSource`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.PersistentVolumeClaimVolumeSource\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L24-24" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="ReclaimPolicy">
+              <a href="/Starboard/reference/starboard-storage-reclaimpolicy.html">
+                ReclaimPolicy
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.ReclaimPolicy`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.ReclaimPolicy\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L6-6" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="Secret">
+              <a href="/Starboard/reference/starboard-storage-secret.html">
+                Secret
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.Secret`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.Secret\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Secret.fs#L12-12" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="SecretBuilder">
+              <a href="/Starboard/reference/starboard-storage-secretbuilder.html">
+                SecretBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.SecretBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.SecretBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Secret.fs#L48-48" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="SecretBuilders">
+              <a href="/Starboard/reference/starboard-storage-secretbuilders.html">
+                SecretBuilders
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.SecretBuilders`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.SecretBuilders\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Secret.fs#L149-149" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="SecretList">
+              <a href="/Starboard/reference/starboard-storage-secretlist.html">
+                SecretList
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.SecretList`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.SecretList\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Secret.fs#L142-142" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="SecretReference">
+              <a href="/Starboard/reference/starboard-storage-secretreference.html">
+                SecretReference
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.SecretReference`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.SecretReference\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L14-14" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="SecretVolumeBuilder">
+              <a href="/Starboard/reference/starboard-storage-secretvolumebuilder.html">
+                SecretVolumeBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.SecretVolumeBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.SecretVolumeBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L340-340" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="SecretVolumeSource">
+              <a href="/Starboard/reference/starboard-storage-secretvolumesource.html">
+                SecretVolumeSource
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.SecretVolumeSource`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.SecretVolumeSource\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L59-59" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="StorageClass">
+              <a href="/Starboard/reference/starboard-storage-storageclass.html">
+                StorageClass
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.StorageClass`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.StorageClass\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L24-24" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="StorageClassBuilder">
+              <a href="/Starboard/reference/starboard-storage-storageclassbuilder.html">
+                StorageClassBuilder
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.StorageClassBuilder`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.StorageClassBuilder\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L63-63" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="Volume">
+              <a href="/Starboard/reference/starboard-storage-volume.html">
+                Volume
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.Volume`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.Volume\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L171-171" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="VolumeBuilders">
+              <a href="/Starboard/reference/starboard-storage-volumebuilders.html">
+                VolumeBuilders
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.VolumeBuilders`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.VolumeBuilders\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L518-518" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="VolumeMode">
+              <a href="/Starboard/reference/starboard-storage-volumemode.html">
+                VolumeMode
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.VolumeMode`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.VolumeMode\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/PersistentVolume.fs#L167-167" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fsdocs-entity-name">
+          <p>
+            <a name="VolumeType">
+              <a href="/Starboard/reference/starboard-storage-volumetype.html">
+                VolumeType
+              </a>
+            </a>
+          </p>
+        </td>
+        <td class="fsdocs-entity-xmldoc">
+          <div>
+            <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:Starboard.Storage.VolumeType`')">
+              <img src="/Starboard/content/img/copy-md.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-md-hover.png" class="hover"/>
+            </div>
+            <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:Starboard.Storage.VolumeType\'/>')">
+              <img src="/Starboard/content/img/copy-xml.png" class="normal"/>
+              <img src="/Starboard/content/img/copy-xml-hover.png" class="hover"/>
+            </div>
+            <a href="https://github.com/dburriss/Starboard/src/Starboard/Volumes.fs#L158-158" class="fsdocs-source-link" title="Source on GitHub">
+              <img src="/Starboard/content/img/github.png" class="normal"/>
+              <img src="/Starboard/content/img/github-hover.png" class="hover"/>
+            </a>
+            <p class="fsdocs-summary">
+              
+            </p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+            
+        </div>
+
+        <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+        <script type="text/javascript">var fsdocs_search_baseurl = '/Starboard/';</script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+        <script type="text/javascript" src="/Starboard/content/fsdocs-search.js"></script>
+        <!-- END SEARCH BOX: this adds support for the search box -->
+    </div>
+</body>
+
+</html>
