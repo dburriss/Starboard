@@ -28,6 +28,7 @@ These are all problems that mature languages have solved decades ago. Instead of
 - Outputs to Kubernetes YAML or JSON config
 - Strongly typed for reduced mistakes
 - Supported by your favourite IDE (it's just F# after all)
+- Sane defaults for authentication and resource constraints
 
 ## Getting started
 

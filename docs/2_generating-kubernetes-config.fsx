@@ -35,7 +35,9 @@ let kubeConfig = k8s {
 (**
 ## Printing to screen
 
-If you would like to see what is generated on your screen you can use the `cref:T:Starboard.K8s.KubeCtlWriter.print` function.
+If you would like to see what is generated on your screen you can use the `cref:T:Starboard.K8s.KubeCtlWriter.print` function. 
+
+> Note that the print also prints any validation errors.
 *)
 
 KubeCtlWriter.print kubeConfig
@@ -43,7 +45,6 @@ KubeCtlWriter.print kubeConfig
 let k8sOutput' = KubeCtlWriter.toYaml kubeConfig
 k8sOutput'.content
 (*** include-it ***)
-
 (**
 ## Writing to file
 

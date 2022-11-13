@@ -352,3 +352,4 @@ tmp/
 output/
 docs/**/*.yml
 docs/**/*.yaml
+.fsdocs/

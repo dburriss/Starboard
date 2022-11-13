@@ -1,6 +1,7 @@
 (**
 ---
 title: Hello world
+description: Generate your first Deployment
 category: Tutorials
 categoryindex: 3
 index: 1
@@ -14,8 +15,10 @@ In this tutorial we will create your first Starboard script and generate the Kub
 
 ## Requirements
 
-1. [dotnet SDK]() installed
-2. Optionally, any IDE that supports F# (Visual Studio Code, IntelliJ Rider, Visual Studio, NeoVim)
+1. A [Kubernetes cluster to learn on](https://kubernetes.io/docs/tasks/tools/) such as Kubernetes on Docker or minikube.
+2. A basic knowledge of using [kubectl](https://kubernetes.io/docs/reference/kubectl/)
+3. [dotnet SDK]() installed
+4. Optionally, any IDE that supports F# (Visual Studio Code, IntelliJ Rider, Visual Studio, NeoVim)
 
 > Visual Studio Code with the [Ionide](https://ionide.io/) is a great choice. See [Setup your environment](../setup-environment.fsx) for more details.
 
@@ -26,7 +29,7 @@ Create a F# script file called `deployment.fsx`
 Copy the following code into the script file:
 *)
 
-// import from Nuget
+// TODO: import from Nuget
 #r "nuget:YamlDotNet"
 #r "nuget:Newtonsoft.Json"
 #r "../../src/Starboard/bin/debug/net6.0/Starboard.dll"
@@ -39,8 +42,6 @@ open Starboard.Workload
 // define your k8s config
 let theInvalidDeployment = k8s {
     deployment {
-        "test-deployment"
-        replicas 2
         pod {
             container {
                 name "nginx"
@@ -52,7 +53,7 @@ let theInvalidDeployment = k8s {
 }
 
 // Write the YAML to infra.yaml file and get the list of validation issues
-let validations = KubeCtlWriter.toYamlFile theInvalidDeployment "deployment.yaml"
+let validations = KubeCtlWriter.toYamlFile theInvalidDeployment "hello-world.yaml"
 // Let's print out the validation errors
 for err in validations do
     eprintfn "%s" err.Message
@@ -80,7 +81,7 @@ dotnet fsi deployment.fsx
 If you run the apply command on your YAML file, you will see Kubernetes agrees with the validation errors.
 
 ```bash
-kubectl apply -f deployment.yaml
+kubectl apply -f hello-world.yaml
 ```
 
 ## Fixed config
@@ -108,7 +109,7 @@ let theValidDeployment = k8s {
     }
 }
 
-KubeCtlWriter.toYamlFile theValidDeployment "deployment.yaml"
+KubeCtlWriter.toYamlFile theValidDeployment "hello-world.yaml"
 (*** hide ***)
 let output2 = KubeCtlWriter.toYaml theValidDeployment
 let content2 = output2.content
@@ -126,7 +127,7 @@ Let's execute this deployment against our Kubernetes cluster to confirm it is in
 
 ```bash
 dotnet fsi deployment.fsx
-kubectl apply -f deployment.yaml
+kubectl apply -f hello-world.yaml
 kubectl get deployments
 ```
 
