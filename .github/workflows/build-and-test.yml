@@ -1,0 +1,47 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+    - '**.fs'
+    - '**.fsproj'
+  workflow_dispatch:
+
+env:
+  config: Release
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  dotnet_core_version: 6.0.x # The .NET SDK version to use
+
+jobs:
+  build-and-test:
+
+    name: build-and-test-${{matrix.os}}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Versions
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: |
+          3.1.x
+          6.0.x
+
+    - name: Install dependencies
+      run: dotnet restore
+      
+    - name: Build on Windows
+      if: runner.os == 'Windows'
+      run: dotnet build --configuration $env:config --no-restore
+    
+    - name: Build on Nix
+      if: runner.os != 'Windows'
+      run: dotnet build --configuration $config --no-restore
+    
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal --filter dep!=kubernetes

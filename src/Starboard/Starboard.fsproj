@@ -4,12 +4,19 @@
 		<PackageId>Starboard</PackageId>
 		<TargetFramework>net6.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<FsDocsLicenseLink>https://github.com/dburriss/Starboard/License</FsDocsLicenseLink>
 		<RepositoryUrl>https://github.com/dburriss/Starboard</RepositoryUrl>
 		<Description>Starboard is a declaritive library over Kubernetes resources that allows you to use the power of F# to define your configuration.</Description>
 		<Authors>Devon Burriss</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Devon Burriss</Copyright>
+		<Version>0.0.1</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Include="Helpers.fs" />

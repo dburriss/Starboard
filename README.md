@@ -78,13 +78,3 @@ Ready to try it yourself? Try the hello-world tutorial. To explore more examples
 3. Package up common infrastructure patterns and ship them to teams as Nuget packages.
 4. Easily build CLI tools to output collections of Kubernetes config for development teams.
 5. Let your imagination ship out.
-
-## About this documentation
-
-The docs follow the guidance from [The documentation system](https://documentation.divio.com/).
-
-## About the logo
-
-Ship by Aleksandr Vector from <a href="https://thenounproject.com/browse/icons/term/ship/" target="_blank" title="Ship Icons">Noun Project</a>
-
-https://thenounproject.com/icon/ship-1016334/
