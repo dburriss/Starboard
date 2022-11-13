@@ -27,8 +27,8 @@ jobs:
         dotnet-version: ${{ env.dotnet_core_version }}
 
     # Run dotnet pack to create the nupkg file for the project and store in artifacts folder
-    - name: Run Pack on Starboard
-      run: dotnet pack src/Starboard/Starboard.fsproj -o ./artifacts --configuration ${{ env.config }}
+    - name: Run Pack on Overboard
+      run: dotnet pack src/Overboard/Overboard.fsproj -o ./artifacts --configuration ${{ env.config }}
       shell: bash
 
     # Find all the created nupkg files and publish it to NuGet, we use the wonderful swiss-army knife capability `find -exec` to find and then execute an action on it.

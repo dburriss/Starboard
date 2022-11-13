@@ -1,10 +1,10 @@
-# Starboard test strategy
+# Overboard test strategy
 
 The test strategy tries to follow the ABC method. Since this is a library, not all sections are as relevant.
 
 ## Acceptance tests
 
-*./tests/Starboard.Acceptance.Tests*
+*./tests/Overboard.Acceptance.Tests*
 
 The acceptance criteria is that the generated JSON or YAML matches the Kubernetes specification. It does this by verifying that the type produced matches the Kubernetes specification.
 
@@ -56,7 +56,7 @@ let ``ingressClassName is set`` () =
 
 ## Building tests
 
-*./tests/Starboard.Building.Tests*
+*./tests/Overboard.Building.Tests*
 
 Builder tests are those tests that know about the internal structure of your application/library. Practices like TDD are great for giving a feeling of progress but lead to a test suite where tests are tied deeply to the internals of the codebase. This can often have the unintended side-effect of making the codebase more difficult to change (the opposite of what good test coverage should give). This can be mitigated by thoughtfully differentiating between Acceptance & Building type tests. By restricting tests that know about the internals of the codebase to a grouping of tests, we are free to delete those tests if they impose too high a cost on changes to the codebase. This comes with a caveat... Acceptance tests need to cover the major parts of important behaviour we care about. This approach acknowledges that verify behaviour is important but sometimes tests that have deep structural knowledge add value while creating the system under test but come at a cost later.
 
@@ -86,7 +86,7 @@ let ``DeploymentBuilder with a name sets name`` () =
 
 ## Communication tests
 
-*./tests/Starboard.Communication.Tests*
+*./tests/Overboard.Communication.Tests*
 
 Communication tests typical verify connection and shared language (read schema/syntax) between running applications. Examples here are health endpoints checking dependencies as well as contract tests.
 Since this is a library, this is NOT a group of tests that is too important. In the future communicating with Kubernetes directly may be in scope. Another option here is to verify schema by comparing known JSON/YAML with generated files.

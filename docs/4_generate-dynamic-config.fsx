@@ -10,7 +10,7 @@ index: 4
 (**
 # Generate dynamic config
 
-The real power of Starboard is not only the awesome declarative builder syntax enabled by F# but also that we can leverage the full power of a programming language instead of some hacky templating language. 
+The real power of Overboard is not only the awesome declarative builder syntax enabled by F# but also that we can leverage the full power of a programming language instead of some hacky templating language. 
 
 In the example below we define a function that defines a **deployment** and a **service** based on the application _name_ and _port_ number passed to the function. 
 
@@ -19,13 +19,13 @@ The function nomalizes the name by lowercasing it and stripping any special char
 (*** hide ***)
 #r "nuget:YamlDotNet"
 #r "nuget:Newtonsoft.Json"
-#r "../src/Starboard/bin/debug/net6.0/Starboard.dll"
+#r "../src/Overboard/bin/debug/net6.0/Overboard.dll"
 (*** show ***)
 open System
-open Starboard
-open Starboard.Common
-open Starboard.Workload
-open Starboard.Service
+open Overboard
+open Overboard.Common
+open Overboard.Workload
+open Overboard.Service
 
 /// Returns a deployment and service for `appName`
 let publicApi appName portNumber =

@@ -12,7 +12,7 @@ index: 1
 
 ## Install dotnet SDK
 
-To work with Starboard you will need to be able to create, edit, and run F# script files (.fsx). This page will give you a quick-start on how to get setup as well as links to resources for further reading if you would like to deepen your knowledge.
+To work with Overboard you will need to be able to create, edit, and run F# script files (.fsx). This page will give you a quick-start on how to get setup as well as links to resources for further reading if you would like to deepen your knowledge.
 Running fsx files requires FSharp Interactive (FSI) which is bundled as part of the [dotnet SDK](https://dotnet.microsoft.com/en-us/download).
 
 That is it! You can now run F# script files.
@@ -27,9 +27,9 @@ If you are using VS Code, you can install the [Ionide plugin](https://ionide.io/
 
 Ionide has a handy run button for executing your script right from the IDE.
 
-## Use Starboard
+## Use Overboard
 
-To get started using Starboard, all you need to do is include the following line in a fsx file:
+To get started using Overboard, all you need to do is include the following line in a fsx file:
 
-`#r "nuget: Starboard"`
+`#r "nuget: Overboard"`
 *)

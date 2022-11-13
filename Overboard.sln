@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E59F055-A1B3-4AA9-A71F-2AD697FE8DFA}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Overboard", "src\Overboard\Overboard.fsproj", "{8D9A80CE-9668-40E0-9F60-96C31611D2EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{7E5B09A7-8D05-48DB-B34F-4EEFCBE9ED89}"
+	ProjectSection(SolutionItems) = preProject
+		examples\basic-infra.fsx = examples\basic-infra.fsx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{416FDA7E-80B9-4516-8CAF-26F5DC9B1C52}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Overboard.Building.Tests", "tests\Overboard.Building.Tests\Overboard.Building.Tests.fsproj", "{4A59EBF7-7815-4A40-922A-8DAA808CF2FC}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Overboard.Acceptance.Tests", "tests\Overboard.Acceptance.Tests\Overboard.Acceptance.Tests.fsproj", "{C8779DAC-5C1D-46A3-B653-6DD7F776F45B}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Overboard.Communication.Tests", "tests\Overboard.Communication.Tests\Overboard.Communication.Tests.fsproj", "{0779E2BF-6DFD-4175-B60B-E86C9D389120}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{9CF3466F-27E6-4B6E-8A59-134F198227F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D9A80CE-9668-40E0-9F60-96C31611D2EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D9A80CE-9668-40E0-9F60-96C31611D2EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D9A80CE-9668-40E0-9F60-96C31611D2EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D9A80CE-9668-40E0-9F60-96C31611D2EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A59EBF7-7815-4A40-922A-8DAA808CF2FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A59EBF7-7815-4A40-922A-8DAA808CF2FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A59EBF7-7815-4A40-922A-8DAA808CF2FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A59EBF7-7815-4A40-922A-8DAA808CF2FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8779DAC-5C1D-46A3-B653-6DD7F776F45B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8779DAC-5C1D-46A3-B653-6DD7F776F45B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8779DAC-5C1D-46A3-B653-6DD7F776F45B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8779DAC-5C1D-46A3-B653-6DD7F776F45B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0779E2BF-6DFD-4175-B60B-E86C9D389120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0779E2BF-6DFD-4175-B60B-E86C9D389120}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0779E2BF-6DFD-4175-B60B-E86C9D389120}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0779E2BF-6DFD-4175-B60B-E86C9D389120}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8D9A80CE-9668-40E0-9F60-96C31611D2EE} = {2E59F055-A1B3-4AA9-A71F-2AD697FE8DFA}
+		{4A59EBF7-7815-4A40-922A-8DAA808CF2FC} = {416FDA7E-80B9-4516-8CAF-26F5DC9B1C52}
+		{C8779DAC-5C1D-46A3-B653-6DD7F776F45B} = {416FDA7E-80B9-4516-8CAF-26F5DC9B1C52}
+		{0779E2BF-6DFD-4175-B60B-E86C9D389120} = {416FDA7E-80B9-4516-8CAF-26F5DC9B1C52}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD031686-4F24-4172-9328-9399D919B558}
+	EndGlobalSection
+EndGlobal

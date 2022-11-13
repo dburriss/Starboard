@@ -9,9 +9,9 @@ index: 1
 *)
 
 (**
-# Starboard: Hello world
+# Overboard: Hello world
 
-In this tutorial we will create your first Starboard script and generate the Kubernetes YAML config to a file.
+In this tutorial we will create your first Overboard script and generate the Kubernetes YAML config to a file.
 
 ## Requirements
 
@@ -32,12 +32,12 @@ Copy the following code into the script file:
 // TODO: import from Nuget
 #r "nuget:YamlDotNet"
 #r "nuget:Newtonsoft.Json"
-#r "../../src/Starboard/bin/debug/net6.0/Starboard.dll"
+#r "../../src/Overboard/bin/debug/net6.0/Overboard.dll"
 
 // open the required namespaces
-open Starboard
-open Starboard.Common
-open Starboard.Workload
+open Overboard
+open Overboard.Common
+open Overboard.Workload
 
 // define your k8s config
 let theInvalidDeployment = k8s {
@@ -86,7 +86,7 @@ kubectl apply -f hello-world.yaml
 
 ## Fixed config
 
-Let's address the validation errors that Starboard found. 
+Let's address the validation errors that Overboard found. 
 
 1. Call the `add_matchLabel` operation with a key/value pair for the label. 
 2. Next, add the label to the pod using the `_labels` metadata operation, passing in a list of key/value pairs.
@@ -135,7 +135,7 @@ You should get the message: _deployment.apps/test-deployment created_
 
 ## Summary
 
-In this tutorial you created your first Starboard script and generated the YAML. We saw how to get and print out the validation errors.
+In this tutorial you created your first Overboard script and generated the YAML. We saw how to get and print out the validation errors.
 Finally, we saw how we can successfully deploy our generated script.
 
 Congratulations! You have taken a turn toward a new way of configuring your infrastructure.

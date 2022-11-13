@@ -9,7 +9,7 @@ index: 2
 *)
 
 (**
-# Starboard: Guestbook Go
+# Overboard: Guestbook Go
 
 In this tutorial we will recreate the [official Kubernetes Guestbook example](https://kubernetes.io/docs/tutorials/stateless-application/guestbook/). 
 The example deploys a Redis cluster with a master node and 3 replicas. A PHP web application makes use of the Redis cluster to allow a guest to leave a note.
@@ -39,22 +39,22 @@ This tutorial will also start to show the power of using a programming language 
 In the [Hello World tutorial](hello-world.fsx) you nested in-line the config. Here we will be defining each resource and assign it to a variable. 
 We then build up our Deployment using the variables rather than in-lining the config.
 
-First off, import the Starboard package and import the namespaces we need.
+First off, import the Overboard package and import the namespaces we need.
 
 1. Create a file called `guestbook.fsx`
-2. Use the `#r` directive to import the Starboard package and open up the namespaces
+2. Use the `#r` directive to import the Overboard package and open up the namespaces
 *)
 // TODO: import from Nuget
 #r "nuget:YamlDotNet"
 #r "nuget:Newtonsoft.Json"
-#r "../../src/Starboard/bin/debug/net6.0/Starboard.dll"
+#r "../../src/Overboard/bin/debug/net6.0/Overboard.dll"
 
 // open the required namespaces
 open System
-open Starboard
-open Starboard.Common
-open Starboard.Workload
-open Starboard.Service
+open Overboard
+open Overboard.Common
+open Overboard.Workload
+open Overboard.Service
 
 (**
 The we are going to create our first function. This function, `redisDeployment` will return the Deployment resource configuration.
@@ -253,7 +253,7 @@ let k8sConfig = k8s {
 }
 
 (**
-We use `cref:T:Starboard.K8s.KubeCtlWriter` to write a YAML (or JSON if you prefer) file that we can use to deploy our configuration to Kubernetes.
+We use `cref:T:Overboard.K8s.KubeCtlWriter` to write a YAML (or JSON if you prefer) file that we can use to deploy our configuration to Kubernetes.
 
 > Tip: `__SOURCE_DIRECTORY__` contains a string to the directory the that the script file is running in.
 *)

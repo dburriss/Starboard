@@ -17,13 +17,13 @@ Setting metadata like `name`, `namespace`, `labels`, and `annotations` are a com
 // import from Nuget
 #r "nuget:YamlDotNet"
 #r "nuget:Newtonsoft.Json"
-#r "../src/Starboard/bin/debug/net6.0/Starboard.dll"
+#r "../src/Overboard/bin/debug/net6.0/Overboard.dll"
 
 // open the required namespaces
 
-open Starboard
-open Starboard.Common
-open Starboard.Workload
+open Overboard
+open Overboard.Common
+open Overboard.Workload
 
 (*** show ***)
 // Using an inline metadata builder

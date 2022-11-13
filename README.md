@@ -1,11 +1,11 @@
-# Starboard
+# Overboard
 
-[![Tests](https://github.com/dburriss/starboard/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/dburriss/starboard/actions/workflows/build-and-test.yml)
-![Nuget](https://img.shields.io/nuget/v/Starboard)
+[![Tests](https://github.com/dburriss/overboard/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/dburriss/overboard/actions/workflows/build-and-test.yml)
+![Nuget](https://img.shields.io/nuget/v/Overboard)
 
-Starboard is a library providing strongly typed builders over kubernetes configuration. It allows you to retain a declarative style to your configuration while putting the full power of the F# programming language in your hands.
+Overboard is a library providing strongly typed builders over kubernetes configuration. It allows you to retain a declarative style to your configuration while putting the full power of the F# programming language in your hands.
 
-Starboard outputs plain Kubernetes YAML or JSON resource config files, so no need to change what you already have.
+Overboard outputs plain Kubernetes YAML or JSON resource config files, so no need to change what you already have.
 
 ## Why?
 
@@ -18,7 +18,7 @@ The problems being solved by layers of tooling on top of mountains of yaml are t
 - templating
 - packaging
 
-These are all problems that mature languages have solved decades ago. Instead of layering new tools on top of YAML files, what if we instead used a declarative programming language to define our configuration? Starboard enables this approach for Kubernetes.
+These are all problems that mature languages have solved decades ago. Instead of layering new tools on top of YAML files, what if we instead used a declarative programming language to define our configuration? Overboard enables this approach for Kubernetes.
 
 ## Feature summary
 
@@ -38,17 +38,17 @@ Of course. Say we have a file called `infra.fsx`.
 
 ```fsharp
 // infra.fsx
-// include the Starboard package from Nuget
-#r "nuget:Starboard"
+// include the Overboard package from Nuget
+#r "nuget:Overboard"
 
 // open  the namespaces for the resources you need
-open Starboard.Common
-open Starboard.Workloads
+open Overboard.Common
+open Overboard.Workloads
 
 // define the deployment Kubernetes resource
 let theDeployment = k8s {
     deployment {
-        "my-starboard-deployment"
+        "my-overboard-deployment"
         replicas 2
         add_matchLabel ("app", "nginx")
         pod {

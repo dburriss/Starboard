@@ -1,13 +1,13 @@
 #r "nuget:YamlDotNet"
 #r "nuget:Newtonsoft.Json"
-#r "../src/Starboard/bin/debug/net6.0/Starboard.dll"
+#r "../src/Overboard/bin/debug/net6.0/Overboard.dll"
 
 
-open Starboard
-open Starboard.Common
-open Starboard.Workload
-open Starboard.Storage
-open Starboard.Service
+open Overboard
+open Overboard.Common
+open Overboard.Workload
+open Overboard.Storage
+open Overboard.Service
 
 let config = configMap {
     _name "test-config-map"

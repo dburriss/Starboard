@@ -1,6 +1,6 @@
-#r "../src/Starboard/bin/debug/net6.0/Starboard.dll"
+#r "../src/Overboard/bin/debug/net6.0/Overboard.dll"
 
-open Starboard.Resources
+open Overboard.Resources
 
 // Example of pod using metadata builder
 let pod1 = pod {
