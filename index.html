@@ -139,18 +139,18 @@
 <span class="pp">#r</span> <span class="s">&quot;nuget:Overboard&quot;</span>
 
 <span class="c">// open  the namespaces for the resources you need</span>
-<span class="k">open</span> <span class="id">Overboard</span><span class="pn">.</span><span class="id">Common</span>
-<span class="k">open</span> <span class="id">Overboard</span><span class="pn">.</span><span class="id">Workloads</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="id">Common</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 3)" onmouseover="showTip(event, 'fs1', 3)" class="id">Overboard</span><span class="pn">.</span><span class="id">Workloads</span>
 
 <span class="c">// define the deployment Kubernetes resource</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">theDeployment</span> <span class="o">=</span> <span class="id">k8s</span> <span class="pn">{</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 4)" onmouseover="showTip(event, 'fs3', 4)" class="id">theDeployment</span> <span class="o">=</span> <span class="id">k8s</span> <span class="pn">{</span>
     <span class="id">deployment</span> <span class="pn">{</span>
         <span class="s">&quot;my-overboard-deployment&quot;</span>
         <span class="id">replicas</span> <span class="n">2</span>
         <span class="id">add_matchLabel</span> <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span class="s">&quot;nginx&quot;</span><span class="pn">)</span>
         <span class="id">pod</span> <span class="pn">{</span>
             <span class="id">_labels</span> <span class="pn">[</span><span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span class="s">&quot;nginx&quot;</span><span class="pn">)</span><span class="pn">]</span>
-            <span class="id">container</span> <span class="pn">{</span>
+            <span onmouseout="hideTip(event, 'fs4', 5)" onmouseover="showTip(event, 'fs4', 5)" class="id">container</span> <span class="pn">{</span>
                 <span class="id">name</span> <span class="s">&quot;nginx&quot;</span>
                 <span class="id">image</span> <span class="s">&quot;nginx:latest&quot;</span>
             <span class="pn">}</span>
@@ -159,7 +159,7 @@
 <span class="pn">}</span>
 
 <span class="c">// write your YAML file to disk</span>
-<span class="id">KubeCtlWriter</span><span class="pn">.</span><span class="id">toYamlFile</span> <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="id">theDeployment</span> <span class="s">&quot;deployment.yaml&quot;</span>
+<span class="id">KubeCtlWriter</span><span class="pn">.</span><span class="id">toYamlFile</span> <span onmouseout="hideTip(event, 'fs3', 6)" onmouseover="showTip(event, 'fs3', 6)" class="id">theDeployment</span> <span class="s">&quot;deployment.yaml&quot;</span>
 </code></pre>
 <p>That's it! You now have a kubernetes config file for a deployment.</p>
 <table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">dotnet fsi infra.fsx
@@ -179,7 +179,13 @@ kubectl apply -f deployment.yaml
 <h2><a name="About-the-logo" class="anchor" href="#About-the-logo">About the logo</a></h2>
 <p>Ship by Aleksandr Vector from <a href="https://thenounproject.com/browse/icons/term/ship/" target="_blank" title="Ship Icons">Noun Project</a></p>
 
-            <div class="fsdocs-tip" id="fs1">val theDeployment: obj</div>
+            <div class="fsdocs-tip" id="fs1">namespace Overboard</div>
+<div class="fsdocs-tip" id="fs2">namespace Overboard.Common</div>
+<div class="fsdocs-tip" id="fs3">val theDeployment: obj</div>
+<div class="fsdocs-tip" id="fs4">val container: ContainerBuilder<br /><em>&lt;summary&gt;
+ A single application container that you want to run within a pod.
+ https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
+&lt;/summary&gt;</em></div>
 
         </div>
 
