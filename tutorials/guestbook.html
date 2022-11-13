@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Guestbook</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Devon Burriss">
+
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="/Starboard/content/navbar-fixed-left.css" />
+    <link type="text/css" rel="stylesheet" href="/Starboard/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/Starboard/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/Starboard/content/fsdocs-tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-left" id="fsdocs-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarsExampleDefault">
+            <a href="/Starboard/"><img id="fsdocs-logo" src="/Starboard/img/logo.png" /></a>
+            <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+            <div id="header">
+                <div class="searchbox" id="fsdocs-searchbox">
+                    <label for="search-by">
+                        <i class="fas fa-search"></i>
+                    </label>
+                    <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                    <span data-search-clear="">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- END SEARCH BOX: this adds support for the search box -->
+            <ul class="navbar-nav">
+                <li class="nav-header">Links</li>
+                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/blob/master/LICENSE.md">License</a></li>
+                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/Starboard/">Source Repository</a></li>
+                <li class="nav-header">
+  How-to
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/1_setup-environment.html">
+    Setup your environment
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/2_generating-kubernetes-config.html">
+    Generating Kubernetes config
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/3_working-with-metadata.html">
+    Working with metadata
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/4_generate-dynamic-config.html">
+    Generate dynamic config
+  </a>
+</li>             
+<li class="nav-header">
+  Tutorials
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/tutorials/hello-world.html">
+    Hello world
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/tutorials/guestbook.html">
+    Guestbook
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Starboard/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="masthead">
+            <h3 class="muted"><a href="/Starboard/">Starboard</a></h3>
+        </div>
+        <hr />
+        <div class="container" id="fsdocs-content">
+            
+<h1><a name="Starboard-Guestbook-Go" class="anchor" href="#Starboard-Guestbook-Go">Starboard: Guestbook Go</a></h1>
+<p>In this tutorial we will recreate the <a href="https://kubernetes.io/docs/tutorials/stateless-application/guestbook/">official Kubernetes Guestbook example</a>.
+The example deploys a Redis cluster with a master node and 3 replicas. A PHP web application makes use of the Redis cluster to allow a guest to leave a note.</p>
+<blockquote>
+<p>The official example does not currently work if you run it as is but don't worry. We will make adjustments to make sure our deployment runs as expected.</p>
+</blockquote>
+<p>This tutorial will also start to show the power of using a programming language over static configuration.</p>
+<h2><a name="Topics-covered" class="anchor" href="#Topics-covered">Topics covered</a></h2>
+<ul>
+<li>Parametrizing and reusing configurations by using functions</li>
+<li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments</a></li>
+<li><a href="https://kubernetes.io/docs/reference/kubernetes-api/service-resources/service-v1/">Services</a></li>
+</ul>
+<h2><a name="Requirements" class="anchor" href="#Requirements">Requirements</a></h2>
+<ol>
+<li>A <a href="https://kubernetes.io/docs/tasks/tools/">Kubernetes cluster to learn on</a> such as Kubernetes on Docker or minikube.</li>
+<li>A basic knowledge of using <a href="https://kubernetes.io/docs/reference/kubectl/">kubectl</a></li>
+<li><a href="https://kubernetes.github.io/ingress-nginx/deploy/">Ingress enabled</a> for your clusterW</li>
+<li><a href="https://dotnet.microsoft.com/en-us/">dotnet SDK</a> installed</li>
+<li>Optionally, any IDE that supports F# (Visual Studio Code, IntelliJ Rider, Visual Studio, NeoVim)</li>
+</ol>
+<blockquote>
+<p>Visual Studio Code with the <a href="https://ionide.io/">Ionide</a> is a great choice. See <a href="../setup-environment.fsx">Setup your environment</a> for more details.</p>
+</blockquote>
+<h2><a name="Configuring-a-Redis-Deployment" class="anchor" href="#Configuring-a-Redis-Deployment">Configuring a Redis Deployment</a></h2>
+<p>In the <a href="hello-world.html">Hello World tutorial</a> you nested in-line the config. Here we will be defining each resource and assign it to a variable.
+We then build up our Deployment using the variables rather than in-lining the config.</p>
+<p>First off, import the Starboard package and import the namespaces we need.</p>
+<ol>
+<li>Create a file called <code>guestbook.fsx</code></li>
+<li>Use the <code>#r</code> directive to import the Starboard package and open up the namespaces</li>
+</ol>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// TODO: import from Nuget</span>
+<span class="pp">#r</span> <span class="s">&quot;nuget:YamlDotNet&quot;</span>
+<span class="pp">#r</span> <span class="s">&quot;nuget:Newtonsoft.Json&quot;</span>
+<span class="pp">#r</span> <span class="s">&quot;../../src/Starboard/bin/debug/net6.0/Starboard.dll&quot;</span>
+
+<span class="c">// open the required namespaces</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">System</span>
+<span class="k">open</span> <span class="id">Starboard</span>
+<span class="k">open</span> <span class="id">Starboard</span><span class="pn">.</span><span class="id">Common</span>
+<span class="k">open</span> <span class="id">Starboard</span><span class="pn">.</span><span class="id">Workload</span>
+<span class="k">open</span> <span class="id">Starboard</span><span class="pn">.</span><span class="id">Service</span>
+</code></pre>
+<p>The we are going to create our first function. This function, <code>redisDeployment</code> will return the Deployment resource configuration.
+A <a href="https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/functions/">F# function</a> is just a value, so we use the <code>let</code> keyword to assign the value.</p>
+<blockquote>
+<p>Tip: Start with defining your configuration with hard-coded values, then pull our parameters to pass in as arguments as needed.</p>
+</blockquote>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">/// Return a Redis Kubernetes Deployment Resource Config</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="fn">redisDeployment</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="fn">redisName</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="fn">role</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="fn">replicaCount</span> <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="fn">portNumber</span>  <span class="o">=</span>
+    
+    <span class="c">// which image depends on the role</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 7)" onmouseover="showTip(event, 'fs7', 7)" class="fn">redisImage</span> <span class="o">=</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs4', 8)" onmouseover="showTip(event, 'fs4', 8)" class="fn">role</span> <span class="o">=</span> <span class="s">&quot;leader&quot;</span> <span class="k">then</span> <span class="s">&quot;docker.io/redis:6.0.5&quot;</span> <span class="k">else</span> <span class="s">&quot;gcr.io/google_samples/gb-redis-follower:v2&quot;</span><span class="c">//&quot;k8s.gcr.io/redis:e2e&quot; &quot;k8s.gcr.io/redis-slave:v2&quot;</span>
+
+    <span class="c">// define the container</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 9)" onmouseover="showTip(event, 'fs8', 9)" class="fn">redisContainer</span> <span class="o">=</span> <span class="id">container</span> <span class="pn">{</span>
+        <span class="id">name</span> <span onmouseout="hideTip(event, 'fs3', 10)" onmouseover="showTip(event, 'fs3', 10)" class="id">redisName</span>
+        <span class="id">image</span> <span onmouseout="hideTip(event, 'fs7', 11)" onmouseover="showTip(event, 'fs7', 11)" class="id">redisImage</span>
+        <span class="id">containerPort</span> <span class="pn">{</span>
+            <span class="id">port</span> <span onmouseout="hideTip(event, 'fs6', 12)" onmouseover="showTip(event, 'fs6', 12)" class="id">portNumber</span>
+        <span class="pn">}</span>
+    <span class="pn">}</span>
+
+    <span class="c">// build up the list of labels</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 13)" onmouseover="showTip(event, 'fs9', 13)" class="fn">labels</span> <span class="o">=</span> <span class="pn">[</span>
+        <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span class="s">&quot;redis&quot;</span><span class="pn">)</span>
+        <span class="pn">(</span><span class="s">&quot;role&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs4', 14)" onmouseover="showTip(event, 'fs4', 14)" class="fn">role</span><span class="pn">)</span>
+        <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;backend&quot;</span><span class="pn">)</span>
+    <span class="pn">]</span>
+
+    <span class="c">// the pod to use for podTemplate</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 15)" onmouseover="showTip(event, 'fs10', 15)" class="fn">redisPod</span> <span class="o">=</span> <span class="id">pod</span> <span class="pn">{</span>
+        <span class="id">_labels</span> <span onmouseout="hideTip(event, 'fs9', 16)" onmouseover="showTip(event, 'fs9', 16)" class="id">labels</span>
+        <span class="id">add_container</span> <span onmouseout="hideTip(event, 'fs8', 17)" onmouseover="showTip(event, 'fs8', 17)" class="id">redisContainer</span>
+    <span class="pn">}</span>
+
+    <span class="c">// define the deployment using the same labels used for the pod in the matchLabels</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 18)" onmouseover="showTip(event, 'fs11', 18)" class="fn">redisDeployment</span> <span class="o">=</span> <span class="id">deployment</span> <span class="pn">{</span>
+        <span class="id">_name</span> <span onmouseout="hideTip(event, 'fs3', 19)" onmouseover="showTip(event, 'fs3', 19)" class="id">redisName</span>
+        <span class="id">replicas</span> <span onmouseout="hideTip(event, 'fs5', 20)" onmouseover="showTip(event, 'fs5', 20)" class="id">replicaCount</span>
+        <span class="id">add_matchLabels</span> <span onmouseout="hideTip(event, 'fs9', 21)" onmouseover="showTip(event, 'fs9', 21)" class="id">labels</span>
+        <span class="id">podTemplate</span> <span onmouseout="hideTip(event, 'fs10', 22)" onmouseover="showTip(event, 'fs10', 22)" class="id">redisPod</span>
+    <span class="pn">}</span>
+
+    <span class="c">// return the deployment config</span>
+    <span onmouseout="hideTip(event, 'fs11', 23)" onmouseover="showTip(event, 'fs11', 23)" class="fn">redisDeployment</span>
+</code></pre>
+<p>So now we have a function that can return the config for both our master and replica Redis deployments.</p>
+<h2><a name="Configuring-a-Redis-Service" class="anchor" href="#Configuring-a-Redis-Service">Configuring a Redis Service</a></h2>
+<p>Next we need to have a Service to match up to a Deployment. This Service will proxy the traffic to the Redis pods provisioned through the Deployment.empty</p>
+<p>We do this the same way as with the Deployment. With a function called <code>redisService</code>.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">/// Return a Redis Kubernetes Service Resource Config</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 24)" onmouseover="showTip(event, 'fs12', 24)" class="fn">redisService</span> <span onmouseout="hideTip(event, 'fs13', 25)" onmouseover="showTip(event, 'fs13', 25)" class="fn">serviceName</span> <span onmouseout="hideTip(event, 'fs4', 26)" onmouseover="showTip(event, 'fs4', 26)" class="fn">role</span> <span onmouseout="hideTip(event, 'fs14', 27)" onmouseover="showTip(event, 'fs14', 27)" class="fn">portNumber</span> <span class="o">=</span>
+    <span class="c">// list the labels</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 28)" onmouseover="showTip(event, 'fs9', 28)" class="fn">labels</span> <span class="o">=</span> <span class="pn">[</span>
+        <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span class="s">&quot;redis&quot;</span><span class="pn">)</span>
+        <span class="pn">(</span><span class="s">&quot;role&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs4', 29)" onmouseover="showTip(event, 'fs4', 29)" class="fn">role</span><span class="pn">)</span>
+        <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;backend&quot;</span><span class="pn">)</span>
+    <span class="pn">]</span>
+
+    <span class="c">// configure the port</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 30)" onmouseover="showTip(event, 'fs15', 30)" class="fn">port</span> <span class="o">=</span> <span class="id">servicePort</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs15', 31)" onmouseover="showTip(event, 'fs15', 31)" class="id">port</span> <span onmouseout="hideTip(event, 'fs14', 32)" onmouseover="showTip(event, 'fs14', 32)" class="id">portNumber</span>
+        <span class="id">targetPortInt</span> <span onmouseout="hideTip(event, 'fs14', 33)" onmouseover="showTip(event, 'fs14', 33)" class="id">portNumber</span>
+    <span class="pn">}</span>
+
+    <span class="c">// put it together in a Service config</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 34)" onmouseover="showTip(event, 'fs16', 34)" class="fn">redisService</span> <span class="o">=</span> <span class="id">service</span> <span class="pn">{</span>
+        <span class="id">_name</span> <span onmouseout="hideTip(event, 'fs13', 35)" onmouseover="showTip(event, 'fs13', 35)" class="id">serviceName</span>
+        <span class="id">_labels</span> <span onmouseout="hideTip(event, 'fs9', 36)" onmouseover="showTip(event, 'fs9', 36)" class="id">labels</span>
+        <span class="id">add_port</span> <span onmouseout="hideTip(event, 'fs15', 37)" onmouseover="showTip(event, 'fs15', 37)" class="id">port</span>
+        <span class="id">matchLabels</span> <span onmouseout="hideTip(event, 'fs9', 38)" onmouseover="showTip(event, 'fs9', 38)" class="id">labels</span>
+    <span class="pn">}</span>
+
+    <span class="c">// return the config</span>
+    <span onmouseout="hideTip(event, 'fs16', 39)" onmouseover="showTip(event, 'fs16', 39)" class="fn">redisService</span>
+</code></pre>
+<p>This function will provide the Service config when passed the parameters for the service. We can use this for defining a Service for both the master and replica Redis Deployments.</p>
+<h2><a name="Configuring-the-Guestbook" class="anchor" href="#Configuring-the-Guestbook">Configuring the Guestbook</a></h2>
+<p>The last piece of the puzzle is the web application.
+The image we are pulling in is of a PHP application but Kubernetes doesn't really care what it is.
+We just define the image used by the container in the Pod.</p>
+<p>So we define a general function for returning the config for a Deployment of an application and the Service to make it available.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">/// Return a Deployment and Service for a frontend application connected to Redis</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs17', 40)" onmouseover="showTip(event, 'fs17', 40)" class="fn">frontendApp</span> <span onmouseout="hideTip(event, 'fs18', 41)" onmouseover="showTip(event, 'fs18', 41)" class="fn">appName</span> <span onmouseout="hideTip(event, 'fs19', 42)" onmouseover="showTip(event, 'fs19', 42)" class="fn">imageName</span> <span onmouseout="hideTip(event, 'fs20', 43)" onmouseover="showTip(event, 'fs20', 43)" class="fn">replicaCount</span> <span onmouseout="hideTip(event, 'fs21', 44)" onmouseover="showTip(event, 'fs21', 44)" class="fn">portName</span> <span onmouseout="hideTip(event, 'fs22', 45)" onmouseover="showTip(event, 'fs22', 45)" class="fn">portNumber</span><span class="o">=</span>
+    <span class="c">// pass back a K8s config type (contains both Deployment and Service)</span>
+    <span class="id">k8s</span> <span class="pn">{</span>
+        <span class="c">// add deployment to K8s config</span>
+        <span class="id">deployment</span> <span class="pn">{</span>
+            <span class="id">_name</span> <span onmouseout="hideTip(event, 'fs18', 46)" onmouseover="showTip(event, 'fs18', 46)" class="id">appName</span>
+            <span class="id">replicas</span> <span onmouseout="hideTip(event, 'fs20', 47)" onmouseover="showTip(event, 'fs20', 47)" class="id">replicaCount</span>
+            <span class="id">labelSelector</span> <span class="pn">{</span>
+                <span class="id">matchLabels</span> <span class="pn">[</span>
+                    <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs18', 48)" onmouseover="showTip(event, 'fs18', 48)" class="id">appName</span><span class="pn">)</span>
+                    <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;frontend&quot;</span><span class="pn">)</span>
+                <span class="pn">]</span>
+            <span class="pn">}</span>
+            <span class="id">pod</span> <span class="pn">{</span>
+                <span class="id">_labels</span> <span class="pn">[</span>
+                    <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs18', 49)" onmouseover="showTip(event, 'fs18', 49)" class="id">appName</span><span class="pn">)</span>
+                    <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;frontend&quot;</span><span class="pn">)</span>
+                <span class="pn">]</span>
+                <span class="id">container</span> <span class="pn">{</span>
+                    <span onmouseout="hideTip(event, 'fs18', 50)" onmouseover="showTip(event, 'fs18', 50)" class="id">appName</span>
+                    <span class="id">image</span> <span onmouseout="hideTip(event, 'fs19', 51)" onmouseover="showTip(event, 'fs19', 51)" class="id">imageName</span>
+                    <span class="id">add_port</span> <span class="pn">(</span><span class="id">containerPort</span> <span class="pn">{</span>
+                        <span class="id">name</span> <span onmouseout="hideTip(event, 'fs21', 52)" onmouseover="showTip(event, 'fs21', 52)" class="id">portName</span>
+                        <span class="id">port</span> <span onmouseout="hideTip(event, 'fs22', 53)" onmouseover="showTip(event, 'fs22', 53)" class="id">portNumber</span>
+                    <span class="pn">}</span><span class="pn">)</span>
+                    <span class="id">cpuRequest</span> <span class="n">100</span><span class="pn">&lt;</span><span class="id">m</span><span class="pn">&gt;</span>
+                    <span class="id">memoryRequest</span> <span class="n">100</span><span class="pn">&lt;</span><span class="id">Mi</span><span class="pn">&gt;</span>
+                    <span class="c">// environment variables instructing how to find Redis cluster</span>
+                    <span class="id">envVar</span> <span class="pn">{</span>
+                        <span class="id">name</span> <span class="s">&quot;GET_HOSTS_FROM&quot;</span>
+                        <span class="id">value</span> <span class="s">&quot;dns&quot;</span>
+                    <span class="pn">}</span>
+                <span class="pn">}</span>
+            <span class="pn">}</span>
+        <span class="pn">}</span> 
+
+        <span class="c">// add service to K8s config</span>
+        <span class="id">service</span> <span class="pn">{</span>
+            <span class="id">_name</span> <span onmouseout="hideTip(event, 'fs18', 54)" onmouseover="showTip(event, 'fs18', 54)" class="id">appName</span>
+            <span class="id">_labels</span> <span class="pn">[</span>
+                <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs18', 55)" onmouseover="showTip(event, 'fs18', 55)" class="id">appName</span><span class="pn">)</span>
+                <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;frontend&quot;</span><span class="pn">)</span>
+            <span class="pn">]</span>
+            <span class="id">add_port</span> <span class="pn">(</span><span class="id">servicePort</span> <span class="pn">{</span>
+                        <span class="id">port</span> <span onmouseout="hideTip(event, 'fs22', 56)" onmouseover="showTip(event, 'fs22', 56)" class="id">portNumber</span>
+                        <span class="id">targetPortString</span> <span onmouseout="hideTip(event, 'fs21', 57)" onmouseover="showTip(event, 'fs21', 57)" class="id">portName</span>
+                    <span class="pn">}</span><span class="pn">)</span>
+            <span class="id">matchLabels</span> <span class="pn">[</span>
+                <span class="pn">(</span><span class="s">&quot;app&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs18', 58)" onmouseover="showTip(event, 'fs18', 58)" class="id">appName</span><span class="pn">)</span>
+                <span class="pn">(</span><span class="s">&quot;tier&quot;</span><span class="pn">,</span> <span class="s">&quot;frontend&quot;</span><span class="pn">)</span>
+            <span class="pn">]</span>
+            <span class="id">typeOf</span> <span class="id">NodePort</span>
+        <span class="pn">}</span>
+    <span class="pn">}</span> <span class="c">// F# returns the last expression of a function. Since the k8s definition is a single expression, it is returned.</span>
+</code></pre>
+<p>In the above function we used a different style to the previous 2. We defined the configuration in a single expression without assigning labels and pods to intermediate variables.
+Which style you use is up to you and might depend on the complexity of the configuration or you might chose variables for reuse (eg. labels are a common candidate).</p>
+<h2><a name="Putting-it-together" class="anchor" href="#Putting-it-together">Putting it together</a></h2>
+<p>Now that we have our functions, we need the values we will be passing into them.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// Capture our values for the Redis and App config</span>
+<span class="c">// Redis settings</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 59)" onmouseover="showTip(event, 'fs23', 59)" class="id">leaderName</span> <span class="o">=</span> <span class="s">&quot;redis-leader&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs24', 60)" onmouseover="showTip(event, 'fs24', 60)" class="id">leaderRole</span> <span class="o">=</span> <span class="s">&quot;leader&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs25', 61)" onmouseover="showTip(event, 'fs25', 61)" class="id">leaderReplicaCount</span> <span class="o">=</span> <span class="n">1</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs26', 62)" onmouseover="showTip(event, 'fs26', 62)" class="id">followerName</span> <span class="o">=</span> <span class="s">&quot;redis-follower&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs27', 63)" onmouseover="showTip(event, 'fs27', 63)" class="id">followerRole</span> <span class="o">=</span> <span class="s">&quot;follower&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs28', 64)" onmouseover="showTip(event, 'fs28', 64)" class="id">followerReplicaCount</span> <span class="o">=</span> <span class="n">2</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs29', 65)" onmouseover="showTip(event, 'fs29', 65)" class="id">redisPortNumber</span> <span class="o">=</span> <span class="n">6379</span>
+<span class="c">// Guestbook settings</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs30', 66)" onmouseover="showTip(event, 'fs30', 66)" class="id">guestbookAppName</span> <span class="o">=</span> <span class="s">&quot;guestbook&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs31', 67)" onmouseover="showTip(event, 'fs31', 67)" class="id">guestbookAppImage</span> <span class="o">=</span> <span class="s">&quot;gcr.io/google-samples/gb-frontend:v5&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs32', 68)" onmouseover="showTip(event, 'fs32', 68)" class="id">guestbookReplicas</span> <span class="o">=</span> <span class="n">3</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs33', 69)" onmouseover="showTip(event, 'fs33', 69)" class="id">guestBookPortName</span> <span class="o">=</span> <span class="s">&quot;http-server&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs34', 70)" onmouseover="showTip(event, 'fs34', 70)" class="id">guestBookPortNumber</span> <span class="o">=</span> <span class="n">80</span>
+</code></pre>
+<p>Now we put together our final Kubernetes configuration by generating the config by calling the functions we created above. We compose them in a <code>k8s</code> builder to build up our final configuration.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// build up the config by calling the functions</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs35', 71)" onmouseover="showTip(event, 'fs35', 71)" class="id">k8sConfig</span> <span class="o">=</span> <span class="id">k8s</span> <span class="pn">{</span>
+    <span class="c">// Redis master deployments and service</span>
+    <span onmouseout="hideTip(event, 'fs2', 72)" onmouseover="showTip(event, 'fs2', 72)" class="id">redisDeployment</span> <span onmouseout="hideTip(event, 'fs23', 73)" onmouseover="showTip(event, 'fs23', 73)" class="id">leaderName</span> <span onmouseout="hideTip(event, 'fs24', 74)" onmouseover="showTip(event, 'fs24', 74)" class="id">leaderRole</span> <span onmouseout="hideTip(event, 'fs25', 75)" onmouseover="showTip(event, 'fs25', 75)" class="id">leaderReplicaCount</span> <span onmouseout="hideTip(event, 'fs29', 76)" onmouseover="showTip(event, 'fs29', 76)" class="id">redisPortNumber</span>
+    <span onmouseout="hideTip(event, 'fs12', 77)" onmouseover="showTip(event, 'fs12', 77)" class="id">redisService</span> <span onmouseout="hideTip(event, 'fs23', 78)" onmouseover="showTip(event, 'fs23', 78)" class="id">leaderName</span> <span onmouseout="hideTip(event, 'fs24', 79)" onmouseover="showTip(event, 'fs24', 79)" class="id">leaderRole</span> <span onmouseout="hideTip(event, 'fs29', 80)" onmouseover="showTip(event, 'fs29', 80)" class="id">redisPortNumber</span>
+    <span class="c">// Redis replica deployment and service</span>
+    <span onmouseout="hideTip(event, 'fs2', 81)" onmouseover="showTip(event, 'fs2', 81)" class="id">redisDeployment</span> <span onmouseout="hideTip(event, 'fs26', 82)" onmouseover="showTip(event, 'fs26', 82)" class="id">followerName</span> <span onmouseout="hideTip(event, 'fs27', 83)" onmouseover="showTip(event, 'fs27', 83)" class="id">followerRole</span> <span onmouseout="hideTip(event, 'fs28', 84)" onmouseover="showTip(event, 'fs28', 84)" class="id">followerReplicaCount</span> <span onmouseout="hideTip(event, 'fs29', 85)" onmouseover="showTip(event, 'fs29', 85)" class="id">redisPortNumber</span>
+    <span onmouseout="hideTip(event, 'fs12', 86)" onmouseover="showTip(event, 'fs12', 86)" class="id">redisService</span> <span onmouseout="hideTip(event, 'fs26', 87)" onmouseover="showTip(event, 'fs26', 87)" class="id">followerName</span> <span onmouseout="hideTip(event, 'fs27', 88)" onmouseover="showTip(event, 'fs27', 88)" class="id">followerRole</span> <span onmouseout="hideTip(event, 'fs29', 89)" onmouseover="showTip(event, 'fs29', 89)" class="id">redisPortNumber</span>
+    <span class="c">// Guestbook app (combines that K8s instance with the current one)</span>
+    <span onmouseout="hideTip(event, 'fs17', 90)" onmouseover="showTip(event, 'fs17', 90)" class="id">frontendApp</span> <span onmouseout="hideTip(event, 'fs30', 91)" onmouseover="showTip(event, 'fs30', 91)" class="id">guestbookAppName</span> <span onmouseout="hideTip(event, 'fs31', 92)" onmouseover="showTip(event, 'fs31', 92)" class="id">guestbookAppImage</span> <span onmouseout="hideTip(event, 'fs32', 93)" onmouseover="showTip(event, 'fs32', 93)" class="id">guestbookReplicas</span> <span onmouseout="hideTip(event, 'fs33', 94)" onmouseover="showTip(event, 'fs33', 94)" class="id">guestBookPortName</span> <span onmouseout="hideTip(event, 'fs34', 95)" onmouseover="showTip(event, 'fs34', 95)" class="id">guestBookPortNumber</span>
+<span class="pn">}</span>
+</code></pre>
+<p>We use <a href="https://docs.microsoft.com/dotnet/api/starboard.k8s.kubectlwriter">KubeCtlWriter</a> to write a YAML (or JSON if you prefer) file that we can use to deploy our configuration to Kubernetes.</p>
+<blockquote>
+<p>Tip: <code>__SOURCE_DIRECTORY__</code> contains a string to the directory the that the script file is running in.</p>
+</blockquote>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// write the file</span>
+<span class="id">KubeCtlWriter</span><span class="pn">.</span><span class="id">toYamlFile</span> <span onmouseout="hideTip(event, 'fs35', 96)" onmouseover="showTip(event, 'fs35', 96)" class="id">k8sConfig</span> <span class="s">$&quot;{</span> <span class="k">__SOURCE_DIRECTORY__</span><span class="s">}{</span><span onmouseout="hideTip(event, 'fs36', 97)" onmouseover="showTip(event, 'fs36', 97)" class="id">IO</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs37', 98)" onmouseover="showTip(event, 'fs37', 98)" class="id">Path</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs38', 99)" onmouseover="showTip(event, 'fs38', 99)" class="id">DirectorySeparatorChar</span><span class="s">}guestbook.yaml&quot;</span>
+</code></pre>
+<p>Test out the configuration you have created by applying it to your Kubernetes cluster.</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl apply -f guestbook.yaml
+kubectl get all
+</code></pre></td></tr></table>
+<p>You should see something similar to this:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">NAME                                  READY   STATUS    RESTARTS   AGE
+pod/guestbook-7c9bfb4679-d8mzr        1/1     Running   0          29s
+pod/guestbook-7c9bfb4679-jgqsk        1/1     Running   0          29s
+pod/guestbook-7c9bfb4679-jrqb5        1/1     Running   0          29s
+pod/redis-follower-75b578cb57-6bkcv   1/1     Running   0          29s
+pod/redis-follower-75b578cb57-c6f4b   1/1     Running   0          29s
+pod/redis-leader-5f6f4b8bb7-wqcz8     1/1     Running   0          29s
+
+NAME                     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/guestbook        NodePort    10.98.17.142    &lt;none&gt;        80:30762/TCP   29s
+service/kubernetes       ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP        22h
+service/redis-follower   ClusterIP   10.99.147.198   &lt;none&gt;        6379/TCP       29s
+service/redis-leader     ClusterIP   10.108.61.85    &lt;none&gt;        6379/TCP       29s
+
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/guestbook        3/3     3            3           29s
+deployment.apps/redis-follower   2/2     2            2           29s
+deployment.apps/redis-leader     1/1     1            1           29s
+
+NAME                                        DESIRED   CURRENT   READY   AGE
+replicaset.apps/guestbook-7c9bfb4679        3         3         3       29s
+replicaset.apps/redis-follower-75b578cb57   2         2         2       29s
+replicaset.apps/redis-leader-5f6f4b8bb7     1         1         1       29s
+</code></pre></td></tr></table>
+<p>To test out the application, open up a port to 80, where the guestbook application is running.</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl port-forward svc/guestbook 81:80
+</code></pre></td></tr></table>
+<blockquote>
+<p>81 is the port you can access the app on your side. You can choose a port you prefer here.</p>
+</blockquote>
+<p>Navigate to <a href="http://localhost:81/">localhost:81</a> and you should see the application.</p>
+<p><img src="../img/tutorials/guestbook.png" alt="Guestbook running" /></p>
+<p>Go ahead and leave a note.</p>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
+<p>In this tutorial we defined a more complicated configuration than <a href="hello-world.html">hello-world</a>.</p>
+<ol>
+<li>We saw how you can extract repetitive configuration into functions and then use that function to generate similar configuration multiple times.</li>
+<li>We also saw how using values allowed us to reuse those values by reference rather than having repeating values like names even when calling our functions.</li>
+<li>We demonstrated different styles available and say how we can not only compose resources like a Deployment but can also compose full Kubernetes configurations into combined ones.</li>
+</ol>
+
+            <div class="fsdocs-tip" id="fs1">namespace System</div>
+<div class="fsdocs-tip" id="fs2">val redisDeployment: redisName: &#39;a -&gt; role: string -&gt; replicaCount: &#39;b -&gt; portNumber: &#39;c -&gt; &#39;d<br /><em>&#160;Return a Redis Kubernetes Deployment Resource Config</em></div>
+<div class="fsdocs-tip" id="fs3">val redisName: &#39;a</div>
+<div class="fsdocs-tip" id="fs4">val role: string</div>
+<div class="fsdocs-tip" id="fs5">val replicaCount: &#39;b</div>
+<div class="fsdocs-tip" id="fs6">val portNumber: &#39;c</div>
+<div class="fsdocs-tip" id="fs7">val redisImage: string</div>
+<div class="fsdocs-tip" id="fs8">val redisContainer: obj</div>
+<div class="fsdocs-tip" id="fs9">val labels: (string * string) list</div>
+<div class="fsdocs-tip" id="fs10">val redisPod: obj</div>
+<div class="fsdocs-tip" id="fs11">val redisDeployment: &#39;d</div>
+<div class="fsdocs-tip" id="fs12">val redisService: serviceName: &#39;a -&gt; role: string -&gt; portNumber: &#39;b -&gt; &#39;c<br /><em>&#160;Return a Redis Kubernetes Service Resource Config</em></div>
+<div class="fsdocs-tip" id="fs13">val serviceName: &#39;a</div>
+<div class="fsdocs-tip" id="fs14">val portNumber: &#39;b</div>
+<div class="fsdocs-tip" id="fs15">val port: obj</div>
+<div class="fsdocs-tip" id="fs16">val redisService: &#39;c</div>
+<div class="fsdocs-tip" id="fs17">val frontendApp: appName: &#39;a -&gt; imageName: &#39;b -&gt; replicaCount: &#39;c -&gt; portName: &#39;d -&gt; portNumber: &#39;e -&gt; &#39;f<br /><em>&#160;Return a Deployment and Service for a frontend application connected to Redis</em></div>
+<div class="fsdocs-tip" id="fs18">val appName: &#39;a</div>
+<div class="fsdocs-tip" id="fs19">val imageName: &#39;b</div>
+<div class="fsdocs-tip" id="fs20">val replicaCount: &#39;c</div>
+<div class="fsdocs-tip" id="fs21">val portName: &#39;d</div>
+<div class="fsdocs-tip" id="fs22">val portNumber: &#39;e</div>
+<div class="fsdocs-tip" id="fs23">val leaderName: string</div>
+<div class="fsdocs-tip" id="fs24">val leaderRole: string</div>
+<div class="fsdocs-tip" id="fs25">val leaderReplicaCount: int</div>
+<div class="fsdocs-tip" id="fs26">val followerName: string</div>
+<div class="fsdocs-tip" id="fs27">val followerRole: string</div>
+<div class="fsdocs-tip" id="fs28">val followerReplicaCount: int</div>
+<div class="fsdocs-tip" id="fs29">val redisPortNumber: int</div>
+<div class="fsdocs-tip" id="fs30">val guestbookAppName: string</div>
+<div class="fsdocs-tip" id="fs31">val guestbookAppImage: string</div>
+<div class="fsdocs-tip" id="fs32">val guestbookReplicas: int</div>
+<div class="fsdocs-tip" id="fs33">val guestBookPortName: string</div>
+<div class="fsdocs-tip" id="fs34">val guestBookPortNumber: int</div>
+<div class="fsdocs-tip" id="fs35">val k8sConfig: obj</div>
+<div class="fsdocs-tip" id="fs36">namespace System.IO</div>
+<div class="fsdocs-tip" id="fs37">type Path =
+  static member ChangeExtension: path: string * extension: string -&gt; string
+  static member Combine: path1: string * path2: string -&gt; string + 3 overloads
+  static member EndsInDirectorySeparator: path: ReadOnlySpan&lt;char&gt; -&gt; bool + 1 overload
+  static member GetDirectoryName: path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetExtension: path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetFileName: path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetFileNameWithoutExtension: path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetFullPath: path: string -&gt; string + 1 overload
+  static member GetInvalidFileNameChars: unit -&gt; char[]
+  static member GetInvalidPathChars: unit -&gt; char[]
+  ...<br /><em>&lt;summary&gt;Performs operations on &lt;see cref=&quot;T:System.String&quot; /&gt; instances that contain file or directory path information. These operations are performed in a cross-platform manner.&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs38">field IO.Path.DirectorySeparatorChar: char</div>
+
+        </div>
+
+        <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+        <script type="text/javascript">var fsdocs_search_baseurl = '/Starboard/';</script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+        <script type="text/javascript" src="/Starboard/content/fsdocs-search.js"></script>
+        <!-- END SEARCH BOX: this adds support for the search box -->
+    </div>
+</body>
+
+</html>
