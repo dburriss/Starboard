@@ -21,7 +21,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [windows-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -34,8 +34,13 @@ jobs:
 
     - name: Install dependencies
       run: dotnet restore
-      
-    - name: Build
+    
+    - name: Build on Windows
+      if: runner.os == 'Windows'
+      run: dotnet build --configuration $env:config --no-restore
+    
+    - name: Build on Nix
+      if: runner.os != 'Windows'
       run: dotnet build --configuration $config --no-restore
     
     - name: Install tools
