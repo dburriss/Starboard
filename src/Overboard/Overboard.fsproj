@@ -25,6 +25,7 @@
 		<Compile Include="Validation.fs" />
 		<Compile Include="Serializer.fs" />
 		<Compile Include="Common.fs" />
+		<Compile Include="Cluster.fs" />
 		<Compile Include="ConfigMap.fs" />
 		<Compile Include="Secret.fs" />
 		<Compile Include="Authentication.fs" />

@@ -8,6 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="NamespaceTests.fs" />
 		<Compile Include="ServiceAccountTests.fs" />
 		<Compile Include="ClusterRoleBindingTests.fs" />
 		<Compile Include="SecretTests.fs" />
