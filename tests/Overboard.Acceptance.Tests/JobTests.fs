@@ -19,7 +19,7 @@ module K8s_Job =
         }
 
     [<Fact>]
-    let ``Job kind is Job`` () =
+    let ``kind is Job`` () =
         
         let sut = job {
             _name "my-name"
@@ -29,7 +29,7 @@ module K8s_Job =
         test <@ resource.kind = "Job" @>
 
     [<Fact>]
-    let ``Job apiVersion is batch v1`` () =
+    let ``apiVersion is batch v1`` () =
         
         let sut = job {
             _name "my-name"
@@ -39,7 +39,7 @@ module K8s_Job =
         test <@ resource.apiVersion = "batch/v1" @>
         
     [<Fact>]
-    let ``Job metadata name is set`` () =
+    let ``metadata name is set`` () =
         
         let sut = job {
             _name "my-job"
@@ -49,7 +49,7 @@ module K8s_Job =
         test <@ resource.metadata.name.Value = "my-job" @>
 
     [<Fact>]
-    let ``Job replicas fields are set`` () =
+    let ``replicas fields are set`` () =
         
         let pod1 = pod {
             _name "my-pod"
@@ -66,7 +66,7 @@ module K8s_Job =
         test <@ resource.spec.parallelism = 2 @>
         
     [<Fact>]
-    let ``Job lifecycle fields defaults are set`` () =
+    let ``lifecycle fields defaults are set`` () =
 
         let sut = job {
             _name "my-name"
@@ -81,7 +81,7 @@ module K8s_Job =
         test <@ resource.spec.suspend = false @>
            
     [<Fact>]
-    let ``Job lifecycle fields are set`` () =
+    let ``lifecycle fields are set`` () =
 
         let sut = job {
             _name "my-name"
@@ -102,7 +102,7 @@ module K8s_Job =
         test <@ resource.spec.suspend = true @>
         
     [<Fact>]
-    let ``Job selector defaults fields are set`` () =
+    let ``selector defaults fields are set`` () =
 
         let sut = job {
             _name "my-name"
@@ -114,7 +114,7 @@ module K8s_Job =
         test <@ resource.spec.manualSelector = false @>
          
     [<Fact>]
-    let ``Job selector fields are set`` () =
+    let ``selector fields are set`` () =
 
         let sut = job {
             _name "my-name"
@@ -129,7 +129,7 @@ module K8s_Job =
         test <@ resource.spec.manualSelector = true @>
                  
     [<Fact>]
-    let ``Job validates with pod`` () =
+    let ``validates with pod`` () =
         
         let pod1 = aPodWith aContainer
         let sut = job {
@@ -140,7 +140,7 @@ module K8s_Job =
         test <@ sut.Validate().IsEmpty = true @>               
     
     [<Fact>]
-    let ``Job does notvalidate without pod`` () =
+    let ``does notvalidate without pod`` () =
         
         let sut = job {
             _name "my-name"
