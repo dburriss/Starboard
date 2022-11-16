@@ -69,7 +69,7 @@ type DeploymentBuilder() =
         { currentValueFromYield with 
             metadata  = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
             pod = Helpers.mergeOption (currentValueFromYield.pod) (accumulatorFromDelay.pod)
-            replicas = Helpers.mergeInt (currentValueFromYield.replicas) (accumulatorFromDelay.replicas)
+            replicas = Helpers.mergeInt32 (currentValueFromYield.replicas) (accumulatorFromDelay.replicas)
             selector = LabelSelector.combine currentValueFromYield.selector accumulatorFromDelay.selector
         }
     

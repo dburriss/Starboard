@@ -13,6 +13,30 @@ module K8s_Deployment =
         let a : IEnumerable<'a> = List.toSeq actual
         Assert.Equal<'a>(e, a)
 
+    let aContainer = container {
+            name "nginx"
+            image "nginx:1.14.2"
+            command ["systemctl"]
+            args ["config"; "nginx"]
+        }
+
+    let aPod aContainer = pod {
+            add_container aContainer
+        }
+
+    [<Fact>]
+    let ``Deployment kind is Deployment`` () =
+        
+        let pod1 = aPod aContainer
+        let sut = deployment {
+            _name "my-name"
+            podTemplate pod1
+        }
+
+        let resource = sut.ToResource() 
+        test <@ resource.kind = "Deployment" @>
+
+
     [<Fact>]
     let ``Deployment spec template contains container`` () =
         let container1 = container {
@@ -26,12 +50,14 @@ module K8s_Deployment =
             add_container container1
         }
 
-        let deployment1 = deployment {
+        let sut = deployment {
             _name "my-name"
             podTemplate pod1
         }
 
-        let resource = deployment1.ToResource()
+        let resource = sut.ToResource()
+
+        let resource = sut.ToResource()
         let container = resource.spec.template.spec.Value.containers |> Option.get |> List.head
 
         Assert.Equal(Some "nginx", container.name)        
