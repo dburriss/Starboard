@@ -10,7 +10,7 @@
 		<Authors>Devon Burriss</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Devon Burriss</Copyright>
-		<Version>0.0.1</Version>
+		<Version>0.0.2</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>kubernetes;configuration</PackageTags>
 		<Title>Overboard</Title>
