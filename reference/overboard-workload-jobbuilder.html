@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>JobBuilder (Overboard)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Devon Burriss">
+
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/navbar-fixed-left.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/Overboard/content/fsdocs-tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-left" id="fsdocs-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarsExampleDefault">
+            <a href="/Overboard/"><img id="fsdocs-logo" src="/Overboard/img/logo.png" /></a>
+            <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+            <div id="header">
+                <div class="searchbox" id="fsdocs-searchbox">
+                    <label for="search-by">
+                        <i class="fas fa-search"></i>
+                    </label>
+                    <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                    <span data-search-clear="">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- END SEARCH BOX: this adds support for the search box -->
+            <ul class="navbar-nav">
+                <li class="nav-header">Links</li>
+                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/overboard/License">License</a></li>
+                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/overboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/overboard/">Source Repository</a></li>
+                <li class="nav-header">
+  How-to
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/1_setup-environment.html">
+    Setup your environment
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/2_generating-kubernetes-config.html">
+    Generating Kubernetes config
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/3_working-with-metadata.html">
+    Working with metadata
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/4_generate-dynamic-config.html">
+    Generate dynamic config
+  </a>
+</li>             
+<li class="nav-header">
+  Tutorials
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/hello-world.html">
+    Hello world
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/guestbook.html">
+    Guestbook
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/dashboard.html">
+    Kubernetes Dashboard
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/run-a-script.html">
+    Run a script in a Pod
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="masthead">
+            <h3 class="muted"><a href="/Overboard/">Overboard</a></h3>
+        </div>
+        <hr />
+        <div class="container" id="fsdocs-content">
+            <div>
+  <h2>
+    JobBuilder Type
+  </h2>
+  <dl class="fsdocs-metadata">
+    <dt>
+      Namespace: 
+      <a href="/Overboard/reference/overboard-workload.html">
+        Overboard.Workload
+      </a>
+    </dt>
+    <dt>
+      Assembly: Overboard.dll
+    </dt>
+    <dt>
+      Base Type: 
+      <code>obj</code>
+    </dt>
+  </dl>
+  <div class="fsdocs-xmldoc">
+    <div>
+      <p class="fsdocs-summary">
+        
+      </p>
+    </div>
+  </div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div>
+    <h3>
+      Constructors
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Constructor
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1039', 1039)" onmouseover="showTip(event, '1039', 1039)">
+                <p>
+                  <a id="``.ctor``">
+                    <a href="#``.ctor``">
+                      <code><span>JobBuilder<span>()</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1039">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>JobBuilder<span>()</span></span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-jobbuilder.html">JobBuilder</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.#ctor`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.#ctor\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L74-74" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-jobbuilder.html">JobBuilder</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>
+      Instance members
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Instance member
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1040', 1040)" onmouseover="showTip(event, '1040', 1040)">
+                <p>
+                  <a id="ActiveDeadlineSeconds">
+                    <a href="#ActiveDeadlineSeconds">
+                      <code><span>activeDeadlineSeconds&#32;<span>activeDeadlineSeconds</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1040">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>activeDeadlineSeconds&#32;<span>activeDeadlineSeconds</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        activeDeadlineSeconds
+                      </b>
+                      :
+                      <code>int64</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.ActiveDeadlineSeconds`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.ActiveDeadlineSeconds\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L158-158" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  activeDeadlineSeconds
+                </span>
+                :
+                <code>int64</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1041', 1041)" onmouseover="showTip(event, '1041', 1041)">
+                <p>
+                  <a id="Annotations">
+                    <a href="#Annotations">
+                      <code><span>_annotations&#32;<span>annotations</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1041">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_annotations&#32;<span>annotations</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        annotations
+                      </b>
+                      :
+                      <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Annotations`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Annotations\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L132-132" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Annotations for the Job
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  annotations
+                </span>
+                :
+                <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1042', 1042)" onmouseover="showTip(event, '1042', 1042)">
+                <p>
+                  <a id="BackoffLimit">
+                    <a href="#BackoffLimit">
+                      <code><span>backoffLimit&#32;<span>backoffLimit</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1042">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>backoffLimit&#32;<span>backoffLimit</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        backoffLimit
+                      </b>
+                      :
+                      <code>int</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.BackoffLimit`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.BackoffLimit\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L156-156" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  backoffLimit
+                </span>
+                :
+                <code>int</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1043', 1043)" onmouseover="showTip(event, '1043', 1043)">
+                <p>
+                  <a id="Combine">
+                    <a href="#Combine">
+                      <code><span>this.Combine</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1043">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Combine</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        currentValueFromYield
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        accumulatorFromDelay
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Combine`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Combine\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L79-79" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  currentValueFromYield
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  accumulatorFromDelay
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1044', 1044)" onmouseover="showTip(event, '1044', 1044)">
+                <p>
+                  <a id="CompletionMode">
+                    <a href="#CompletionMode">
+                      <code><span>completionMode&#32;<span>completionMode</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1044">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>completionMode&#32;<span>completionMode</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        completionMode
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-completionmode.html">CompletionMode</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.CompletionMode`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.CompletionMode\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L153-153" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  completionMode
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-completionmode.html">CompletionMode</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1045', 1045)" onmouseover="showTip(event, '1045', 1045)">
+                <p>
+                  <a id="Completions">
+                    <a href="#Completions">
+                      <code><span>completions&#32;<span>completions</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1045">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>completions&#32;<span>completions</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        completions
+                      </b>
+                      :
+                      <code>int</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Completions`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Completions\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L150-150" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  completions
+                </span>
+                :
+                <code>int</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1046', 1046)" onmouseover="showTip(event, '1046', 1046)">
+                <p>
+                  <a id="Delay">
+                    <a href="#Delay">
+                      <code><span>this.Delay</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1046">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Delay</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        f
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;'b</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code>'b</code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:Overboard.Workload.JobBuilder.Delay``1```')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Delay``1\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L99-99" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  f
+                </span>
+                :
+                <code><span>unit&#32;->&#32;'b</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code>'b</code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1047', 1047)" onmouseover="showTip(event, '1047', 1047)">
+                <p>
+                  <a id="For">
+                    <a href="#For">
+                      <code><span>this.For</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1047">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.For</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        state
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        f
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;<a href="/Overboard/reference/overboard-workload-job.html">Job</a></span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.For`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.For\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L101-101" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  state
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  f
+                </span>
+                :
+                <code><span>unit&#32;->&#32;<a href="/Overboard/reference/overboard-workload-job.html">Job</a></span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1048', 1048)" onmouseover="showTip(event, '1048', 1048)">
+                <p>
+                  <a id="Labels">
+                    <a href="#Labels">
+                      <code><span>_labels&#32;<span>labels</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1048">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_labels&#32;<span>labels</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        labels
+                      </b>
+                      :
+                      <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Labels`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Labels\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L126-126" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Labels for the Job
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  labels
+                </span>
+                :
+                <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1049', 1049)" onmouseover="showTip(event, '1049', 1049)">
+                <p>
+                  <a id="ManualSelector">
+                    <a href="#ManualSelector">
+                      <code><span>manualSelector&#32;<span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1049">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>manualSelector&#32;<span></span></span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.ManualSelector`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.ManualSelector\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L172-172" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1050', 1050)" onmouseover="showTip(event, '1050', 1050)">
+                <p>
+                  <a id="Name">
+                    <a href="#Name">
+                      <code><span>_name&#32;<span>name</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1050">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_name&#32;<span>name</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        name
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Name`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Name\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L112-112" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Name of the Job. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  name
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1051', 1051)" onmouseover="showTip(event, '1051', 1051)">
+                <p>
+                  <a id="Namespace">
+                    <a href="#Namespace">
+                      <code><span>_namespace&#32;<span>ns</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1051">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_namespace&#32;<span>ns</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        ns
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Namespace`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Namespace\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L120-120" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Namespace of the Job.
+ Namespace defines the space within which each name must be unique. Default is "default".
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ns
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1052', 1052)" onmouseover="showTip(event, '1052', 1052)">
+                <p>
+                  <a id="Parallelism">
+                    <a href="#Parallelism">
+                      <code><span>parallelism&#32;<span>parallelism</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1052">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>parallelism&#32;<span>parallelism</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        parallelism
+                      </b>
+                      :
+                      <code>int</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Parallelism`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Parallelism\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L147-147" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  parallelism
+                </span>
+                :
+                <code>int</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1053', 1053)" onmouseover="showTip(event, '1053', 1053)">
+                <p>
+                  <a id="Pod">
+                    <a href="#Pod">
+                      <code><span>template&#32;<span>pod</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1053">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>template&#32;<span>pod</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        pod
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-pod.html">Pod</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Pod`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Pod\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L144-144" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  pod
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-pod.html">Pod</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1054', 1054)" onmouseover="showTip(event, '1054', 1054)">
+                <p>
+                  <a id="Selector">
+                    <a href="#Selector">
+                      <code><span>selector&#32;<span>selector</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1054">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>selector&#32;<span>selector</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        selector
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-common-common-labelselector.html">LabelSelector</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Selector`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Selector\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L169-169" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  selector
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-common-common-labelselector.html">LabelSelector</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1055', 1055)" onmouseover="showTip(event, '1055', 1055)">
+                <p>
+                  <a id="SetMetadata">
+                    <a href="#SetMetadata">
+                      <code><span>set_metadata&#32;<span>metadata</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1055">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>set_metadata&#32;<span>metadata</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        metadata
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-common-common-metadata.html">Metadata</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.SetMetadata`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.SetMetadata\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L139-139" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Sets the Job metadata
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  metadata
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-common-common-metadata.html">Metadata</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1056', 1056)" onmouseover="showTip(event, '1056', 1056)">
+                <p>
+                  <a id="Suspend">
+                    <a href="#Suspend">
+                      <code><span>suspend&#32;<span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1056">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>suspend&#32;<span></span></span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Suspend`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Suspend\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L164-164" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1057', 1057)" onmouseover="showTip(event, '1057', 1057)">
+                <p>
+                  <a id="TtlSecondsAfterFinished">
+                    <a href="#TtlSecondsAfterFinished">
+                      <code><span>ttlSecondsAfterFinished&#32;<span>ttlSecondsAfterFinished</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1057">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>ttlSecondsAfterFinished&#32;<span>ttlSecondsAfterFinished</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        ttlSecondsAfterFinished
+                      </b>
+                      :
+                      <code>int</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.TtlSecondsAfterFinished`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.TtlSecondsAfterFinished\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L161-161" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ttlSecondsAfterFinished
+                </span>
+                :
+                <code>int</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1058', 1058)" onmouseover="showTip(event, '1058', 1058)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1058">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        selector
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-common-common-labelselector.html">LabelSelector</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Yield`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Yield\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L167-167" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  selector
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-common-common-labelselector.html">LabelSelector</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1059', 1059)" onmouseover="showTip(event, '1059', 1059)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1059">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        pod
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-pod.html">Pod</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Yield`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Yield\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L142-142" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  pod
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-pod.html">Pod</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1060', 1060)" onmouseover="showTip(event, '1060', 1060)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1060">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        metadata
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-common-common-metadata.html">Metadata</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Yield`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Yield\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L136-136" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  metadata
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-common-common-metadata.html">Metadata</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1061', 1061)" onmouseover="showTip(event, '1061', 1061)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1061">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        name
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Yield`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Yield\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L106-106" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  name
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1062', 1062)" onmouseover="showTip(event, '1062', 1062)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1062">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        arg0
+                      </b>
+                      :
+                      <code>'b</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:Overboard.Workload.JobBuilder.Yield``1```')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Yield``1\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L75-75" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  arg0
+                </span>
+                :
+                <code>'b</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '1063', 1063)" onmouseover="showTip(event, '1063', 1063)">
+                <p>
+                  <a id="Zero">
+                    <a href="#Zero">
+                      <code><span>this.Zero</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="1063">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Zero</span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.JobBuilder.Zero`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.JobBuilder.Zero\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/Job.fs#L77-77" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div></div>
+</div>
+            
+        </div>
+
+        <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+        <script type="text/javascript">var fsdocs_search_baseurl = '/Overboard/';</script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+        <script type="text/javascript" src="/Overboard/content/fsdocs-search.js"></script>
+        <!-- END SEARCH BOX: this adds support for the search box -->
+    </div>
+</body>
+
+</html>

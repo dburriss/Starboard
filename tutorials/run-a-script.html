@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Run a script in a Pod</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Devon Burriss">
+
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/navbar-fixed-left.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/Overboard/content/fsdocs-tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-left" id="fsdocs-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarsExampleDefault">
+            <a href="/Overboard/"><img id="fsdocs-logo" src="/Overboard/img/logo.png" /></a>
+            <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+            <div id="header">
+                <div class="searchbox" id="fsdocs-searchbox">
+                    <label for="search-by">
+                        <i class="fas fa-search"></i>
+                    </label>
+                    <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                    <span data-search-clear="">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- END SEARCH BOX: this adds support for the search box -->
+            <ul class="navbar-nav">
+                <li class="nav-header">Links</li>
+                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/overboard/License">License</a></li>
+                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/overboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/overboard/">Source Repository</a></li>
+                <li class="nav-header">
+  How-to
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/1_setup-environment.html">
+    Setup your environment
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/2_generating-kubernetes-config.html">
+    Generating Kubernetes config
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/3_working-with-metadata.html">
+    Working with metadata
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/4_generate-dynamic-config.html">
+    Generate dynamic config
+  </a>
+</li>             
+<li class="nav-header">
+  Tutorials
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/hello-world.html">
+    Hello world
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/guestbook.html">
+    Guestbook
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/dashboard.html">
+    Kubernetes Dashboard
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/run-a-script.html">
+    Run a script in a Pod
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="masthead">
+            <h3 class="muted"><a href="/Overboard/">Overboard</a></h3>
+        </div>
+        <hr />
+        <div class="container" id="fsdocs-content">
+            
+<h1><a name="Running-a-script-in-a-Pod" class="anchor" href="#Running-a-script-in-a-Pod">Running a script in a Pod</a></h1>
+<p>In this tutorial we will look at running a script in a <code>Pod</code>, running it as a <code>Job</code> and then finally running that <code>Job</code> as a <code>CronJob</code>.</p>
+<h2><a name="Topics-covered" class="anchor" href="#Topics-covered">Topics covered</a></h2>
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/job/">Jobs</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/">CronJobs</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMaps</a></li>
+</ul>
+<h2><a name="Requirements" class="anchor" href="#Requirements">Requirements</a></h2>
+<ol>
+<li>A <a href="https://kubernetes.io/docs/tasks/tools/">Kubernetes cluster to learn on</a> such as Kubernetes on Docker or minikube.</li>
+<li>A basic knowledge of using <a href="https://kubernetes.io/docs/reference/kubectl/">kubectl</a></li>
+<li><a href="https://kubernetes.github.io/ingress-nginx/deploy/">Ingress enabled</a> for your clusterW</li>
+<li><a href="https://dotnet.microsoft.com/en-us/">dotnet SDK</a> installed</li>
+<li>Optionally, any IDE that supports F# (Visual Studio Code, IntelliJ Rider, Visual Studio, NeoVim)</li>
+</ol>
+<blockquote>
+<p>Visual Studio Code with the <a href="https://ionide.io/">Ionide</a> is a great choice. See <a href="../setup-environment.fsx">Setup your environment</a> for more details.</p>
+</blockquote>
+<h2><a name="Shipping-a-script-in-a-Deployment" class="anchor" href="#Shipping-a-script-in-a-Deployment">Shipping a script in a Deployment</a></h2>
+<p>In this first step we are going to show what is required to bundle a script into a <code>Deployment</code> and run it in a <code>Pod</code>.</p>
+<p>Overboard had a nice addition on <code>ConfigMap</code>s that allows you to add a file from the machine creating the config.</p>
+<p>The file we will be adding to the <code>ConfigMap</code> is called <em>.write-date.fsx</em> and has the following contents:</p>
+<blockquote>
+<p>Note: The fsx file has a . at the start of it's name purely so it is ignored by this documentation system. It is not required you place a . at the start of your filename.</p>
+</blockquote>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">System</span>
+<span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="rt">Console</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="id">WriteLine</span><span class="pn">(</span><span class="s">$&quot;Hello from FSX script at {</span><span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="vt">DateTimeOffset</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="id">UtcNow</span><span class="s">}&quot;</span><span class="pn">)</span>
+</code></pre>
+<p>To leverage this script we create the following resources:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="pp">#r</span> <span class="s">&quot;nuget:Overboard&quot;</span>
+
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 6)" onmouseover="showTip(event, 'fs1', 6)" class="id">System</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs6', 7)" onmouseover="showTip(event, 'fs6', 7)" class="id">Overboard</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs6', 8)" onmouseover="showTip(event, 'fs6', 8)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs7', 9)" onmouseover="showTip(event, 'fs7', 9)" class="id">Common</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs6', 10)" onmouseover="showTip(event, 'fs6', 10)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs8', 11)" onmouseover="showTip(event, 'fs8', 11)" class="id">Workload</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs6', 12)" onmouseover="showTip(event, 'fs6', 12)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs9', 13)" onmouseover="showTip(event, 'fs9', 13)" class="id">Storage</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 14)" onmouseover="showTip(event, 'fs10', 14)" class="id">scriptPath</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs11', 15)" onmouseover="showTip(event, 'fs11', 15)" class="id">IO</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs12', 16)" onmouseover="showTip(event, 'fs12', 16)" class="rt">Path</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs13', 17)" onmouseover="showTip(event, 'fs13', 17)" class="id">Combine</span><span class="pn">(</span><span class="s">&quot;.write-date.fsx&quot;</span><span class="pn">)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 18)" onmouseover="showTip(event, 'fs14', 18)" class="id">labels</span> <span class="o">=</span> <span class="pn">[</span><span class="s">&quot;app&quot;</span><span class="pn">,</span><span class="s">&quot;script&quot;</span><span class="pn">]</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 19)" onmouseover="showTip(event, 'fs15', 19)" class="id">k8sDeploymentConfig</span> <span class="o">=</span> 
+    <span onmouseout="hideTip(event, 'fs16', 20)" onmouseover="showTip(event, 'fs16', 20)" class="k">k8s</span> <span class="pn">{</span>
+        <span class="c">// config map containing write-date.fsx</span>
+        <span onmouseout="hideTip(event, 'fs17', 21)" onmouseover="showTip(event, 'fs17', 21)" class="id">configMap</span> <span class="pn">{</span>
+            <span onmouseout="hideTip(event, 'fs18', 22)" onmouseover="showTip(event, 'fs18', 22)" class="k">_name</span> <span class="s">&quot;script-configmap&quot;</span>
+            <span onmouseout="hideTip(event, 'fs19', 23)" onmouseover="showTip(event, 'fs19', 23)" class="k">add_file</span> <span class="pn">(</span><span class="s">&quot;write-date.fsx&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs10', 24)" onmouseover="showTip(event, 'fs10', 24)" class="id">scriptPath</span><span class="pn">)</span>
+        <span class="pn">}</span>
+        <span class="c">// a deployment</span>
+        <span onmouseout="hideTip(event, 'fs20', 25)" onmouseover="showTip(event, 'fs20', 25)" class="id">deployment</span> <span class="pn">{</span>
+            <span onmouseout="hideTip(event, 'fs21', 26)" onmouseover="showTip(event, 'fs21', 26)" class="k">_name</span> <span class="s">&quot;script-deployment&quot;</span>
+            <span onmouseout="hideTip(event, 'fs22', 27)" onmouseover="showTip(event, 'fs22', 27)" class="k">add_matchLabels</span> <span onmouseout="hideTip(event, 'fs14', 28)" onmouseover="showTip(event, 'fs14', 28)" class="id">labels</span>
+            <span onmouseout="hideTip(event, 'fs23', 29)" onmouseover="showTip(event, 'fs23', 29)" class="id">pod</span> <span class="pn">{</span>
+                <span onmouseout="hideTip(event, 'fs24', 30)" onmouseover="showTip(event, 'fs24', 30)" class="k">_name</span> <span class="s">&quot;script-pod&quot;</span>
+                <span onmouseout="hideTip(event, 'fs25', 31)" onmouseover="showTip(event, 'fs25', 31)" class="k">_labels</span> <span onmouseout="hideTip(event, 'fs14', 32)" onmouseover="showTip(event, 'fs14', 32)" class="id">labels</span>
+                <span class="c">// container with an image with dotnet that runs the script </span>
+                <span onmouseout="hideTip(event, 'fs26', 33)" onmouseover="showTip(event, 'fs26', 33)" class="id">container</span> <span class="pn">{</span>
+                    <span onmouseout="hideTip(event, 'fs27', 34)" onmouseover="showTip(event, 'fs27', 34)" class="k">name</span> <span class="s">&quot;script-runner&quot;</span>
+                    <span onmouseout="hideTip(event, 'fs28', 35)" onmouseover="showTip(event, 'fs28', 35)" class="k">image</span> <span class="s">&quot;mcr.microsoft.com/dotnet/sdk:7.0-alpine&quot;</span>
+                    <span onmouseout="hideTip(event, 'fs29', 36)" onmouseover="showTip(event, 'fs29', 36)" class="k">command</span> <span class="pn">[</span><span class="s">&quot;dotnet&quot;</span><span class="pn">]</span>
+                    <span onmouseout="hideTip(event, 'fs30', 37)" onmouseover="showTip(event, 'fs30', 37)" class="k">args</span> <span class="pn">[</span><span class="s">&quot;fsi&quot;</span><span class="pn">;</span> <span class="s">&quot;./.write-date.fsx&quot;</span><span class="pn">]</span>
+                    <span onmouseout="hideTip(event, 'fs31', 38)" onmouseover="showTip(event, 'fs31', 38)" class="k">workingDir</span> <span class="s">&quot;/scripts&quot;</span>
+                    <span onmouseout="hideTip(event, 'fs32', 39)" onmouseover="showTip(event, 'fs32', 39)" class="id">volumeMount</span> <span class="pn">{</span>
+                        <span onmouseout="hideTip(event, 'fs33', 40)" onmouseover="showTip(event, 'fs33', 40)" class="k">name</span> <span class="s">&quot;script-volume&quot;</span>
+                        <span onmouseout="hideTip(event, 'fs34', 41)" onmouseover="showTip(event, 'fs34', 41)" class="k">mountPath</span> <span class="s">&quot;/scripts&quot;</span>
+                    <span class="pn">}</span>
+                <span class="pn">}</span>
+                <span class="c">// configMap is mounted as a volume</span>
+                <span onmouseout="hideTip(event, 'fs35', 42)" onmouseover="showTip(event, 'fs35', 42)" class="id">configMapVolume</span> <span class="pn">{</span>
+                    <span onmouseout="hideTip(event, 'fs36', 43)" onmouseover="showTip(event, 'fs36', 43)" class="k">name</span> <span class="s">&quot;script-volume&quot;</span>
+                    <span onmouseout="hideTip(event, 'fs37', 44)" onmouseover="showTip(event, 'fs37', 44)" class="k">configName</span> <span class="s">&quot;script-configmap&quot;</span>
+                    <span onmouseout="hideTip(event, 'fs38', 45)" onmouseover="showTip(event, 'fs38', 45)" class="k">defaultMode</span> <span class="n">0700</span>
+                <span class="pn">}</span>
+            <span class="pn">}</span>
+        <span class="pn">}</span>
+    <span class="pn">}</span>
+
+<span class="c">// write the config YAML file</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs39', 46)" onmouseover="showTip(event, 'fs39', 46)" class="id">configDir</span> <span class="o">=</span> <span class="k">__SOURCE_DIRECTORY__</span>
+<span onmouseout="hideTip(event, 'fs40', 47)" onmouseover="showTip(event, 'fs40', 47)" class="m">KubeCtlWriter</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs41', 48)" onmouseover="showTip(event, 'fs41', 48)" class="id">toYamlFile</span> <span onmouseout="hideTip(event, 'fs15', 49)" onmouseover="showTip(event, 'fs15', 49)" class="id">k8sDeploymentConfig</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs11', 50)" onmouseover="showTip(event, 'fs11', 50)" class="id">IO</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs12', 51)" onmouseover="showTip(event, 'fs12', 51)" class="rt">Path</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs13', 52)" onmouseover="showTip(event, 'fs13', 52)" class="id">Combine</span><span class="pn">(</span> <span onmouseout="hideTip(event, 'fs39', 53)" onmouseover="showTip(event, 'fs39', 53)" class="id">configDir</span><span class="pn">,</span> <span class="s">&quot;script-deployment.yaml&quot;</span><span class="pn">)</span><span class="pn">)</span>
+</code></pre>
+<p>See how in the <code>ConfigMap</code> definition we use the <code>add_file</code> operation.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="id">add_file</span> <span class="pn">(</span><span class="s">&quot;write-date.fsx&quot;</span><span class="pn">,</span> <span class="id">scriptPath</span><span class="pn">)</span>
+</code></pre>
+<p>The first element of the tuple is the name of the file as it will appear in the <code>ConfigMap</code> (which will be mounted as a file in the volume).
+The second element is the path to the file on the machine that will be building this config.
+In this case, your machine. In a production environment this may be a CI build agent.</p>
+<p>Let's test this <code>Deployment</code> out:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl apply -f .\script-deployment.yaml
+</code></pre></td></tr></table>
+<p>Here is an example of what the run can look like</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">&gt; kubectl get pods
+NAME                                 READY   STATUS      RESTARTS      AGE
+script-deployment-655f668d57-g777w   0/1     Completed   5 (85s ago)   2m53s
+
+&gt; kubectl logs script-deployment-655f668d57-g777w
+Hello from FSX script at 11/20/2022 11:17:40 +00:00
+</code></pre></td></tr></table>
+<p>We can see from the logs that the script has been run (use your pod name when fetching the logs).</p>
+<h2><a name="Using-a-Job" class="anchor" href="#Using-a-Job">Using a Job</a></h2>
+<p>We can create a <code>Deployment</code> and run a script like we did but Kubernetes has a resource that is a better match for this kind of task.
+A Kubernetes <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/job-v1/">Job</a> is specifically for a single execution workload like we a re doing here.
+One reason to prefer a Job is the cleanup of the pods after the work is done.</p>
+<p>You could swap out the deployment for a <code>Job</code> leaving the <code>Pod</code> and <code>ConfigMap</code> unchanged but Overboard has a simpler way to use a <code>Job</code>.
+In the <code>Overboard.Extras</code> namespace is a high-level resource called <code>fsJob</code> which takes a F# script file as am <code>entryPoint</code> and will create a <code>Job</code> from it.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs6', 54)" onmouseover="showTip(event, 'fs6', 54)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs42', 55)" onmouseover="showTip(event, 'fs42', 55)" class="id">Extras</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs43', 56)" onmouseover="showTip(event, 'fs43', 56)" class="id">fsJobConfig</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs44', 57)" onmouseover="showTip(event, 'fs44', 57)" class="k">fsJob</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs45', 58)" onmouseover="showTip(event, 'fs45', 58)" class="k">entryPoint</span> <span class="s">&quot;./.write-date.fsx&quot;</span>
+    <span class="pn">}</span>
+
+<span onmouseout="hideTip(event, 'fs40', 59)" onmouseover="showTip(event, 'fs40', 59)" class="m">KubeCtlWriter</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs41', 60)" onmouseover="showTip(event, 'fs41', 60)" class="id">toYamlFile</span> <span onmouseout="hideTip(event, 'fs43', 61)" onmouseover="showTip(event, 'fs43', 61)" class="id">fsJobConfig</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs11', 62)" onmouseover="showTip(event, 'fs11', 62)" class="id">IO</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs12', 63)" onmouseover="showTip(event, 'fs12', 63)" class="rt">Path</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs13', 64)" onmouseover="showTip(event, 'fs13', 64)" class="id">Combine</span><span class="pn">(</span> <span onmouseout="hideTip(event, 'fs39', 65)" onmouseover="showTip(event, 'fs39', 65)" class="id">configDir</span><span class="pn">,</span> <span class="s">&quot;script-job.yaml&quot;</span><span class="pn">)</span><span class="pn">)</span>
+</code></pre>
+<p>This can be a very simple way to run one-off jobs.</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">&gt; kubectl apply -f .\script-job.yaml
+&gt; kubectl get pods
+script-write-date-job-4gstg          0/1     Completed          0               2m12s
+&gt; kubectl logs script-write-date-job-4gstg
+Hello from FSX script at 11/20/2022 19:52:29 +00:00
+</code></pre></td></tr></table>
+<h2><a name="Creating-a-CronJob" class="anchor" href="#Creating-a-CronJob">Creating a CronJob</a></h2>
+<p>If we had manually created a <code>Job</code> we could use that job to create a <code>CronJob</code>.
+With the <code>fsJob</code> abstraction through all you need do is add a Cron schedule and your <code>Job</code> will become a <code>CronJob</code>.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs46', 66)" onmouseover="showTip(event, 'fs46', 66)" class="id">fsCronJobConfig</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs44', 67)" onmouseover="showTip(event, 'fs44', 67)" class="k">fsJob</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs45', 68)" onmouseover="showTip(event, 'fs45', 68)" class="k">entryPoint</span> <span class="s">&quot;./.write-date.fsx&quot;</span>
+        <span onmouseout="hideTip(event, 'fs47', 69)" onmouseover="showTip(event, 'fs47', 69)" class="k">schedule</span> <span class="s">&quot;* * * * *&quot;</span>
+    <span class="pn">}</span>
+
+<span onmouseout="hideTip(event, 'fs40', 70)" onmouseover="showTip(event, 'fs40', 70)" class="m">KubeCtlWriter</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs41', 71)" onmouseover="showTip(event, 'fs41', 71)" class="id">toYamlFile</span> <span onmouseout="hideTip(event, 'fs46', 72)" onmouseover="showTip(event, 'fs46', 72)" class="id">fsCronJobConfig</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs11', 73)" onmouseover="showTip(event, 'fs11', 73)" class="id">IO</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs12', 74)" onmouseover="showTip(event, 'fs12', 74)" class="rt">Path</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs13', 75)" onmouseover="showTip(event, 'fs13', 75)" class="id">Combine</span><span class="pn">(</span> <span onmouseout="hideTip(event, 'fs39', 76)" onmouseover="showTip(event, 'fs39', 76)" class="id">configDir</span><span class="pn">,</span> <span class="s">&quot;script-cronjob.yaml&quot;</span><span class="pn">)</span><span class="pn">)</span>
+</code></pre>
+<p>Run the <code>get all</code> command to see what is created. Each occurrence of the <code>Job</code> runs in a new <code>Pod</code>.</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl apply -f .\script-cronjob.yaml
+kubectl get all
+</code></pre></td></tr></table>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
+<p>In this tutorial we created a <code>Deployment</code> that runs a script once.
+You then leveraged <code>fsJob</code> abstraction to easily run the same script as a <code>Job</code>.
+You then easily changed that <code>Job</code> to a <code>CronJob</code> by adding a <code>schedule</code>.</p>
+
+            <div class="fsdocs-tip" id="fs1">namespace System</div>
+<div class="fsdocs-tip" id="fs2">type Console =
+  static member Beep: unit -&gt; unit + 1 overload
+  static member Clear: unit -&gt; unit
+  static member GetCursorPosition: unit -&gt; struct (int * int)
+  static member MoveBufferArea: sourceLeft: int * sourceTop: int * sourceWidth: int * sourceHeight: int * targetLeft: int * targetTop: int -&gt; unit + 1 overload
+  static member OpenStandardError: unit -&gt; Stream + 1 overload
+  static member OpenStandardInput: unit -&gt; Stream + 1 overload
+  static member OpenStandardOutput: unit -&gt; Stream + 1 overload
+  static member Read: unit -&gt; int
+  static member ReadKey: unit -&gt; ConsoleKeyInfo + 1 overload
+  static member ReadLine: unit -&gt; string
+  ...<br /><em>&lt;summary&gt;Represents the standard input, output, and error streams for console applications. This class cannot be inherited.&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs3">Console.WriteLine() : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: uint64) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: uint32) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: string) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: float32) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: obj) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: int64) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: float) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: decimal) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em></div>
+<div class="fsdocs-tip" id="fs4">Multiple items<br />[&lt;Struct&gt;]
+type DateTimeOffset =
+  new: dateTime: DateTime -&gt; unit + 5 overloads
+  member Add: timeSpan: TimeSpan -&gt; DateTimeOffset
+  member AddDays: days: float -&gt; DateTimeOffset
+  member AddHours: hours: float -&gt; DateTimeOffset
+  member AddMilliseconds: milliseconds: float -&gt; DateTimeOffset
+  member AddMinutes: minutes: float -&gt; DateTimeOffset
+  member AddMonths: months: int -&gt; DateTimeOffset
+  member AddSeconds: seconds: float -&gt; DateTimeOffset
+  member AddTicks: ticks: int64 -&gt; DateTimeOffset
+  member AddYears: years: int -&gt; DateTimeOffset
+  ...<br /><em>&lt;summary&gt;Represents a point in time, typically expressed as a date and time of day, relative to Coordinated Universal Time (UTC).&lt;/summary&gt;</em><br /><br />--------------------<br />DateTimeOffset ()<br />DateTimeOffset(dateTime: DateTime) : DateTimeOffset<br />DateTimeOffset(dateTime: DateTime, offset: TimeSpan) : DateTimeOffset<br />DateTimeOffset(ticks: int64, offset: TimeSpan) : DateTimeOffset<br />DateTimeOffset(year: int, month: int, day: int, hour: int, minute: int, second: int, offset: TimeSpan) : DateTimeOffset<br />DateTimeOffset(year: int, month: int, day: int, hour: int, minute: int, second: int, millisecond: int, offset: TimeSpan) : DateTimeOffset<br />DateTimeOffset(year: int, month: int, day: int, hour: int, minute: int, second: int, millisecond: int, calendar: Globalization.Calendar, offset: TimeSpan) : DateTimeOffset</div>
+<div class="fsdocs-tip" id="fs5">property DateTimeOffset.UtcNow: DateTimeOffset with get<br /><em>&lt;summary&gt;Gets a &lt;see cref=&quot;T:System.DateTimeOffset&quot; /&gt; object whose date and time are set to the current Coordinated Universal Time (UTC) date and time and whose offset is &lt;see cref=&quot;F:System.TimeSpan.Zero&quot; /&gt;.&lt;/summary&gt;<br />&lt;returns&gt;An object whose date and time is the current Coordinated Universal Time (UTC) and whose offset is &lt;see cref=&quot;F:System.TimeSpan.Zero&quot; /&gt;.&lt;/returns&gt;</em></div>
+<div class="fsdocs-tip" id="fs6">namespace Overboard</div>
+<div class="fsdocs-tip" id="fs7">namespace Overboard.Common</div>
+<div class="fsdocs-tip" id="fs8">namespace Overboard.Workload</div>
+<div class="fsdocs-tip" id="fs9">namespace Overboard.Storage</div>
+<div class="fsdocs-tip" id="fs10">val scriptPath: string</div>
+<div class="fsdocs-tip" id="fs11">namespace System.IO</div>
+<div class="fsdocs-tip" id="fs12">type Path =
+  static member ChangeExtension: path: string * extension: string -&gt; string
+  static member Combine: path1: string * path2: string -&gt; string + 3 overloads
+  static member EndsInDirectorySeparator: path: ReadOnlySpan&lt;char&gt; -&gt; bool + 1 overload
+  static member GetDirectoryName: path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetExtension: path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetFileName: path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetFileNameWithoutExtension: path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetFullPath: path: string -&gt; string + 1 overload
+  static member GetInvalidFileNameChars: unit -&gt; char[]
+  static member GetInvalidPathChars: unit -&gt; char[]
+  ...<br /><em>&lt;summary&gt;Performs operations on &lt;see cref=&quot;T:System.String&quot; /&gt; instances that contain file or directory path information. These operations are performed in a cross-platform manner.&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs13">IO.Path.Combine([&lt;ParamArray&gt;] paths: string[]) : string<br />IO.Path.Combine(path1: string, path2: string) : string<br />IO.Path.Combine(path1: string, path2: string, path3: string) : string<br />IO.Path.Combine(path1: string, path2: string, path3: string, path4: string) : string</div>
+<div class="fsdocs-tip" id="fs14">val labels: (string * string) list</div>
+<div class="fsdocs-tip" id="fs15">val k8sDeploymentConfig: K8s</div>
+<div class="fsdocs-tip" id="fs16">val k8s: K8sBuilder</div>
+<div class="fsdocs-tip" id="fs17">val configMap: ConfigMapBuilder</div>
+<div class="fsdocs-tip" id="fs18">custom operation: _name (string)
+
+Calls ConfigMapBuilder.Name<br /><em>&lt;summary&gt;
+ Name of the ConfigMap. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs19">custom operation: add_file (string * string)
+
+Calls ConfigMapBuilder.AddFileToBinaryData<br /><em>&lt;summary&gt;
+ Adds a file to the ConfigMap binary data
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs20">val deployment: DeploymentBuilder</div>
+<div class="fsdocs-tip" id="fs21">custom operation: _name (string)
+
+Calls DeploymentBuilder.Name<br /><em>&lt;summary&gt;
+ Name of the Deployment. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs22">custom operation: add_matchLabels ((string * string) list)
+
+Calls DeploymentBuilder.MatchLabels<br /><em>&lt;summary&gt;
+ Add multiple label selectors to the Deployment.
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs23">val pod: PodBuilder</div>
+<div class="fsdocs-tip" id="fs24">custom operation: _name (string)
+
+Calls PodBuilder.Name<br /><em>&lt;summary&gt;
+ Name of the Pod. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs25">custom operation: _labels ((string * string) list)
+
+Calls PodBuilder.Labels<br /><em>&lt;summary&gt;
+ Labels for the Pod
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs26">val container: ContainerBuilder<br /><em>&lt;summary&gt;
+ A single application container that you want to run within a pod.
+ https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs27">custom operation: name (string)
+
+Calls ContainerBuilder.Name</div>
+<div class="fsdocs-tip" id="fs28">custom operation: image (string)
+
+Calls ContainerBuilder.Image</div>
+<div class="fsdocs-tip" id="fs29">custom operation: command (string list)
+
+Calls ContainerBuilder.Command</div>
+<div class="fsdocs-tip" id="fs30">custom operation: args (string list)
+
+Calls ContainerBuilder.Args</div>
+<div class="fsdocs-tip" id="fs31">custom operation: workingDir (string)
+
+Calls ContainerBuilder.WorkingDir</div>
+<div class="fsdocs-tip" id="fs32">val volumeMount: VolumeMountBuilder</div>
+<div class="fsdocs-tip" id="fs33">custom operation: name (string)
+
+Calls VolumeMountBuilder.Name</div>
+<div class="fsdocs-tip" id="fs34">custom operation: mountPath (string)
+
+Calls VolumeMountBuilder.MountPath</div>
+<div class="fsdocs-tip" id="fs35">val configMapVolume: ConfigMapVolumeBuilder</div>
+<div class="fsdocs-tip" id="fs36">custom operation: name (string)
+
+Calls ConfigMapVolumeBuilder.Name</div>
+<div class="fsdocs-tip" id="fs37">custom operation: configName (string)
+
+Calls ConfigMapVolumeBuilder.ConfigName</div>
+<div class="fsdocs-tip" id="fs38">custom operation: defaultMode (int)
+
+Calls ConfigMapVolumeBuilder.DefaultMode</div>
+<div class="fsdocs-tip" id="fs39">val configDir: string</div>
+<div class="fsdocs-tip" id="fs40">module KubeCtlWriter
+
+from Overboard.K8s</div>
+<div class="fsdocs-tip" id="fs41">val toYamlFile: k8s: K8s -&gt; filePath: string -&gt; ValidationProblem list</div>
+<div class="fsdocs-tip" id="fs42">namespace Overboard.Extras</div>
+<div class="fsdocs-tip" id="fs43">val fsJobConfig: K8s</div>
+<div class="fsdocs-tip" id="fs44">val fsJob: FsharpJobBuilder</div>
+<div class="fsdocs-tip" id="fs45">custom operation: entryPoint (string)
+
+Calls FsharpJobBuilder.EntryPoint</div>
+<div class="fsdocs-tip" id="fs46">val fsCronJobConfig: K8s</div>
+<div class="fsdocs-tip" id="fs47">custom operation: schedule (string)
+
+Calls FsharpJobBuilder.Schedule</div>
+
+        </div>
+
+        <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+        <script type="text/javascript">var fsdocs_search_baseurl = '/Overboard/';</script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+        <script type="text/javascript" src="/Overboard/content/fsdocs-search.js"></script>
+        <!-- END SEARCH BOX: this adds support for the search box -->
+    </div>
+</body>
+
+</html>

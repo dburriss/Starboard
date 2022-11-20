@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>CronJobBuilder (Overboard)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Devon Burriss">
+
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/navbar-fixed-left.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/Overboard/content/fsdocs-tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-left" id="fsdocs-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarsExampleDefault">
+            <a href="/Overboard/"><img id="fsdocs-logo" src="/Overboard/img/logo.png" /></a>
+            <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+            <div id="header">
+                <div class="searchbox" id="fsdocs-searchbox">
+                    <label for="search-by">
+                        <i class="fas fa-search"></i>
+                    </label>
+                    <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                    <span data-search-clear="">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- END SEARCH BOX: this adds support for the search box -->
+            <ul class="navbar-nav">
+                <li class="nav-header">Links</li>
+                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/overboard/License">License</a></li>
+                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/overboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/overboard/">Source Repository</a></li>
+                <li class="nav-header">
+  How-to
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/1_setup-environment.html">
+    Setup your environment
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/2_generating-kubernetes-config.html">
+    Generating Kubernetes config
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/3_working-with-metadata.html">
+    Working with metadata
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/4_generate-dynamic-config.html">
+    Generate dynamic config
+  </a>
+</li>             
+<li class="nav-header">
+  Tutorials
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/hello-world.html">
+    Hello world
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/guestbook.html">
+    Guestbook
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/dashboard.html">
+    Kubernetes Dashboard
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/run-a-script.html">
+    Run a script in a Pod
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="masthead">
+            <h3 class="muted"><a href="/Overboard/">Overboard</a></h3>
+        </div>
+        <hr />
+        <div class="container" id="fsdocs-content">
+            <div>
+  <h2>
+    CronJobBuilder Type
+  </h2>
+  <dl class="fsdocs-metadata">
+    <dt>
+      Namespace: 
+      <a href="/Overboard/reference/overboard-workload.html">
+        Overboard.Workload
+      </a>
+    </dt>
+    <dt>
+      Assembly: Overboard.dll
+    </dt>
+    <dt>
+      Base Type: 
+      <code>obj</code>
+    </dt>
+  </dl>
+  <div class="fsdocs-xmldoc">
+    <div>
+      <p class="fsdocs-summary">
+        
+      </p>
+    </div>
+  </div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div>
+    <h3>
+      Constructors
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Constructor
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '968', 968)" onmouseover="showTip(event, '968', 968)">
+                <p>
+                  <a id="``.ctor``">
+                    <a href="#``.ctor``">
+                      <code><span>CronJobBuilder<span>()</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="968">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>CronJobBuilder<span>()</span></span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjobbuilder.html">CronJobBuilder</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.#ctor`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.#ctor\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L67-67" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjobbuilder.html">CronJobBuilder</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>
+      Instance members
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Instance member
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '969', 969)" onmouseover="showTip(event, '969', 969)">
+                <p>
+                  <a id="Annotations">
+                    <a href="#Annotations">
+                      <code><span>_annotations&#32;<span>annotations</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="969">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_annotations&#32;<span>annotations</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        annotations
+                      </b>
+                      :
+                      <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Annotations`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Annotations\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L125-125" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Annotations for the CronJob
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  annotations
+                </span>
+                :
+                <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '970', 970)" onmouseover="showTip(event, '970', 970)">
+                <p>
+                  <a id="Combine">
+                    <a href="#Combine">
+                      <code><span>this.Combine</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="970">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Combine</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        currentValueFromYield
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        accumulatorFromDelay
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Combine`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Combine\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L72-72" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  currentValueFromYield
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  accumulatorFromDelay
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '971', 971)" onmouseover="showTip(event, '971', 971)">
+                <p>
+                  <a id="ConcurrencyPolicy">
+                    <a href="#ConcurrencyPolicy">
+                      <code><span>concurrencyPolicy&#32;<span>concurrencyPolicy</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="971">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>concurrencyPolicy&#32;<span>concurrencyPolicy</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        concurrencyPolicy
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-concurrencypolicy.html">ConcurrencyPolicy</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.ConcurrencyPolicy`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.ConcurrencyPolicy\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L146-146" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  concurrencyPolicy
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-concurrencypolicy.html">ConcurrencyPolicy</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '972', 972)" onmouseover="showTip(event, '972', 972)">
+                <p>
+                  <a id="Delay">
+                    <a href="#Delay">
+                      <code><span>this.Delay</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="972">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Delay</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        f
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;'b</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code>'b</code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:Overboard.Workload.CronJobBuilder.Delay``1```')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Delay``1\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L92-92" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  f
+                </span>
+                :
+                <code><span>unit&#32;->&#32;'b</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code>'b</code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '973', 973)" onmouseover="showTip(event, '973', 973)">
+                <p>
+                  <a id="FailedJobsHistoryLimit">
+                    <a href="#FailedJobsHistoryLimit">
+                      <code><span>failedJobsHistoryLimit&#32;<span>failedJobsHistoryLimit</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="973">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>failedJobsHistoryLimit&#32;<span>failedJobsHistoryLimit</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        failedJobsHistoryLimit
+                      </b>
+                      :
+                      <code>int</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.FailedJobsHistoryLimit`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.FailedJobsHistoryLimit\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L158-158" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  failedJobsHistoryLimit
+                </span>
+                :
+                <code>int</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '974', 974)" onmouseover="showTip(event, '974', 974)">
+                <p>
+                  <a id="For">
+                    <a href="#For">
+                      <code><span>this.For</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="974">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.For</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        state
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        f
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;<a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.For`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.For\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L94-94" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  state
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  f
+                </span>
+                :
+                <code><span>unit&#32;->&#32;<a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '975', 975)" onmouseover="showTip(event, '975', 975)">
+                <p>
+                  <a id="JobTemplate">
+                    <a href="#JobTemplate">
+                      <code><span>jobTemplate&#32;<span>job</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="975">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>jobTemplate&#32;<span>job</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        job
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.JobTemplate`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.JobTemplate\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L137-137" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  job
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '976', 976)" onmouseover="showTip(event, '976', 976)">
+                <p>
+                  <a id="Labels">
+                    <a href="#Labels">
+                      <code><span>_labels&#32;<span>labels</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="976">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_labels&#32;<span>labels</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        labels
+                      </b>
+                      :
+                      <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Labels`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Labels\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L119-119" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Labels for the CronJob
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  labels
+                </span>
+                :
+                <code><span><span>(<span>string&#32;*&#32;string</span>)</span>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '977', 977)" onmouseover="showTip(event, '977', 977)">
+                <p>
+                  <a id="Name">
+                    <a href="#Name">
+                      <code><span>_name&#32;<span>name</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="977">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_name&#32;<span>name</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        name
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Name`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Name\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L105-105" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Name of the CronJob. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  name
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '978', 978)" onmouseover="showTip(event, '978', 978)">
+                <p>
+                  <a id="Namespace">
+                    <a href="#Namespace">
+                      <code><span>_namespace&#32;<span>ns</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="978">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>_namespace&#32;<span>ns</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        ns
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Namespace`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Namespace\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L113-113" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Namespace of the CronJob.
+ Namespace defines the space within which each name must be unique. Default is "default".
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ns
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '979', 979)" onmouseover="showTip(event, '979', 979)">
+                <p>
+                  <a id="Schedule">
+                    <a href="#Schedule">
+                      <code><span>schedule&#32;<span>schedule</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="979">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>schedule&#32;<span>schedule</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        schedule
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Schedule`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Schedule\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L140-140" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  schedule
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '980', 980)" onmouseover="showTip(event, '980', 980)">
+                <p>
+                  <a id="SetMetadata">
+                    <a href="#SetMetadata">
+                      <code><span>set_metadata&#32;<span>metadata</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="980">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>set_metadata&#32;<span>metadata</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        metadata
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-common-common-metadata.html">Metadata</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.SetMetadata`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.SetMetadata\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L132-132" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+ Sets the CronJob metadata
+
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  metadata
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-common-common-metadata.html">Metadata</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '981', 981)" onmouseover="showTip(event, '981', 981)">
+                <p>
+                  <a id="StartingDeadlineSeconds">
+                    <a href="#StartingDeadlineSeconds">
+                      <code><span>startingDeadlineSeconds&#32;<span>startingDeadlineSeconds</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="981">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>startingDeadlineSeconds&#32;<span>startingDeadlineSeconds</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        startingDeadlineSeconds
+                      </b>
+                      :
+                      <code>int64</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.StartingDeadlineSeconds`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.StartingDeadlineSeconds\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L149-149" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  startingDeadlineSeconds
+                </span>
+                :
+                <code>int64</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '982', 982)" onmouseover="showTip(event, '982', 982)">
+                <p>
+                  <a id="SuccessfulJobsHistoryLimit">
+                    <a href="#SuccessfulJobsHistoryLimit">
+                      <code><span>successfulJobsHistoryLimit&#32;<span>successfulJobsHistoryLimit</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="982">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>successfulJobsHistoryLimit&#32;<span>successfulJobsHistoryLimit</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        successfulJobsHistoryLimit
+                      </b>
+                      :
+                      <code>int</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.SuccessfulJobsHistoryLimit`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.SuccessfulJobsHistoryLimit\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L155-155" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  successfulJobsHistoryLimit
+                </span>
+                :
+                <code>int</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '983', 983)" onmouseover="showTip(event, '983', 983)">
+                <p>
+                  <a id="Suspend">
+                    <a href="#Suspend">
+                      <code><span>suspend&#32;<span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="983">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>suspend&#32;<span></span></span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Suspend`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Suspend\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L152-152" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '984', 984)" onmouseover="showTip(event, '984', 984)">
+                <p>
+                  <a id="TimeZone">
+                    <a href="#TimeZone">
+                      <code><span>timeZone&#32;<span>timeZone</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="984">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>timeZone&#32;<span>timeZone</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        timeZone
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.TimeZone`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.TimeZone\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L143-143" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  timeZone
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '985', 985)" onmouseover="showTip(event, '985', 985)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="985">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        job
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Yield`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Yield\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L135-135" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  job
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-workload-job.html">Job</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '986', 986)" onmouseover="showTip(event, '986', 986)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="986">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        metadata
+                      </b>
+                      :
+                      <code><a href="/Overboard/reference/overboard-common-common-metadata.html">Metadata</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Yield`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Yield\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L129-129" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  metadata
+                </span>
+                :
+                <code><a href="/Overboard/reference/overboard-common-common-metadata.html">Metadata</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '987', 987)" onmouseover="showTip(event, '987', 987)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="987">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        name
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Yield`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Yield\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L99-99" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  name
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '988', 988)" onmouseover="showTip(event, '988', 988)">
+                <p>
+                  <a id="Yield">
+                    <a href="#Yield">
+                      <code><span>this.Yield</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="988">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Yield</span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        arg0
+                      </b>
+                      :
+                      <code>'b</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:Overboard.Workload.CronJobBuilder.Yield``1```')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Yield``1\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L68-68" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  arg0
+                </span>
+                :
+                <code>'b</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '989', 989)" onmouseover="showTip(event, '989', 989)">
+                <p>
+                  <a id="Zero">
+                    <a href="#Zero">
+                      <code><span>this.Zero</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="989">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.Zero</span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <div class="fsdocs-summary">
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:Overboard.Workload.CronJobBuilder.Zero`')">
+                <img src="/Overboard/content/img/copy-md.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-md-hover.png" class="hover"/>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:Overboard.Workload.CronJobBuilder.Zero\'/>')">
+                <img src="/Overboard/content/img/copy-xml.png" class="normal"/>
+                <img src="/Overboard/content/img/copy-xml-hover.png" class="hover"/>
+              </div>
+              <a href="https://github.com/dburriss/overboard/src/Overboard/CronJob.fs#L70-70" class="fsdocs-source-link" title="Source on GitHub">
+                <img src="/Overboard/content/img/github.png" class="normal"/>
+                <img src="/Overboard/content/img/github-hover.png" class="hover"/>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="/Overboard/reference/overboard-workload-cronjob.html">CronJob</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div></div>
+</div>
+            
+        </div>
+
+        <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+        <script type="text/javascript">var fsdocs_search_baseurl = '/Overboard/';</script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+        <script type="text/javascript" src="/Overboard/content/fsdocs-search.js"></script>
+        <!-- END SEARCH BOX: this adds support for the search box -->
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Kubernetes Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Devon Burriss">
+
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/navbar-fixed-left.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/Overboard/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/Overboard/content/fsdocs-tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-left" id="fsdocs-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarsExampleDefault">
+            <a href="/Overboard/"><img id="fsdocs-logo" src="/Overboard/img/logo.png" /></a>
+            <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+            <div id="header">
+                <div class="searchbox" id="fsdocs-searchbox">
+                    <label for="search-by">
+                        <i class="fas fa-search"></i>
+                    </label>
+                    <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                    <span data-search-clear="">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- END SEARCH BOX: this adds support for the search box -->
+            <ul class="navbar-nav">
+                <li class="nav-header">Links</li>
+                <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/dburriss/overboard/License">License</a></li>
+                <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/dburriss/overboard/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+                <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="https://github.com/dburriss/overboard/">Source Repository</a></li>
+                <li class="nav-header">
+  How-to
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/1_setup-environment.html">
+    Setup your environment
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/2_generating-kubernetes-config.html">
+    Generating Kubernetes config
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/3_working-with-metadata.html">
+    Working with metadata
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/4_generate-dynamic-config.html">
+    Generate dynamic config
+  </a>
+</li>             
+<li class="nav-header">
+  Tutorials
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/hello-world.html">
+    Hello world
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/guestbook.html">
+    Guestbook
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/dashboard.html">
+    Kubernetes Dashboard
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/run-a-script.html">
+    Run a script in a Pod
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="masthead">
+            <h3 class="muted"><a href="/Overboard/">Overboard</a></h3>
+        </div>
+        <hr />
+        <div class="container" id="fsdocs-content">
+            
+<h1><a name="Overboard-Kubernetes-dashboard-setup" class="anchor" href="#Overboard-Kubernetes-dashboard-setup">Overboard: Kubernetes dashboard setup</a></h1>
+<p>In this tutorial we will setup the <a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">official Kubernetes Dashboard</a>.
+After installing the dashboard we will use Overboard to create a <code>ServiceAccount</code> and assign the necessary role. Then we will get an access token for that user.</p>
+<h2><a name="Topics-covered" class="anchor" href="#Topics-covered">Topics covered</a></h2>
+<ul>
+<li>Dashboard</li>
+<li>Authentication and Authorization resources</li>
+</ul>
+<h2><a name="Requirements" class="anchor" href="#Requirements">Requirements</a></h2>
+<ol>
+<li>A <a href="https://kubernetes.io/docs/tasks/tools/">Kubernetes cluster to learn on</a> such as Kubernetes on Docker or minikube.</li>
+<li>A basic knowledge of using <a href="https://kubernetes.io/docs/reference/kubectl/">kubectl</a></li>
+<li><a href="https://kubernetes.github.io/ingress-nginx/deploy/">Ingress enabled</a> for your clusterW</li>
+<li><a href="https://dotnet.microsoft.com/en-us/">dotnet SDK</a> installed</li>
+<li>Optionally, any IDE that supports F# (Visual Studio Code, IntelliJ Rider, Visual Studio, NeoVim)</li>
+</ol>
+<blockquote>
+<p>Visual Studio Code with the <a href="https://ionide.io/">Ionide</a> is a great choice. See <a href="../setup-environment.fsx">Setup your environment</a> for more details.</p>
+</blockquote>
+<h2><a name="Enable-the-Dashboard" class="anchor" href="#Enable-the-Dashboard">Enable the Dashboard</a></h2>
+<p>To install the Dashboard into the kubernetes cluster you can run the following command. Check the <a href="https://github.com/kubernetes/dashboard#install">GitHub repository</a> for the latest version.</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+</code></pre></td></tr></table>
+<p>This creates about 14 different Kubernetes resources but the important ones for what we will be doing next are:</p>
+<ul>
+<li>A <code>Namespace</code> called <em>kubernetes-dashboard</em></li>
+<li>A <code>ClusterRole</code> called <em>kubernetes-dashboard</em> in the <em>kubernetes-dashboard</em> <code>Namespace</code></li>
+</ul>
+<p>You can navigate to your <a href="http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/">dashboard</a>
+by going the the address <a href="http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/"><a href="http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/">http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/</a></a>.</p>
+<p><img src="../img/tutorials/dashboard-login.png" alt="dashboard login" /></p>
+<p>Remember to run <code>proxy</code> so you can access the cluster from your machine:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl proxy
+</code></pre></td></tr></table>
+<p>To login though, we need to create a <code>ServiceAccount</code> and connect the correct role to it. We will do this and then get a token.</p>
+<h2><a name="Creating-the-Service-Account" class="anchor" href="#Creating-the-Service-Account">Creating the Service Account</a></h2>
+<p>Next, we will create our fsx file and import the necessary packages and namespaces.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="pp">#r</span> <span class="s">&quot;nuget:Overboard&quot;</span>
+
+<span class="c">// open the required namespaces</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">System</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="id">Overboard</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 4)" onmouseover="showTip(event, 'fs3', 4)" class="id">Authentication</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs2', 5)" onmouseover="showTip(event, 'fs2', 5)" class="id">Overboard</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs4', 6)" onmouseover="showTip(event, 'fs4', 6)" class="id">Authorization</span>
+</code></pre>
+<h2><a name="Creating-the-ServiceAccount" class="anchor" href="#Creating-the-ServiceAccount">Creating the ServiceAccount</a></h2>
+<p>The <code>ServiceAccount</code> is called <em>admin-user</em> and is in the <em>kubernetes-dashboard</em> <code>Namespace</code>.</p>
+<blockquote>
+<p>This <em>admin-user</em> is only intended for testing on a local cluster! Use a more robust RBAC setup for a production setup.</p>
+</blockquote>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs5', 7)" onmouseover="showTip(event, 'fs5', 7)" class="id">dashboardAccount</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs6', 8)" onmouseover="showTip(event, 'fs6', 8)" class="k">serviceAccount</span> <span class="pn">{</span>
+    <span onmouseout="hideTip(event, 'fs7', 9)" onmouseover="showTip(event, 'fs7', 9)" class="k">_name</span> <span class="s">&quot;admin-user&quot;</span>
+    <span onmouseout="hideTip(event, 'fs8', 10)" onmouseover="showTip(event, 'fs8', 10)" class="k">_namespace</span> <span class="s">&quot;kubernetes-dashboard&quot;</span>
+<span class="pn">}</span>
+</code></pre>
+<h2><a name="Assign-role-to-ServiceAccount" class="anchor" href="#Assign-role-to-ServiceAccount">Assign role to ServiceAccount</a></h2>
+<p>As mentioned above, the <code>ClusterRole</code> <em>kubernetes-dashboard</em> is created when we install the dashboard. We need to connect it to the <em>admin-user</em> <code>ServiceAccount</code>.
+We do this with a <code>ClusterRoleBinding</code>.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 11)" onmouseover="showTip(event, 'fs9', 11)" class="id">dashboardRoleBinding</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 12)" onmouseover="showTip(event, 'fs10', 12)" class="k">clusterRoleBinding</span> <span class="pn">{</span>
+    <span onmouseout="hideTip(event, 'fs11', 13)" onmouseover="showTip(event, 'fs11', 13)" class="k">_name</span> <span class="s">&quot;admin-user&quot;</span>
+    <span onmouseout="hideTip(event, 'fs12', 14)" onmouseover="showTip(event, 'fs12', 14)" class="id">roleRef</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs13', 15)" onmouseover="showTip(event, 'fs13', 15)" class="k">apiGroup</span> <span class="s">&quot;rbac.authorization.k8s.io&quot;</span>
+        <span onmouseout="hideTip(event, 'fs14', 16)" onmouseover="showTip(event, 'fs14', 16)" class="k">kind</span> <span class="s">&quot;ClusterRole&quot;</span>
+        <span onmouseout="hideTip(event, 'fs15', 17)" onmouseover="showTip(event, 'fs15', 17)" class="k">name</span> <span class="s">&quot;cluster-admin&quot;</span>
+    <span class="pn">}</span>
+    <span onmouseout="hideTip(event, 'fs16', 18)" onmouseover="showTip(event, 'fs16', 18)" class="id">subject</span> <span class="pn">{</span>
+        <span onmouseout="hideTip(event, 'fs17', 19)" onmouseover="showTip(event, 'fs17', 19)" class="k">kind</span> <span class="s">&quot;ServiceAccount&quot;</span>
+        <span onmouseout="hideTip(event, 'fs18', 20)" onmouseover="showTip(event, 'fs18', 20)" class="k">name</span> <span class="s">&quot;admin-user&quot;</span>
+        <span onmouseout="hideTip(event, 'fs19', 21)" onmouseover="showTip(event, 'fs19', 21)" class="k">ns</span> <span class="s">&quot;kubernetes-dashboard&quot;</span>
+    <span class="pn">}</span>
+<span class="pn">}</span>
+</code></pre>
+<p>Finally, we add this to a <code>K8s</code> config and write the results out to a <em>dashboard.yaml</em> file.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs20', 22)" onmouseover="showTip(event, 'fs20', 22)" class="id">dashboardConfig</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs21', 23)" onmouseover="showTip(event, 'fs21', 23)" class="k">k8s</span> <span class="pn">{</span>
+    <span onmouseout="hideTip(event, 'fs5', 24)" onmouseover="showTip(event, 'fs5', 24)" class="id">dashboardAccount</span>
+    <span onmouseout="hideTip(event, 'fs9', 25)" onmouseover="showTip(event, 'fs9', 25)" class="id">dashboardRoleBinding</span>
+<span class="pn">}</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs22', 26)" onmouseover="showTip(event, 'fs22', 26)" class="id">configDir</span> <span class="o">=</span> <span class="k">__SOURCE_DIRECTORY__</span>
+<span onmouseout="hideTip(event, 'fs23', 27)" onmouseover="showTip(event, 'fs23', 27)" class="m">KubeCtlWriter</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs24', 28)" onmouseover="showTip(event, 'fs24', 28)" class="id">toYamlFile</span> <span onmouseout="hideTip(event, 'fs20', 29)" onmouseover="showTip(event, 'fs20', 29)" class="id">dashboardConfig</span> <span class="s">$&quot;{</span><span onmouseout="hideTip(event, 'fs22', 30)" onmouseover="showTip(event, 'fs22', 30)" class="id">configDir</span><span class="s">}{</span><span class="id">IO</span><span class="pn">.</span><span class="rt">Path</span><span class="pn">.</span><span class="id">DirectorySeparatorChar</span><span class="s">}dashboard.yaml&quot;</span>
+</code></pre>
+<p>Run the fsx file and then apply the config to your cluster you created to</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">dotnet fsi .\dashboard.fsx
+kubectl apply -f .\dashboard.yaml
+</code></pre></td></tr></table>
+<p>Use the command for your terminal on your operating system to generate a token.
+Copying the token manually can cause issues (newlines etc.) so I recommend putting the token directly into your clipboard like shown below.</p>
+<p>Windows cmd:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="powershell">kubectl -n kubernetes-dashboard create token admin-user | clip
+</code></pre></td></tr></table>
+<p>Powershell:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="powershell">kubectl -n kubernetes-dashboard create token admin-user | Set-Clipboard
+</code></pre></td></tr></table>
+<p>Mac:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl -n kubernetes-dashboard create token admin-user | pbcopy
+</code></pre></td></tr></table>
+<p>Linux (with xclip installed):</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl -n kubernetes-dashboard create token admin-user | xclip
+</code></pre></td></tr></table>
+<p>Remember to start a proxy if you don't still have it running from earlier.</p>
+<blockquote>
+<p>Don't copy/paste this command since the token is in your clipboard ;)</p>
+</blockquote>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="bash">kubectl proxy
+</code></pre></td></tr></table>
+<p>Now, navigate to the <a href="http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/">kubnernetes dashboard</a> again,
+make sure <strong>Token</strong> is selected, and paste your token in the text field.</p>
+<p>You should now have access to your cluster dashboard.</p>
+<p>Congrats!</p>
+<h1><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h1>
+<p>In this tutorial we saw how to easily install the Kubernetes dashboard and create a <code>ServiceAccount</code> and a <code>ClusterRoleBinding</code> to access it.
+We used this <code>ServiceAccount</code> to access the dashboard with a generated token.</p>
+
+            <div class="fsdocs-tip" id="fs1">namespace System</div>
+<div class="fsdocs-tip" id="fs2">namespace Overboard</div>
+<div class="fsdocs-tip" id="fs3">namespace Overboard.Authentication</div>
+<div class="fsdocs-tip" id="fs4">namespace Overboard.Authorization</div>
+<div class="fsdocs-tip" id="fs5">val dashboardAccount: ServiceAccount</div>
+<div class="fsdocs-tip" id="fs6">val serviceAccount: ServiceAccountBuilder</div>
+<div class="fsdocs-tip" id="fs7">custom operation: _name (string)
+
+Calls ServiceAccountBuilder.Name<br /><em>&lt;summary&gt;
+ Name of the ServiceAccount. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs8">custom operation: _namespace (string)
+
+Calls ServiceAccountBuilder.Namespace<br /><em>&lt;summary&gt;
+ Namespace of the ServiceAccount.
+ Namespace defines the space within which each name must be unique. Default is &quot;default&quot;.
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs9">val dashboardRoleBinding: ClusterRoleBinding</div>
+<div class="fsdocs-tip" id="fs10">val clusterRoleBinding: ClusterRoleBindingBuilder</div>
+<div class="fsdocs-tip" id="fs11">custom operation: _name (string)
+
+Calls ClusterRoleBindingBuilder.Name<br /><em>&lt;summary&gt;
+ Name of the ClusterRoleBinding. 
+ Name must be unique within a namespace. 
+ https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs12">val roleRef: RoleRefBuilder</div>
+<div class="fsdocs-tip" id="fs13">custom operation: apiGroup (string)
+
+Calls RoleRefBuilder.ApiGroup</div>
+<div class="fsdocs-tip" id="fs14">custom operation: kind (string)
+
+Calls RoleRefBuilder.Kind</div>
+<div class="fsdocs-tip" id="fs15">custom operation: name (string)
+
+Calls RoleRefBuilder.Name</div>
+<div class="fsdocs-tip" id="fs16">val subject: SubjectBuilder</div>
+<div class="fsdocs-tip" id="fs17">custom operation: kind (string)
+
+Calls SubjectBuilder.Kind</div>
+<div class="fsdocs-tip" id="fs18">custom operation: name (string)
+
+Calls SubjectBuilder.Name</div>
+<div class="fsdocs-tip" id="fs19">custom operation: ns (string)
+
+Calls SubjectBuilder.Ns</div>
+<div class="fsdocs-tip" id="fs20">val dashboardConfig: K8s</div>
+<div class="fsdocs-tip" id="fs21">val k8s: K8sBuilder</div>
+<div class="fsdocs-tip" id="fs22">val configDir: string</div>
+<div class="fsdocs-tip" id="fs23">module KubeCtlWriter
+
+from Overboard.K8s</div>
+<div class="fsdocs-tip" id="fs24">val toYamlFile: k8s: K8s -&gt; filePath: string -&gt; ValidationProblem list</div>
+
+        </div>
+
+        <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+        <script type="text/javascript">var fsdocs_search_baseurl = '/Overboard/';</script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+        <script type="text/javascript" src="/Overboard/content/fsdocs-search.js"></script>
+        <!-- END SEARCH BOX: this adds support for the search box -->
+    </div>
+</body>
+
+</html>

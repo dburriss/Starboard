@@ -89,6 +89,16 @@
   <a class="nav-link" href="/Overboard/tutorials/guestbook.html">
     Guestbook
   </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/dashboard.html">
+    Kubernetes Dashboard
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/Overboard/tutorials/run-a-script.html">
+    Run a script in a Pod
+  </a>
 </li>
                 <li class="nav-header">
   API Reference
@@ -215,6 +225,7 @@ spec:
             cpu: 500m
             memory: 256Mi
         workingDir: /test-dir
+      restartPolicy: Always
 
 "</code></pre></td></tr></table>
 <h2><a name="Testing-the-result" class="anchor" href="#Testing-the-result">Testing the result</a></h2>
