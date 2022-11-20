@@ -59,9 +59,8 @@ To login though, we need to create a `ServiceAccount` and connect the correct ro
 
 Next, we will create our fsx file and import the necessary packages and namespaces.
 *)
-//#r "nuget:Overboard"
-#r "nuget:YamlDotNet"
-#r """..\..\src\Overboard\bin\Debug\net6.0\Overboard.dll"""
+#r "nuget:Overboard"
+
 // open the required namespaces
 open System
 open Overboard

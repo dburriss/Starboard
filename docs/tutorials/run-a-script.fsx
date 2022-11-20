@@ -47,9 +47,7 @@ Console.WriteLine($"Hello from FSX script at {DateTimeOffset.UtcNow}")
 
 To leverage this script we create the following resources:
 *)
-//#r "nuget:Overboard"
-#r "nuget:YamlDotNet"
-#r """..\..\src\Overboard\bin\Debug\net6.0\Overboard.dll"""
+#r "nuget:Overboard"
 
 open System
 open Overboard
