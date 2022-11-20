@@ -130,20 +130,36 @@ module K8s_Job =
                  
     [<Fact>]
     let ``validates with pod`` () =
-        
-        let pod1 = aPodWith aContainer
+        let aPod = pod {
+            add_container aContainer
+            restartPolicy Never
+        }
         let sut = job {
             _name "my-name"
-            template pod1
+            template aPod
         }
 
         test <@ sut.Validate().IsEmpty = true @>               
     
     [<Fact>]
-    let ``does notvalidate without pod`` () =
+    let ``does not validate without pod`` () =
         
         let sut = job {
             _name "my-name"
         }
 
         test <@ sut.Validate().IsEmpty = false @>
+        
+    [<Fact>]
+    let ``restartPolicy can be set to Never`` () =
+        let aPod = pod {
+            add_container aContainer
+            restartPolicy Never
+        }
+        let sut = job {
+            _name "my-name"
+            template aPod
+        }
+        let resource = sut.ToResource() 
+        test <@ resource.spec.template.spec.IsSome @>
+        test <@ resource.spec.template.spec.Value.restartPolicy = "Never" @>

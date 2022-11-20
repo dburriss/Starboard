@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cluster.Namespace
 - Workload.Job
 - Workload.CronJob
+- Workload.Pod
+	- restartPolicy
+
+### Fixed
+
+- ServiceAccount and ClusterRoleBinding not recognised by K8s
 
 ## [0.0.1] - 2022-11-13
 

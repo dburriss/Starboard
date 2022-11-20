@@ -92,16 +92,6 @@ module K8s_CronJob =
         test <@ resource.spec.suspend = true @>
         test <@ resource.spec.successfulJobsHistoryLimit = 99 @>
         test <@ resource.spec.failedJobsHistoryLimit = 7 @>
-        
-    [<Fact>]
-    let ``validates with job`` () =
-        
-        let sut = cronJob {
-            _name "my-cron-job"
-        }
-
-        test <@ sut.Validate().IsEmpty = true @>               
-    
     [<Fact>]
     let ``does not validate without a job`` () =
         
@@ -121,3 +111,16 @@ module K8s_CronJob =
         }
 
         test <@ sut.Validate().IsEmpty = false @>
+        
+    [<Fact>]
+    let ``validates with job required set`` () =
+        
+        let sut = cronJob {
+            _name "my-cron-job"
+            jobTemplate aJob
+            schedule "0 * * * *"
+        }
+
+        test <@ sut.Validate().IsEmpty = true @>               
+      
+    

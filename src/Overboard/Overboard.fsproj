@@ -39,6 +39,7 @@
 		<Compile Include="Service.fs" />
 		<Compile Include="Ingress.fs" />
 		<Compile Include="K8s.fs" />
+		<Compile Include="Extras.fs" />
 	</ItemGroup>
 
 	<ItemGroup>

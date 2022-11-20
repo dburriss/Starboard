@@ -184,3 +184,28 @@ module K8s_Pod =
 
         Assert.NotEmpty result
         
+    [<Fact>]
+    let ``restartPolicy defaults to Always`` () =
+        let thePod = pod {
+            _name "pod-test"
+            container {
+                "container-test"
+            }
+        }
+        let result = thePod.ToResource()
+
+        test <@ result.spec.restartPolicy = "Always" @>
+      
+    [<Fact>]
+    let ``restartPolicy is set`` () =
+        let thePod = pod {
+            _name "pod-test"
+            restartPolicy Never
+            container {
+                "container-test"
+            }
+        }
+        let result = thePod.ToResource()
+
+        test <@ result.spec.restartPolicy = "Never" @>
+      

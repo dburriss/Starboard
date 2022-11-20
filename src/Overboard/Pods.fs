@@ -4,10 +4,13 @@ open Overboard
 open Overboard.Common
 open Overboard.Storage
 
+type RestartPolicy = | Always | OnFailure | Never
+
 type Pod = { 
     metadata: Metadata
     containers: Container list
     volumes: Volume list
+    restartPolicy: RestartPolicy
 }
 
 // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/
@@ -17,6 +20,7 @@ type Pod with
             metadata = Metadata.empty
             containers = List.empty 
             volumes = List.empty
+            restartPolicy = Always
         }
 
 // resource: version, kind, metadata, spec
@@ -29,6 +33,7 @@ type Pod with
             // https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec
             containers = this.containers |> Helpers.mapEach (fun c -> c.Spec())
             volumes = this.volumes |> Helpers.mapEach (fun v -> v.Spec())
+            restartPolicy = this.restartPolicy.ToString()
         |}
     member this.ToResource() =
         {|
@@ -52,10 +57,16 @@ type PodBuilder() =
     member __.Zero () = Pod.empty
     
     member __.Combine (currentValueFromYield: Pod, accumulatorFromDelay: Pod) = 
+        let mergeRestartPolicy v1 v2 =
+            match (v1,v2) with
+                //| Never, v2' -> v2'
+                //| v1', Never -> v1'
+                | _ -> v1
         { currentValueFromYield with 
             metadata = Metadata.combine currentValueFromYield.metadata accumulatorFromDelay.metadata
             containers = List.append (currentValueFromYield.containers) (accumulatorFromDelay.containers)
             volumes = List.append (currentValueFromYield.volumes) (accumulatorFromDelay.volumes)
+            restartPolicy = mergeRestartPolicy currentValueFromYield.restartPolicy accumulatorFromDelay.restartPolicy
         }
     
     member __.Delay f = f()
@@ -121,7 +132,9 @@ type PodBuilder() =
     [<CustomOperation "volumes">]
     member _.Volumes(state: Pod, volumes: Volume list) = { state with volumes = volumes }
 
-
+    [<CustomOperation "restartPolicy">]
+    member _.RestartPolicy(state: Pod, restartPolicy: RestartPolicy) = { state with restartPolicy = restartPolicy }
+    
 
 [<AutoOpen>]
 module PodBuilders =

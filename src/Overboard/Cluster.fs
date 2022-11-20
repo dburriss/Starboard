@@ -20,6 +20,9 @@ type Namespace with
             kind = this.K8sKind()
             metadata = this.K8sMetadata()
         |}
+    member this.Validate() =
+        let kind = this.K8sKind()
+        (this.metadata.Validate(kind))
 
 type NamespaceBuilder() =
     member _.Yield _ = Namespace.empty

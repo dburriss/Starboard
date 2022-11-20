@@ -157,7 +157,6 @@ type CronJobBuilder() =
     [<CustomOperation "failedJobsHistoryLimit">]
     member _.FailedJobsHistoryLimit(state: CronJob, failedJobsHistoryLimit: int) = { state with failedJobsHistoryLimit = failedJobsHistoryLimit }
     
-    
 [<AutoOpen>]
 module CronJobBuilders =
     let cronJob = new CronJobBuilder()

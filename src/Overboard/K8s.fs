@@ -6,7 +6,9 @@ module K8s =
     open Overboard.Storage
     open Overboard.Workload
     open Overboard.Service
-
+    open Overboard.Authentication
+    open Overboard.Authorization
+    open Overboard.Cluster
 
     // TODO: Jobs
     // TODO: ReplicaSet?
@@ -101,7 +103,7 @@ module K8s =
             state.AddResource (box (pod.ToResource()))
             |> fun s -> s.AddErrors(pod.Validate())
 
-        // Deployments
+        // Deployment
         member this.Yield(deployment: Deployment) = this.Deployment(K8s.empty, deployment)
         member this.Yield(deployments: Deployment seq) = deployments |> Seq.fold (fun state d -> this.Deployment(state, d)) K8s.empty
         member this.YieldFrom(deployments: Deployment seq) = this.Yield(deployments)
@@ -109,7 +111,25 @@ module K8s =
         member __.Deployment(state: K8s, deployment: Deployment) = 
             state.AddResource (box (deployment.ToResource()))
             |> fun s -> s.AddErrors(deployment.Validate())
-
+            
+        // Job
+        member this.Yield(job: Job) = this.Job(K8s.empty, job)
+        member this.Yield(jobs: Job seq) = jobs |> Seq.fold (fun state d -> this.Job(state, d)) K8s.empty
+        member this.YieldFrom(jobs: Job seq) = this.Yield(jobs)
+        [<CustomOperation "add_job">]
+        member __.Job(state: K8s, job: Job) = 
+            state.AddResource (box (job.ToResource()))
+            |> fun s -> s.AddErrors(job.Validate())
+            
+        // CronJob
+        member this.Yield(cronJob: CronJob) = this.CronJob(K8s.empty, cronJob)
+        member this.Yield(cronJobs: CronJob seq) = cronJobs |> Seq.fold (fun state d -> this.CronJob(state, d)) K8s.empty
+        member this.YieldFrom(cronJobs: CronJob seq) = this.Yield(cronJobs)
+        [<CustomOperation "add_cronJob">]
+        member __.CronJob(state: K8s, cronJob: CronJob) = 
+            state.AddResource (box (cronJob.ToResource()))
+            |> fun s -> s.AddErrors(cronJob.Validate())
+            
         // Service
         member this.Yield(service: Service) = this.Service(K8s.empty, service)
         member this.Yield(service: Service seq) = service |> Seq.fold (fun state x -> this.Service(state, x)) K8s.empty
@@ -160,6 +180,32 @@ module K8s =
         member __.CSIPersistentVolumeSource(state: K8s, persistentVolume: PersistentVolume<CSIPersistentVolumeSource>) = 
             state.AddResource (box (persistentVolume.ToResource()))
         
+        
+        // Namespace
+        member this.Yield(ns) = this.Namespace(K8s.empty, ns)
+        member this.Yield(ns) = ns |> Seq.fold (fun state x -> this.Namespace(state, x)) K8s.empty
+        member this.YieldFrom(ns: Cluster.Namespace seq) = this.Yield(ns)
+        [<CustomOperation "add_namespace">]
+        member __.Namespace(state: K8s, ns: Cluster.Namespace) = 
+            state.AddResource (box (ns.ToResource()))
+        
+        // ServiceAccount
+        member this.Yield(serviceAccount) = this.ServiceAccount(K8s.empty, serviceAccount)
+        member this.Yield(serviceAccount) = serviceAccount |> Seq.fold (fun state x -> this.ServiceAccount(state, x)) K8s.empty
+        member this.YieldFrom(serviceAccount: ServiceAccount seq) = this.Yield(serviceAccount)
+        [<CustomOperation "add_serviceAccount">]
+        member __.ServiceAccount(state: K8s, serviceAccount: ServiceAccount) = 
+            state.AddResource (box (serviceAccount.ToResource()))
+        
+        // ClusterRoleBinding
+        member this.Yield(clusterRoleBinding) = this.ClusterRoleBinding(K8s.empty, clusterRoleBinding)
+        member this.Yield(clusterRoleBinding) = clusterRoleBinding |> Seq.fold (fun state x -> this.ClusterRoleBinding(state, x)) K8s.empty
+        member this.YieldFrom(clusterRoleBinding: ClusterRoleBinding seq) = this.Yield(clusterRoleBinding)
+        [<CustomOperation "add_clusterRoleBinding">]
+        member __.ClusterRoleBinding(state: K8s, clusterRoleBinding: ClusterRoleBinding) = 
+            state.AddResource (box (clusterRoleBinding.ToResource()))
+        
+
         [<CustomOperation "add_resource">]
         member __.Resource(state: K8s, resource: obj) = state.AddResource resource
 

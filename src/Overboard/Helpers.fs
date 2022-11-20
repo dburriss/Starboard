@@ -78,6 +78,7 @@ module Helpers =
 module String =
     open System
 
+    let lower (s: string) = s.ToLower()
     let length (s: string) = s.Length
     let isEmpty (s: string) = String.IsNullOrEmpty s
     let stripSpaces (s: string) = s.Replace(" ", "")
@@ -92,3 +93,10 @@ module String =
             with
             | _ -> false
     let toOption (s: string) = if String.IsNullOrWhiteSpace s then None else Some s
+
+module Files =
+    open System
+    let ext (path: string) = IO.Path.GetExtension(path)
+    let fileNameWithoutExt (path: string) = IO.Path.GetFileNameWithoutExtension(path)
+    let fileName (path: string) = IO.Path.GetFileName(path)
+    let isFsxFile (path: string) = IO.Path.GetExtension(path).ToLower() = "fsx" 

@@ -128,6 +128,13 @@ type ConfigMapBuilder() =
         let bytes = System.IO.File.ReadAllBytes(filePath)
         { state with binaryData = state.binaryData |> Map.add key bytes }
 
+    /// Adds a file to the ConfigMap binary data
+    [<CustomOperation "files">]
+    member _.AddFilesToBinaryData(state: ConfigMap, files) = 
+        let bytes path = System.IO.File.ReadAllBytes(path)
+        let newMap = files |> List.map (fun (k, v) -> (k, bytes v)) |> Map.ofList
+        { state with binaryData = newMap }
+
 //====================================
 // CONFIGMAP LIST
 // https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/config-map-v1/#ConfigMapList

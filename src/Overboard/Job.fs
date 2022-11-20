@@ -69,6 +69,7 @@ type Job with
         let kind = this.K8sKind()
         (this.metadata.Validate(kind))
         @ (Validation.required (fun x -> x.template) $"{kind} `template` is required." this)
+        @ (if this.template.IsSome && this.template.Value.restartPolicy = Always then [InvalidValue $"{kind} `template.restartPolicy` is `Always`, can only be `OnFailure` or `Never` on Job."] else [])
 
 type JobBuilder() =
     member _.Yield _ = Job.empty
