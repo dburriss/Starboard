@@ -63,6 +63,13 @@ type Subject with
             apiGroup = None
             ns = None
         }
+    member this.Spec() =
+        {|
+            kind = this.kind
+            name = this.name
+            apiGroup = this.apiGroup
+            ``namespace`` = this.ns
+        |}
 
 type SubjectBuilder() =
     member _.Yield _ = Subject.empty
@@ -121,7 +128,7 @@ type ClusterRoleBinding with
             kind = this.K8sKind()
             metadata = this.K8sMetadata()
             roleRef = this.roleRef
-            subjects = this.subjects |> Helpers.mapEach id
+            subjects = this.subjects |> Helpers.mapEach (fun x -> x.Spec())
         |}
 
 type ClusterRoleBindingBuilder() =

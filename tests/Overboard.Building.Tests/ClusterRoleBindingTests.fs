@@ -32,4 +32,4 @@ module ClusterRoleBindingTests =
         test <@ result.subjects.Value.Head.name = "my-subject1" @>
         test <@ result.subjects.Value.Head.kind = "my-kind" @>
         test <@ result.subjects.Value.Head.apiGroup = Some "my-group" @>
-        test <@ result.subjects.Value.Head.ns = Some "my-namespace" @>
+        test <@ result.subjects.Value.Head.``namespace`` = Some "my-namespace" @>

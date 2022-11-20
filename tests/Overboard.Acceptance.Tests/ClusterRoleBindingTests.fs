@@ -89,8 +89,8 @@ module K8s_ClusterRoleBinding =
             subjects subjects'
         }
         let result = sut.ToResource()
-        test <@ result.subjects = Some subjects' @>
+        test <@ result.subjects.Value |> List.tryFind  (fun x -> x.name = "my-subject" ) |> Option.isSome @>
         test <@ result.subjects.Value.Head.name = "my-subject" @>
         test <@ result.subjects.Value.Head.kind = "my-kind" @>
         test <@ result.subjects.Value.Head.apiGroup = Some "my-group" @>
-        test <@ result.subjects.Value.Head.ns = Some "my-namespace" @>
+        test <@ result.subjects.Value.Head.``namespace`` = Some "my-namespace" @>
