@@ -1,7 +1,9 @@
 # Overboard
 
 [![Tests](https://github.com/dburriss/overboard/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/dburriss/overboard/actions/workflows/build-and-test.yml)
-![Nuget](https://img.shields.io/nuget/v/Overboard)
+[![Nuget](https://img.shields.io/nuget/v/Overboard)](https://www.nuget.org/packages/Overboard/)
+
+[Documentation](https://devonburriss.me/overboard/) | [Nuget](https://www.nuget.org/packages/Overboard/)
 
 Overboard is a library providing strongly typed builders over kubernetes configuration. It allows you to retain a declarative style to your configuration while putting the full power of the F# programming language in your hands.
 
