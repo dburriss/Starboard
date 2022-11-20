@@ -12,6 +12,11 @@ index: 2
 
 Overboard gives a powerful way to define your Kubernetes config but for that to be useful, we need to generate the kubernetes config. Overboard provides some helpers for doing just this in `cref:T:Overboard.K8s.KubeCtlWriter`.
 *)
+
+(***hide***)
+let makeYaml text = $"""<pre class="fssnip highlighted"><code lang="yaml">{text}</code></pre>"""
+
+
 (*** hide ***)
 // import from Nuget
 #r "nuget:Overboard"
@@ -41,8 +46,9 @@ If you would like to see what is generated on your screen you can use the `cref:
 KubeCtlWriter.print kubeConfig
 (*** hide ***)
 let k8sOutput' = KubeCtlWriter.toYaml kubeConfig
-k8sOutput'.content
-(*** include-it ***)
+
+makeYaml k8sOutput'.content
+(***include-it-raw***)
 (**
 ## Writing to file
 
@@ -66,8 +72,8 @@ It will still generate the config you specify but gives you errors that you can 
 
 
 let k8sOutput = KubeCtlWriter.toYaml kubeConfig
-k8sOutput.content
-(*** include-it ***)
+makeYaml k8sOutput.content
+(***include-it-raw***)
 
 (**
 ## Validation errors

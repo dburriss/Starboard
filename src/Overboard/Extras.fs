@@ -94,12 +94,18 @@ type FsharpJobBuilder() =
     member _.Schedule(state: FsharpJob, schedule: string) = { state with schedule = Some schedule }
     
     member this.Run(state: FsharpJob) =
+        let normalize (s: string) =
+            s.ToCharArray()
+            |> Array.filter (fun c -> Char.IsLetterOrDigit(c) || c = '-')
+            |> String
+            |> String.lower
 
         let entryPoint = state |> FsharpJob.finalEntrypoint
         
         let name =
             state.metadata.name
             |> Option.orElseWith( fun () -> entryPoint |> Files.fileNameWithoutExt |> String.lower |> Some )
+            |> Option.map normalize
             |> Option.defaultValue "fsx"
 
         let configMapName = $"script-{name}-configmap"

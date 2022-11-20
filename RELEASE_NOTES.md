@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - ServiceAccount and ClusterRoleBinding not recognised by K8s
+- defaultMode dropping leading zeros
 
 ## [0.0.1] - 2022-11-13
 

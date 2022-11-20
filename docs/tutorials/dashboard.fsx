@@ -53,11 +53,7 @@ Remember to run `proxy` so you can access the cluster from your machine:
 kubectl proxy
 ```
 
-```bash
-kubectl proxy
-```
-
-To login, we need to create a `ServiceAccount` and connect the correct role to it. We will do this and then get a token.
+To login though, we need to create a `ServiceAccount` and connect the correct role to it. We will do this and then get a token.
 
 ## Creating the Service Account
 
@@ -77,6 +73,9 @@ open Overboard.Authorization
 ## Creating the ServiceAccount
 
 The `ServiceAccount` is called _admin-user_ and is in the _kubernetes-dashboard_ `Namespace`.
+
+> This _admin-user_ is only intended for testing on a local cluster! Use a more robust RBAC setup for a production setup.
+
 *)
 let dashboardAccount = serviceAccount {
     _name "admin-user"
@@ -138,21 +137,21 @@ Mac:
 ```bash
 kubectl -n kubernetes-dashboard create token admin-user | pbcopy
 ```
-Linux (with xcopy installed):
+Linux (with xclip installed):
 ```bash
-kubectl -n kubernetes-dashboard create token admin-user | xcopy
+kubectl -n kubernetes-dashboard create token admin-user | xclip
 ```
 
 Remember to start a proxy if you don't still have it running from earlier.
 
-Don't copy/paste this command since the token is in your clipboard ;)
+> Don't copy/paste this command since the token is in your clipboard ;)
+
 ```bash
 kubectl proxy
 ```
 
-Now, navigate to the dashboard again, make sure **Token** is selected, and paste your token in the text field.
-
-[kubnernetes dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
+Now, navigate to the [kubnernetes dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/) again, 
+make sure **Token** is selected, and paste your token in the text field.
 
 You should now have access to your cluster dashboard.
 

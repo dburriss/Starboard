@@ -86,6 +86,14 @@ Ready to try it yourself? Try the [hello-world](tutorials/hello-world.fsx) tutor
 
 The docs follow the guidance from [The documentation system](https://documentation.divio.com/).
 
+Generation is done using [FSharp.Formatting](https://fsprojects.github.io/FSharp.Formatting/).
+
+To run the docs locally, navigate to this _/overboard_ root folder and run the following command:
+
+```bash
+dotnet fsdocs watch --eval
+```
+
 ## About the logo
 
 Ship by Aleksandr Vector from <a href="https://thenounproject.com/browse/icons/term/ship/" target="_blank" title="Ship Icons">Noun Project</a>

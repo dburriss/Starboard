@@ -1,5 +1,6 @@
 ﻿namespace Overboard.Storage
 
+open System
 open Overboard
 open Overboard.Common
 
@@ -52,7 +53,7 @@ type ConfigMapVolumeSource with
         {|
             name = this.name
             optional = this.optional
-            defaultMode = this.defaultMode
+            defaultMode = this.defaultMode |> Option.map (fun i -> i.ToString("0000"))
             items = this.items
         |}
 

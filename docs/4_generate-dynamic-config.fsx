@@ -16,6 +16,10 @@ In the example below we define a function that defines a **deployment** and a **
 
 The function nomalizes the name by lowercasing it and stripping any special characters from it. This is a great way to standardize on naming conventions without always requiring that everyone always remembers the standards.
 *)
+(***hide***)
+let makeYaml text = $"""<pre class="fssnip highlighted"><code lang="yaml">{text}</code></pre>"""
+
+
 (*** hide ***)
 #r "nuget:Overboard"
 
@@ -70,11 +74,10 @@ let k8sConfig = k8s {
 
 // Get the output content and validation errors
 let k8sOutput = KubeCtlWriter.toYaml k8sConfig
-(*** hide ***)
-let md = $"
-{k8sOutput.content}
-"
+
 (**
 ### Output
 *)
-(*** include-value: md ***)
+(*** hide ***)
+makeYaml k8sOutput.content
+(***include-it-raw***)

@@ -7,6 +7,7 @@ module PodTests =
     open Overboard.Workload
     open Overboard.Storage
     open System.Collections.Generic
+    open Swensen.Unquote
 
     let listsEqual<'a> expected actual = 
         let e : IEnumerable<'a> = List.toSeq expected
@@ -42,5 +43,20 @@ module PodTests =
 
         Assert.True(result.spec.volumes.Value.Head.csi.Value.volumeAttributes.IsSome)
         Assert.Equal(1, result.spec.volumes.Value.Head.csi.Value.volumeAttributes.Value.Count)
+      
+
+      
+    [<Fact>]
+    let ``configVolume defaultMode is octal`` () =
+        let thePod = pod {
+            "pod-test"
+            configMapVolume {
+                defaultMode 0700
+            }
+        }
+        let result = thePod.ToResource()
+
+        test <@ result.spec.volumes.Value.Head.configMap.IsSome @>
+        test <@ result.spec.volumes.Value.Head.configMap.Value.defaultMode = Some "0700" @>
       
 
