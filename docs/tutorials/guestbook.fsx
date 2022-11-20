@@ -9,7 +9,7 @@ index: 2
 *)
 
 (**
-# Overboard: Guestbook Go
+# Overboard: Guestbook example
 
 In this tutorial we will recreate the [official Kubernetes Guestbook example](https://kubernetes.io/docs/tutorials/stateless-application/guestbook/). 
 The example deploys a Redis cluster with a master node and 3 replicas. A PHP web application makes use of the Redis cluster to allow a guest to leave a note.
@@ -44,7 +44,6 @@ First off, import the Overboard package and import the namespaces we need.
 1. Create a file called `guestbook.fsx`
 2. Use the `#r` directive to import the Overboard package and open up the namespaces
 *)
-// TODO: import from Nuget
 #r "nuget:Overboard"
 
 // open the required namespaces
@@ -65,7 +64,7 @@ A [F# function](https://learn.microsoft.com/en-us/dotnet/fsharp/language-referen
 let redisDeployment redisName role replicaCount portNumber  =
     
     // which image depends on the role
-    let redisImage = if role = "leader" then "docker.io/redis:6.0.5" else "gcr.io/google_samples/gb-redis-follower:v2"//"k8s.gcr.io/redis:e2e" "k8s.gcr.io/redis-slave:v2"
+    let redisImage = if role = "leader" then "docker.io/redis:6.0.5" else "gcr.io/google_samples/gb-redis-follower:v2"
 
     // define the container
     let redisContainer = container {
